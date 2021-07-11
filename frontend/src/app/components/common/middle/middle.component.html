@@ -1,0 +1,32 @@
+<div id="middle">
+  <div class="wrapper">
+    <div class="row">
+      <div [@routingAnimation]="o.isActivated ? o.activatedRoute : ''" c class="col mr-lg-4">
+        <router-outlet #o="outlet"></router-outlet>
+      </div>
+<!--      <div class="col-12 col-md-3 col-lg-5 col-xl-3 pl-lg-0"><a-->
+<!--        class="btn_large success mb-3"-->
+<!--        routerLink="start" *ngIf="!user;else downloadLauncherBtn"><span-->
+<!--      >Начать играть</span>-->
+<!--        <small>Начни игру всего в пару кликов!</small>-->
+<!--      </a>-->
+<!--        <a class="btn_large success" href=""><span-->
+<!--        >Проголосовать</span>-->
+<!--          <small>За голосование выдаем монеты</small>-->
+<!--        </a>-->
+<!--        <app-monitoring></app-monitoring>-->
+<!--        <div class="quarter mt-5">-->
+<!--        </div>-->
+<!--      </div>-->
+    </div>
+  </div>
+</div>
+
+<ng-template #downloadLauncherBtn>
+  <a
+    class="btn_large success mb-3"
+    routerLink="launcher"><span
+  >скачать лаунчер</span>
+    <small>Необходим для входа на сервера</small>
+  </a>
+</ng-template>

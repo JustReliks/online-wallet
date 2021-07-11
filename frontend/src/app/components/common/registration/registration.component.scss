@@ -1,0 +1,39 @@
+.register-modal {
+  h1 {
+    color: #6977fa;
+  }
+
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 48px;
+    text-transform: uppercase;
+  }
+
+  p {
+    color: #4d5773;
+  }
+
+  p {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .login-btn {
+    color: white;
+    background: #6977fa;
+
+    &:hover {
+      background: #4b51a8;
+    }
+  }
+
+  .overflow-inherit {
+    overflow: inherit;
+    margin-bottom: 17px
+  }
+}
+
+.register-icon {
+  margin-right: 21px;
+}

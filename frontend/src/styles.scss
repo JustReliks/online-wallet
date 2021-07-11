@@ -1,0 +1,123 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Open+Sans+Condensed:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+//@font-face {
+//  font-family: 'minecraft';
+//  src: url('/assets/fonts/minecraft.ttf');
+//}
+//
+@font-face {
+  font-family: 'Nunito-regular';
+  src: url('/assets/fonts/nunito/Nunito-Regular.ttf');
+}
+
+body {
+  font-family: 'Nunito-regular', sans-serif;
+}
+
+.toast-container .ngx-toastr {
+  width: 450px;
+}
+
+#middle {
+  position: relative;
+  padding: 34px 0 128px;
+}
+
+.btn_common {
+  border: none;
+  position: relative;
+  display: inline-block;
+  border-radius: 4px;
+  padding: 6px 14px;
+  background-color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  color: #1960ee !important;
+  top: 0;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  text-decoration: none !important;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.btn_common:hover{
+  background-color: #d2d2d2;
+}
+
+// NEW
+
+#middle {
+  position: relative;
+  padding: 34px 0 128px;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1480px;
+  padding-right: 35px;
+  padding-left: 35px;
+  margin-right: auto;
+  margin-left: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.row {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.toast-container .ngx-toastr {
+  width: 450px;
+}
+
+.header .headline_1 h2 {
+  color: #353535;
+  font-weight: 700;
+}
+
+.back-arrow {
+  h3 {
+    a {
+      cursor: pointer;
+    }
+  }
+}
+
+.blue-p-input {
+  width: 100%;
+  border-radius: 11px;
+  background: #cce5ff;
+  padding: 10px 10px 7px 10px;
+  border-left: 3px solid #8f50f0;
+}
+
+.blue-gradient-btn {
+  filter: drop-shadow(4px 3px 9px #3780d6);
+  width: 60%;
+  padding: 9px 0;
+  background: linear-gradient(45deg, #3780d6 5%, #2128e4a8, #780eecc2) top;
+  font-size: 22px;
+  font-weight: 700;
+  -webkit-animation: pulse 3.25s infinite cubic-bezier(0.01, 0.02, 0.99, 0.99);
+  -moz-animation: pulse 3.25s infinite cubic-bezier(0.01, 0.02, 0.99, 0.99);
+  -ms-animation: pulse 3.25s infinite cubic-bezier(0.01, 0.02, 0.99, 0.99);
+  animation: pulse 3.25s infinite cubic-bezier(0.01, 0.02, 0.99, 0.99)
+}
+
+.header a, footer .promo_box h3, nav .dropdown .link:after, nav .dropdown_menu a, nav .dropdown_menu a:before, nav .link, nav .link:before, nav  {
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+}

@@ -1,0 +1,24 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
+<h2 class="title" mat-dialog-title>Двухфакторная аутентификация</h2>
+<mat-dialog-content>
+  <div class="d-inline-flex flex-column">
+    <p class="mb-3">Для данного аккаунта активирована двухфакторная аутентификация, введите код из Google
+      Authenticator в
+      поле ниже и нажмите кнопку "Подветрдить"
+    </p>
+    <mat-form-field class="two-factor-key-p-input">
+      <mat-label>Код из приложения:</mat-label>
+      <input matInput placeholder="Введите код из Google Authenticator" type="number" [value]="authKey"
+             (keyup)="googleAuthKeyKeyUp($event)">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="w-100 d-flex justify-content-center">
+    <button [disabled]="!authKey" (click)="auth()" mat-raised-button color="primary"
+            class="two-factor-btn align-self-center mt-4">Войти в акканут
+    </button>
+  </div>
+</mat-dialog-actions>

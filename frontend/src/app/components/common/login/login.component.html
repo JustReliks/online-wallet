@@ -1,0 +1,97 @@
+<!--<div class="content">
+  <div class="inner">
+    <div class="headline">
+      <h2 style="text-align: center;">Авторизация</h2>
+      <p>Для доступа к большей части функциональности нашего сайта Вам необходимо авторизоваться.</p>
+    </div>
+    <div class="registration_form">
+      <div class="login-page">
+        <div class="form-signin">
+          <h1 class="h3 mb-3 font-weight-normal">Пожалуйста, авторизуйтесь</h1>
+          <div *ngIf="!!error" class="alert alert-danger" role="alert">
+            {{ error }}
+          </div>
+          <label for="username" class="sr-only">Username</label>
+          <input id="username" class="form-control" style="margin-bottom: 7px" [(ngModel)]="username"
+                 placeholder="Username" autofocus>
+          <label for="password" class="sr-only">Password</label>
+          <input type="password" id="password" [(ngModel)]="password" class="form-control" placeholder="Password"
+                 required>
+          <button class="btn btn-lg btn-primary btn-block" (click)="onSignIn()" [disabled]="!isValid()">Войти
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>-->
+
+<div class="login-modal" [formGroup]="loginForm">
+  <div class="col-xs-1 text-center">
+    <h1 mat-dialog-title>Авторизация</h1>
+    <p>
+      Что-то пошло не так? Сообщите об этом в нашу
+      <a target="_blank" href="https://vk.com/owallet">группу ВКонтакте</a>
+      и мы оперативно поможем Вам решить проблему!
+    </p>
+  </div>
+  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+    <div class="col-1 d-flex align-items-center">
+      <label class="register-icon"
+      ><i class="fas fa-user" aria-hidden="true"></i>
+      </label>
+    </div>
+    <div class="col">
+      <mat-form-field class="w-100">
+        <input formControlName="username" matInput placeholder="Логин"/>
+        <mat-error *ngIf="hasControlsErrors('username', 'required')"
+        >Введите имя пользователя
+        </mat-error
+        >
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit mb-0">
+    <div class="col-1 d-flex align-items-center">
+      <label class="register-icon"
+      ><i class="fas fa-unlock-alt" aria-hidden="true"></i>
+      </label>
+    </div>
+    <div class="col">
+      <mat-form-field class="w-100">
+        <input
+          formControlName="password"
+          matInput
+          placeholder="Пароль"
+          type="password"
+        />
+        <mat-error *ngIf="hasControlsErrors('password', 'required')"
+        >Введите пароль
+        </mat-error
+        >
+      </mat-form-field>
+    </div>
+    <!--    <div *ngIf="authError" style="color:red;">-->
+    <!--      Ошибка авторизации. Попробуйте еще раз.-->
+    <!--    </div>-->
+  </div>
+  <div class="d-flex">
+    <button (click)="openRestoreAccessModal()" mat-flat-button class="mb-1">Проблемы со входом?</button>
+    <a mat-flat-button class="mb-1">Нет аккаунта?</a>
+  </div>
+  <div mat-dialog-actions class="row d-flex justify-content-center">
+    <button #signBtn
+            mat-raised-button
+            color="primary"
+            (click)="onSignIn(signBtn)"
+            [disabled]="!form.valid"
+    >
+      Войти на сайт
+    </button>
+    <button type="button" mat-raised-button color="warn" (click)="close()">
+      Закрыть
+    </button>
+    <!--[mat-dialog-close]="data"-->
+    <!--<button (click)="onSignIn()" cdkFocusInitial mat-button class="login-btn">Войти на сайт</button>
+    <button (click)="close()" mat-button>Закрыть</button>-->
+  </div>
+</div>

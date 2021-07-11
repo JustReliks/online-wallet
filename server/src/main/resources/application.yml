@@ -1,0 +1,28 @@
+spring:
+  # first datasource [Oline-Wallet site]
+  datasource:
+    url: jdbc:postgresql://localhost:5432/online-wallet
+    username: postgres
+    password: 123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-test-query: SELECT 1
+
+  # Jackson
+  jackson:
+    default-property-inclusion: non_null
+
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+      enabled: true
+
+  logging:
+    level:
+    ru.onlinewallet: debug
+    org.springframework.web: debug
+
+jwt:
+  secret: vcNwqkM76h45gpVhDbC8Zs6e8IGGp1W4
+  expiration: 43200  # minutes
