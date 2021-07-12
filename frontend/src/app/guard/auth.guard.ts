@@ -3,6 +3,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTre
 import {Observable} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthService} from "../service/auth.service";
+import {LoginComponent} from "../components/common/login/login.component";
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +20,10 @@ export class AuthGuard implements CanActivate {
       localStorage.removeItem('requestedAuthPage');
       return true;
     }
-    // this.dialog.open(LoginComponent, {
-    //   width: '340px',
-    //   data: {}
-    // });
+     this.dialog.open(LoginComponent, {
+       width: '340px',
+       data: {}
+     });
 
     localStorage.setItem('requestedAuthPage', state.url);
     return false;

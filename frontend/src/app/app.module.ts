@@ -27,7 +27,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {ToastrModule} from "ngx-toastr";
-import {FinanceComponent} from "./components/pages/fincance/finance.component";
+import {FinanceComponent} from "./components/pages/finance/finance.component";
 import {MatDividerModule} from "@angular/material/divider";
 
 registerLocaleData(localeRu, 'ru');

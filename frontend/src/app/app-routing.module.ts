@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MainComponent} from "./components/pages/main/main.component";
-import {FinanceComponent} from "./components/pages/fincance/finance.component";
+import {FinanceComponent} from "./components/pages/finance/finance.component";
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', component: MainComponent},
