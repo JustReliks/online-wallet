@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-lg-3 col-sm-3 col-md-3">
+    <div class="w-block mb-5">
+      <mat-card>
+        <mat-card-header [textContent]="'Баланс'" class="card-header w-card-header">
+        </mat-card-header>
+        <div class="w-change-balance-btn">
+          <button color="primary" mat-raised-button class="btn custom-btn custom-btn-blue-gradient"
+                  (click)="true">
+            <mat-icon style="top: -2px;position: relative;">attach_money</mat-icon>
+            Изменить
+          </button>
+        </div>
+        <mat-card-content class="card-body mat-card-content">
+          <div class="w-available-balance">
+            <p class="text-black-50 mb-0">Доступно: </p>
+            <p class="w-summa">9900 <span class="w-currency">USD</span></p>
+          </div>
+          <div class="w-balance-table">
+            <div class="row w-100">
+              <div class="col w-25">333</div>
+              <div class="col-sm-2 w-25 font-weight-bold">RUB</div>
+            </div>
+            <hr align="center" width="90%" size="50" color="#dddddd"/>
+            <div class="row w-100">
+              <div class="col w-25">333</div>
+              <div class="col-sm-2 w-25 font-weight-bold">RUB</div>
+            </div>
+            <hr align="center" width="90%" size="50" color="#dddddd"/>
+            <div class="row w-100">
+              <div class="col w-25">333</div>
+              <div class="col-sm-2 w-25 font-weight-bold">RUB</div>
+            </div>
+            <hr align="center" width="90%" size="50" color="#dddddd"/>
+            <div class="row w-100">
+              <div class="col w-25">333</div>
+              <div class="col-sm-2 w-25 font-weight-bold">RUB</div>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-footer class="card-footer">
+          Всего счетов: 8
+        </mat-card-footer>
+      </mat-card>
+    </div>
+  </div>
+  <div class="col">test col</div>
+</div>

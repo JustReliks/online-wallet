@@ -1,0 +1,38 @@
+.w-card-header {
+  justify-content: space-between;
+
+  .text {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.w-change-balance-btn {
+  position: absolute;
+  top: 23px;
+  right: 10%;
+}
+
+.w-available-balance {
+  .w-summa {
+    font-size: 43px;
+    font-weight: 600;
+    color: #2e7103;
+  }
+
+  .w-currency {
+    font-size: 25px;
+    vertical-align: top;
+    font-weight: 100;
+  }
+}
+
+.w-balance-table {
+  background: #f7f7f7;
+  padding: 13px;
+  border-radius: 6px;
+  -webkit-box-shadow: 4px 6px 23px 6px rgb(34 60 80 / 20%);
+  -moz-box-shadow: 4px 6px 23px 6px rgba(34, 60, 80, 0.2);
+  box-shadow: 4px 6px 23px 6px rgb(34 60 80 / 20%);
+  font-size: 16px;
+}

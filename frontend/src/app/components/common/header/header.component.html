@@ -3,7 +3,7 @@
     <div class="nav_menu"><a class="logo router-link-exact-active router-link-active" routerLink="/"></a>
       <ul class="d-lg-block">
         <li class=""><a class="link"
-                        routerLink="cabinet">Мои финансы</a> <!----> <!---->
+                        routerLink="finance">Мои финансы</a> <!----> <!---->
         </li>
         <li class=""><a class="link"
                         routerLink="cabinet">Профиль</a> <!----> <!---->
@@ -38,80 +38,10 @@
           </li>
         </ul>
       </ng-template>
-      <!--      <ul class="d-block d-lg-none text-right"><a class="mobile_menu_toggle" routerLink="#"><span-->
-      <!--        class="bars"></span></a>-->
-      <!--      </ul>-->
     </div>
-
-    <!--    <div class="mobile_menu d-block d-lg-none ">-->
-    <!--      <div class="popup">-->
-    <!--        <div class="row align-items-center m-0"><h3>Меню</h3>-->
-    <!--          <div class="col dotted"></div>-->
-    <!--          <a class="mobile_menu_toggle" routerLink="#"><i class="fal fa-times"></i></a></div>-->
-    <!--        <div class="panel">-->
-    <!--          <ul class="row profile light mx-0">-->
-    <!--            <li><a class="link" routerLink="/cabinet/">-->
-    <!--              <div *ngIf="this.user" class="user_pic"><img-->
-    <!--                style="image-rendering: pixelated;" [src]="getUserHead()"></div>-->
-    <!--              MrcreativeBC-->
-    <!--            </a></li>-->
-    <!--            <li class="notice"><a class="link" routerLink="#"><i class="far fa-envelope"></i></a></li>-->
-    <!--            <li class="notice "><a class="link" routerLink="/notifications"><i class="far fa-bell"></i></a></li>-->
-    <!--            <li class="ml-auto"><a class="link" routerLink="#">Выход</a></li>-->
-    <!--          </ul>-->
-    <!--        </div>-->
-    <!--        <div class="row area">-->
-    <!--          <div class="col-12 col-sm-6"><h4>Навигация</h4>-->
-    <!--            <ul>-->
-    <!--              <li><a class="" routerLink="/forum/">Форум</a></li>&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;-->
-    <!--              <li><a class="" routerLink="/donate">Донат</a></li>-->
-    <!--              <li><a class="" routerLink="/cabinet/">Кабинет</a></li>-->
-    <!--            </ul>-->
-    <!--          </div> &lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;-->
-    <!--          <div class="col-12 col-sm"><h4>Помощь</h4>-->
-    <!--            <ul>-->
-    <!--              <li><a class="" routerLink="rules">Правила</a></li>-->
-    <!--              <li><a class="" routerLink="help">Вопросы и ответы</a></li>-->
-    <!--              <li><a class="" routerLink="download">Скачать лаунчер</a></li>-->
-    <!--              <li><a class="" routerLink="commands">Команды</a></li>-->
-    <!--              <li><a class="" routerLink="/banlist">Банлист</a></li>-->
-    <!--              <li><a class="" routerLink="/moder/entry">Стать модератором</a></li>-->
-    <!--              <li><a class="" routerLink="team">Команда проекта</a></li>-->
-    <!--            </ul>-->
-    <!--          </div>&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;</div> &lt;!&ndash;&ndash;&gt;-->
-    <!--        <div class="row area mt-4">-->
-    <!--          <div class="col-12 col-sm-6">-->
-    <!--            <ul><h4>Наши сервера</h4>-->
-    <!--              <li><a class="" routerLink="sandbox">SandBox</a></li>-->
-    <!--              <li><a class="" routerLink="nanotech">NanoTech</a></li>-->
-    <!--              <li><a class="" routerLink="galactic">Galactic</a></li>-->
-    <!--              <li><a class="" routerLink="technomagic">TechnoMagic</a></li>-->
-    <!--              <li><a class="" routerLink="technomagicsky">TechnoMagicSky</a></li>-->
-    <!--              <li><a class="" routerLink="magic">Magic</a></li>-->
-    <!--              <li><a class="" routerLink="rpg">RPG</a></li>-->
-    <!--              <li><a class="" routerLink="hitech">HiTech</a></li>-->
-    <!--              <li><a class="" routerLink="gregtech">GregTech</a></li>-->
-    <!--            </ul>-->
-    <!--          </div>-->
-    <!--          <div class="col-12 col-sm-6">-->
-    <!--            <ul><h4>Миниигры</h4>-->
-    <!--              <li><a class="" routerLink="minigames">MiniGames</a></li>-->
-    <!--            </ul>-->
-    <!--            <ul><h4>Сервера 1.12.2</h4>-->
-    <!--              <li><a class="" routerLink="technofantasy">TechnoFantasy</a></li>-->
-    <!--              <li><a class="" routerLink="pixelmon">Pixelmon</a></li>-->
-    <!--            </ul>-->
-    <!--            <ul><h4>SurvivalMG</h4>-->
-    <!--              <li><a class="" routerLink="jedicraft">JediCraft</a></li>-->
-    <!--              <li><a class="" routerLink="cosmoprison">CosmoPrison</a></li>-->
-    <!--              <li><a class="" routerLink="zona">Z.O.N.A.</a></li>-->
-    <!--            </ul>-->
-    <!--          </div>-->
-    <!--        </div>&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;&lt;!&ndash;&ndash;&gt;</div>-->
-    <!--    </div>-->
   </div>
 </nav>
-<div class="waveWrapper waveAnimation">
+<div *ngIf="hasRoute('\/')" class="waveWrapper waveAnimation">
   <div class="waveWrapperInner bgTop">
     <div class="wave waveTop"
          style="background-image: url('../../../../assets/img//wave/wave-top.png');"></div>

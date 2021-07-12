@@ -2,13 +2,11 @@ import {LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {ServiceWorkerModule} from '@angular/service-worker';
-import {environment} from '../environments/environment';
 import {HeaderComponent} from './components/common/header/header.component';
 import {FooterComponent} from './components/common/footer/footer.component';
 import {MiddleComponent} from './components/common/middle/middle.component';
 import {RouterModule} from "@angular/router";
-import {MainComponent} from './components/common/pages/main/main.component';
+import {MainComponent} from './components/pages/main/main.component';
 import {AuthService} from "./service/auth.service";
 import {ApplicationEventBroadcaster} from "./service/application.event.broadcaster";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
@@ -22,13 +20,15 @@ import {AppRoutingModule} from "./app-routing.module";
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TwoFactorModalComponent} from "./components/common/login/two-factor-modal/two-factor-modal.component";
 import {RegistrationComponent} from "./components/common/registration/registration.component";
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LoginComponent} from "./components/common/login/login.component";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {ToastrModule} from "ngx-toastr";
+import {FinanceComponent} from "./components/pages/fincance/finance.component";
+import {MatDividerModule} from "@angular/material/divider";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -41,7 +41,9 @@ registerLocaleData(localeRu, 'ru');
     MainComponent,
     TwoFactorModalComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    FinanceComponent
+
   ],
   imports: [
     BrowserModule,
@@ -66,6 +68,7 @@ registerLocaleData(localeRu, 'ru');
     MatIconModule,
     MatFormFieldModule,
     MatTooltipModule,
+    MatDividerModule,
   ],
   providers: [
     AuthService,

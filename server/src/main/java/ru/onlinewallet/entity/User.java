@@ -29,7 +29,6 @@ public class User {
     @JsonManagedReference
     private Set<Role> roles;
 
-
     @Column
     private String email;
 
