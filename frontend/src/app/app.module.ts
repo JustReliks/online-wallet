@@ -33,6 +33,7 @@ import {IncomeComponent} from "./components/pages/income/income.component";
 import {MenuComponent} from "./components/pages/finance/menu/menu.component";
 import {CardComponent} from "./components/pages/finance/card/card.component";
 import {SelectAccountComponent} from "./components/pages/finance/select-account/select-account.component";
+import {MatSelectModule} from "@angular/material/select";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -52,31 +53,32 @@ registerLocaleData(localeRu, 'ru');
     CardComponent,
     SelectAccountComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    // ServiceWorkerModule.register('ngsw-worker.js', {
-    //   enabled: environment.production,
-    //   // Register the ServiceWorker as soon as the app is stable
-    //   // or after 30 seconds (whichever comes first).
-    //   registrationStrategy: 'registerWhenStable:30000'
-    // }),
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-    }),
-    RouterModule,
-    BrowserAnimationsModule,
-    NgbModule,
-    MaterialModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatTooltipModule,
-    MatDividerModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        // ServiceWorkerModule.register('ngsw-worker.js', {
+        //   enabled: environment.production,
+        //   // Register the ServiceWorker as soon as the app is stable
+        //   // or after 30 seconds (whichever comes first).
+        //   registrationStrategy: 'registerWhenStable:30000'
+        // }),
+        ToastrModule.forRoot({
+            positionClass: 'toast-bottom-right',
+        }),
+        RouterModule,
+        BrowserAnimationsModule,
+        NgbModule,
+        MaterialModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+        MatDividerModule,
+        MatSelectModule,
+    ],
   providers: [
     AuthService,
     ApplicationEventBroadcaster,

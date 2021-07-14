@@ -20,6 +20,11 @@
   color: white;
 
 }
+
+.btn {
+  border-radius: 18px;
+}
+
 .w-select-account {
   position: relative;
   left: 25%;
@@ -27,4 +32,18 @@
 
 .w-acc-name {
   right: -10%;
+}
+
+.w-acc {
+  border-radius: 18px;
+  position: relative;
+
+  //height: 50%;
+  background: rgb(39,60,214);
+  background: linear-gradient(25deg, rgba(39,60,214,1) 3%, rgba(88,83,243,1) 55%, rgba(144,81,226,1) 100%);
+  padding: 13px;
+}
+
+.w-acc:active{
+  color: red;
 }

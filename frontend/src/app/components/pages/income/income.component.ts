@@ -4,6 +4,8 @@ import {Account} from "../../../entities/account";
 import {LoginComponent} from "../../common/login/login.component";
 import {MatDialog} from "@angular/material/dialog";
 import {SelectAccountComponent} from "../finance/select-account/select-account.component";
+import {MatSelectChange} from "@angular/material/select";
+import {MatOptionSelectionChange} from "@angular/material/core";
 
 @Component({
   selector: 'app-income',
@@ -12,9 +14,10 @@ import {SelectAccountComponent} from "../finance/select-account/select-account.c
 })
 export class IncomeComponent implements OnInit {
 
+  private _accounts: Array<Account>;
   private _operations: Array<Operation>
   private _selectedAccount: Account;
-
+  displayedColumns: string[] = ['id', 'date', 'value', 'currency', 'description']
   constructor(private dialog: MatDialog) {
     this._operations = new Array<Operation>();
     this._operations.push(new Operation(1, OperationType.INCOME, 15,"05.10.2005", "test", "RUB"));
@@ -22,21 +25,23 @@ export class IncomeComponent implements OnInit {
     this._operations.push(new Operation(3, OperationType.INCOME, 23,"15.10.2005", "test", "RUB"));
     this._operations.push(new Operation(4, OperationType.INCOME, 24,"33.10.2005", "test", "RUB"));
 
+    this._accounts = new Array<Account>();
+    this._accounts.push(new Account("test1", 15, "RUB"));
+    this._accounts.push(new Account("test2", 31, "RUB"));
+    this._accounts.push(new Account("test3", 45, "EUR"));
   }
 
-  selectAccount()
-  {
-    const dialogRef = this.dialog.open(SelectAccountComponent, {
-      width: '340px',
-      data: {}
-    });
-    dialogRef.afterClosed().subscribe(result => {
-    });
-
+  get accounts(): Array<Account> {
+    return this._accounts;
   }
+
+  set accounts(value: Array<Account>) {
+    this._accounts = value;
+  }
+
 
   isAccountSelected(): boolean {
-    return this._selectedAccount == null;
+    return this._selectedAccount != null;
   }
 
 
@@ -49,11 +54,11 @@ export class IncomeComponent implements OnInit {
   }
 
 
-  get chosenAccount(): Account {
+  get selectedAccount(): Account {
     return this._selectedAccount;
   }
 
-  set chosenAccount(value: Account) {
+  set selectedAccount(value: Account) {
     this._selectedAccount = value;
   }
 
@@ -61,4 +66,8 @@ export class IncomeComponent implements OnInit {
     console.log('Loaded');
   }
 
+  selectAccount($event: any) {
+    this._selectedAccount = $event;
+    console.log(this._selectedAccount.name);
+  }
 }
