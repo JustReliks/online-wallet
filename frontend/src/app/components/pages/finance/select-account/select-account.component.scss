@@ -1,0 +1,30 @@
+.w-card-header {
+  justify-content: space-between;
+  font-size: 25px;
+  font-weight: bolder;
+  color: #6977fa;
+  .text {
+    display: flex;
+    align-items: center;
+  }
+}
+.w-balance-table {
+  //background: rgb(39,60,214);
+  //background: linear-gradient(25deg, rgba(39,60,214,1) 3%, rgba(88,83,243,1) 55%, rgba(144,81,226,1) 100%);
+  padding: 13px;
+  border-radius: 6px;
+  -webkit-box-shadow: 4px 6px 23px 6px rgb(34 60 80 / 20%);
+  -moz-box-shadow: 4px 6px 23px 6px rgba(34, 60, 80, 0.2);
+  box-shadow: 4px 6px 23px 6px rgb(34 60 80 / 20%);
+  font-size: 16px;
+  color: white;
+
+}
+.w-select-account {
+  position: relative;
+  left: 25%;
+}
+
+.w-acc-name {
+  right: -10%;
+}

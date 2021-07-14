@@ -1,0 +1,12 @@
+<mat-card>
+  <mat-card-header [textContent]="getTitle()" class="card-header w-card-header">
+  </mat-card-header>
+  <mat-card-content class="card-body mat-card-content">
+    <div *ngIf="menuState.toString() == 'menu'">
+      <app-menu (menuState)="changeMenuState($event)"></app-menu>
+    </div>
+    <div *ngIf="menuState.toString() == 'income'">
+      <app-income></app-income>
+    </div>
+  </mat-card-content>
+</mat-card>

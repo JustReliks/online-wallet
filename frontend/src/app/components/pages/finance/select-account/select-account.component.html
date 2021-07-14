@@ -1,0 +1,47 @@
+<mat-card-header [textContent]="'Ваши счета:'" class="w-card-header"></mat-card-header>
+<mat-card-content class="card-body mat-card-content">
+  <!--    <div class="w-available-balance">-->
+  <!--      <p class="text-black-50 mb-0">Доступно: </p>-->
+  <!--      <p class="w-summa">9900 <span class="w-currency">USD</span></p>-->
+  <!--    </div>-->
+  <div class="w-balance-table">
+    <div *ngFor="let account of accounts">
+      <div class="row w-100 btn" (click)="selectAccount(account)">
+        <div class="col-sm-2 w-25 w-account-table">{{account.value}}</div>
+        <div class="col-sm-2 font-weight-bold">{{account.currency}}</div>
+        <div class="col w-25 w-acc-name">Счет: {{account.name}}</div>
+      </div>
+      <hr align="center" width="90%" size="50" color="#dddddd"/>
+    </div>
+  </div>
+
+</mat-card-content>
+
+<div class="w-select-account">
+  <button [disabled]="isAccountSelected()" color="primary"  mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+          (click)="true">
+    <mat-icon style="top: -2px;position: relative; left: -4px">done</mat-icon>
+    Выбрать
+  </button>
+</div>
+
+
+<!--      <div class="row w-100">-->
+<!--        <div class="col w-25">333</div>-->
+<!--        <div class="col-sm-2 w-25 font-weight-bold">RUB</div>-->
+<!--      </div>-->
+<!--      <hr align="center" width="90%" size="50" color="#dddddd"/>-->
+<!--      <div class="row w-100">-->
+<!--        <div class="col w-25">333</div>-->
+<!--        <div class="col-sm-2 w-25 font-weight-bold">RUB</div>-->
+<!--      </div>-->
+<!--      <hr align="center" width="90%" size="50" color="#dddddd"/>-->
+<!--      <div class="row w-100">-->
+<!--        <div class="col w-25">333</div>-->
+<!--        <div class="col-sm-2 w-25 font-weight-bold">RUB</div>-->
+<!--      </div>-->
+<!--      <hr align="center" width="90%" size="50" color="#dddddd"/>-->
+<!--      <div class="row w-100">-->
+<!--        <div class="col w-25">333</div>-->
+<!--        <div class="col-sm-2 w-25 font-weight-bold">RUB</div>-->
+<!--      </div>-->

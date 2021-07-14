@@ -1,0 +1,85 @@
+.w-card-header {
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: bolder;
+
+  .text {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.w-change-balance-btn {
+  position: absolute;
+  top: 23px;
+  right: 10%;
+}
+
+.w-available-balance {
+  .w-summa {
+    font-size: 43px;
+    font-weight: 600;
+    color: #2e7103;
+  }
+
+  .w-currency {
+    font-size: 25px;
+    vertical-align: top;
+    font-weight: 100;
+  }
+}
+
+
+.w-balance-table {
+  background: #f7f7f7;
+  padding: 13px;
+  border-radius: 6px;
+  -webkit-box-shadow: 4px 6px 23px 6px rgb(34 60 80 / 20%);
+  -moz-box-shadow: 4px 6px 23px 6px rgba(34, 60, 80, 0.2);
+  box-shadow: 4px 6px 23px 6px rgb(34 60 80 / 20%);
+  font-size: 16px;
+}
+
+.w-menu-item {
+  background: linear-gradient(
+      25deg, #326dc1 3%, #524ade 55%, #7937d0 100%);
+  padding: 21px;
+  width: 100%;
+  height: 100%;
+  box-shadow: 5px 4px 17px 4px rgb(7 12 16 / 48%);
+  border-radius: 8px;
+  color: aliceblue;
+  transition: all 0.3s;
+
+  .w-title {
+    font-size: 17px;
+    font-weight: 600;
+
+    .w-sub-title {
+      font-size: 12px;
+      font-weight: 100;
+      color: #ffffff9e;
+    }
+  }
+
+  .w-right {
+    float: right;
+    height: 80px;
+    margin-top: 20px;
+    margin-bottom: 21px;
+    text-align: center;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.w-menu-item:hover {
+  cursor: pointer;
+  background: linear-gradient(
+      25deg, #3e69a6 3%, #4740d3 55%, #8128f8 100%);
+  transform: translate(0px, -4px);
+}

@@ -1,0 +1,15 @@
+<div class="w-add-income-operation">
+  <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+          (click)="true" [disabled]="isAccountSelected()">
+    <mat-icon style="top: -2px;position: relative; left: -4px">add_circle</mat-icon>
+    Добавить операцию
+  </button>
+</div>
+<div class="w-select-account" *ngIf="isAccountSelected()">
+  <button color="primary"  mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+          (click)="selectAccount()">
+    <mat-icon style="top: -2px;position: relative; left: -4px">account_balance_wallet</mat-icon>
+    Выберите счет
+  </button>
+</div>
+<!--  <div class="example-table-container"></div>-->
