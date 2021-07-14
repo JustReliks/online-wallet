@@ -29,6 +29,10 @@ import {MatIconModule} from "@angular/material/icon";
 import {ToastrModule} from "ngx-toastr";
 import {FinanceComponent} from "./components/pages/finance/finance.component";
 import {MatDividerModule} from "@angular/material/divider";
+import {IncomeComponent} from "./components/pages/income/income.component";
+import {MenuComponent} from "./components/pages/finance/menu/menu.component";
+import {CardComponent} from "./components/pages/finance/card/card.component";
+import {SelectAccountComponent} from "./components/pages/finance/select-account/select-account.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -42,8 +46,11 @@ registerLocaleData(localeRu, 'ru');
     TwoFactorModalComponent,
     RegistrationComponent,
     LoginComponent,
-    FinanceComponent
-
+    FinanceComponent,
+    IncomeComponent,
+    MenuComponent,
+    CardComponent,
+    SelectAccountComponent
   ],
   imports: [
     BrowserModule,
