@@ -1,0 +1,107 @@
+<div class="row" style="background-color: #f8fafc">
+  <div class="w-acc-settings">
+    <h2 class="font-weight-bold mb-3">Аккаунт</h2>
+    <div [formGroup]="profileFormGroup">
+      <section class="w-acc-section">
+        <h5 class="mb-0">Профиль</h5>
+        <p class="w-gray-text">Данная информация профиля является публичной, ее может посмотреть любой авторизированный
+          пользователь.</p>
+
+        <div class="w-fio d-flex">
+          <mat-form-field appearance="outline" class="w-100 mr-2">
+            <mat-label>Имя</mat-label>
+            <input formControlName="firstName" matInput/>
+            <mat-error *ngIf="hasControlsErrors('firstName', 'required')"
+            >Имя не может быть пустым
+            </mat-error
+            >
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 mr-2">
+            <mat-label>Фамилия</mat-label>
+            <input formControlName="lastName" matInput placeholder="Фамилия"/>
+            <mat-error *ngIf="hasControlsErrors('lastName', 'required')"
+            >Фамилия не может быть пустым
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Отчество</mat-label>
+            <input formControlName="surName" matInput placeholder="Отчество"/>
+          </mat-form-field>
+        </div>
+        <div class="w-section mb-4">
+          <p class="w-title font-weight-bold mb-2">Фото</p>
+          <div class="d-flex align-items-center">
+            <div class="w-profile-rounded-img mr-5">
+              <img src="https://davd.photo/wp-content/uploads/2019/03/rocco-roxie-employee-headshots-4.jpg">
+            </div>
+            <input type="file" id="file3"/>
+            <label for="file3" class="btn-3">
+              <span>Загрузить</span>
+            </label>
+            <button mat-raised-button color="warn" class="btn custom-btn">Удалить</button>
+          </div>
+        </div>
+        <div class="w-section">
+          <p class="w-title font-weight-bold mb-2">Обо мне</p>
+          <div class="d-flex flex-column">
+            <mat-form-field class="w-about w-100" appearance="fill">
+              <textarea formControlName="about" matInput placeholder="Я хороший человек..."></textarea>
+            </mat-form-field>
+            <p class="w-gray-text">Краткое описание Вас и Вашего профиля.</p>
+          </div>
+          <p class="w-title font-weight-bold mb-2">URL</p>
+          <div class="d-flex align-items-center">
+            <mat-form-field class="w-about w-100" appearance="fill">
+              <input formControlName="url" matInput placeholder="https://online-wallet.ru"/>
+            </mat-form-field>
+          </div>
+        </div>
+      </section>
+      <hr>
+      <section class="w-acc-section">
+        <h5 class="mb-0">Персональная информация</h5>
+        <p class="w-gray-text">Данная информация профиля является публичной, ее может посмотреть любой авторизированный
+          пользователь.</p>
+        <div class="w-fio d-flex">
+          <mat-form-field appearance="outline" class="w-100 mr-2">
+            <mat-label>Email</mat-label>
+            <input formControlName="email" matInput/>
+            <mat-error *ngIf="hasControlsErrors('email', 'required')"
+            >Имя не может быть пустым
+            </mat-error
+            >
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 mr-2">
+            <mat-label>Номер телефона</mat-label>
+            <input formControlName="phone" matInput/>
+            <mat-error *ngIf="hasControlsErrors('phone', 'required')"
+            >Фамилия не может быть пустым
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="w-fio d-flex">
+          <mat-form-field appearance="outline" class="w-100 mr-2">
+            <mat-label>Страна</mat-label>
+            <input formControlName="country" matInput/>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Язык</mat-label>
+            <input formControlName="language" matInput/>
+          </mat-form-field>
+        </div>
+      </section>
+    </div>
+    <hr>
+    <div class="float-right">
+      <button color="warn" mat-raised-button class="mt-0 mr-4"
+              (click)="true">
+        Отменить
+      </button>
+      <button mat-raised-button color="primary"
+              class=" custom-btn-blue-gradient align-self-center mt-4"
+              (click)="true">
+        Сохранить
+      </button>
+    </div>
+  </div>
+</div>

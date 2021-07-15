@@ -41,8 +41,7 @@
 }
 
 .w-menu-item {
-  background: linear-gradient(
-      25deg, #326dc1 3%, #524ade 55%, #7937d0 100%);
+  background: linear-gradient(to top, #0bb0fc 17%, #2960cf 83%);
   padding: 21px;
   width: 100%;
   height: 100%;
@@ -79,7 +78,6 @@
 
 .w-menu-item:hover {
   cursor: pointer;
-  background: linear-gradient(
-      25deg, #3e69a6 3%, #4740d3 55%, #8128f8 100%);
+  background: linear-gradient(to top, #31b9f8 17%, #286cf8 83%);
   transform: translate(0px, -4px);
 }

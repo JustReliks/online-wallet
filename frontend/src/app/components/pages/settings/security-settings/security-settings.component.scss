@@ -1,0 +1,54 @@
+h5{
+  font-weight: 600;
+}
+.w-acc-settings {
+  padding: 2% 11%;
+  width: 100%;
+
+  .w-gray-text {
+    color: #8592a4;
+  }
+  .w-input{
+    margin-right: 27px;
+    background: white;
+    border-radius: 10px;
+    border: 1px #cbd5e1 solid;
+  }
+  .title {
+    font-weight: 600;
+    font-size: 18px;
+    color: #353535;
+  }
+
+  .lite-info {
+    font-size: 13px;
+    color: #848484;
+  }
+
+
+  .purchase-btn {
+    filter: drop-shadow(4px 3px 9px #3780d6);
+    width: 60%;
+    padding: 9px 0;
+    background: linear-gradient(45deg, #3780d6 5%, #2128e4a8, #780eecc2) top;
+    font-size: 22px;
+    font-weight: 700;
+    -webkit-animation: pulse 3.25s infinite cubic-bezier(0.01, 0.02, 0.99, 0.99);
+    -moz-animation: pulse 3.25s infinite cubic-bezier(0.01, 0.02, 0.99, 0.99);
+    -ms-animation: pulse 3.25s infinite cubic-bezier(0.01, 0.02, 0.99, 0.99);
+    animation: pulse 3.25s infinite cubic-bezier(0.01, 0.02, 0.99, 0.99)
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.95);
+    }
+    50% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0.95);
+    }
+  }
+}
+

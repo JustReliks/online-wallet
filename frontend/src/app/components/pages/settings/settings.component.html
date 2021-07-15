@@ -1,0 +1,49 @@
+<div class="row">
+  <mat-card class="w-100 w-mat-card">
+    <mat-card-header [textContent]="'Настройки профиля'" class="card-header w-card-header">
+    </mat-card-header>
+    <mat-card-content class="d-flex">
+      <div class="col-3 w-settings-menu pl-0 pr-0">
+        <div class="w-menu-item d-flex" (click)="changeMenuState('ACCOUNT')">
+          <div class="w-menu-img">
+            <mat-icon>settings</mat-icon>
+          </div>
+          <div class="w-text">
+            <p class="w-title mb-2">Аккаунт</p>
+            <p class="w-description">Настройки аккаунта: изменение ФИО, города и тд.</p>
+          </div>
+        </div>
+        <div class="w-menu-item d-flex" (click)="changeMenuState('SECURITY')">
+          <div class="w-menu-img">
+            <mat-icon>verified_user</mat-icon>
+          </div>
+          <div class="w-text">
+            <p class="w-title mb-2">Безопасность</p>
+            <p class="w-description">Настройки безопасности: смена пароля, активация двухафакторной авторизации.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div *ngIf="settingsState.toString() == 'start'">
+          <div class="w-content pb-3">
+            <h3 class="font-weight-bold">Профиль пользователя</h3>
+            <div class="alert alert-primary">
+              Данная страница включает в себя всевозможные настройки личного аккаунта, такие как: редактирование личной
+              информации, изменение пароля, активация/деактивация двухфакторной авторизации.
+              <br><br>Для дальнейшей работы выберите пункт меню слева. <br><br>
+
+              Напоминаем! Безопасность аккаунта является важным моментом, рекомендуем Вам менять пароль хотя бы раз в
+              месяц.<br><br>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="settingsState.toString() == 'account'">
+          <app-account-settings ></app-account-settings>
+        </div>
+        <div *ngIf="settingsState.toString() == 'security'">
+          <app-security-settings [user]="this.user"></app-security-settings>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

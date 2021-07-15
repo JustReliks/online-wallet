@@ -34,6 +34,9 @@ import {MenuComponent} from "./components/pages/finance/menu/menu.component";
 import {CardComponent} from "./components/pages/finance/card/card.component";
 import {SelectAccountComponent} from "./components/pages/finance/select-account/select-account.component";
 import {MatSelectModule} from "@angular/material/select";
+import {SettingsComponent} from "./components/pages/settings/settings.component";
+import {AccountSettingsComponent} from "./components/pages/settings/account-settings/account-settings.component";
+import {SecuritySettingsComponent} from "./components/pages/settings/security-settings/security-settings.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -51,34 +54,37 @@ registerLocaleData(localeRu, 'ru');
     IncomeComponent,
     MenuComponent,
     CardComponent,
-    SelectAccountComponent
+    SelectAccountComponent,
+    SettingsComponent,
+    AccountSettingsComponent,
+    SecuritySettingsComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        // ServiceWorkerModule.register('ngsw-worker.js', {
-        //   enabled: environment.production,
-        //   // Register the ServiceWorker as soon as the app is stable
-        //   // or after 30 seconds (whichever comes first).
-        //   registrationStrategy: 'registerWhenStable:30000'
-        // }),
-        ToastrModule.forRoot({
-            positionClass: 'toast-bottom-right',
-        }),
-        RouterModule,
-        BrowserAnimationsModule,
-        NgbModule,
-        MaterialModule,
-        MatProgressSpinnerModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatTooltipModule,
-        MatDividerModule,
-        MatSelectModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    // ServiceWorkerModule.register('ngsw-worker.js', {
+    //   enabled: environment.production,
+    //   // Register the ServiceWorker as soon as the app is stable
+    //   // or after 30 seconds (whichever comes first).
+    //   registrationStrategy: 'registerWhenStable:30000'
+    // }),
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+    }),
+    RouterModule,
+    BrowserAnimationsModule,
+    NgbModule,
+    MaterialModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatTooltipModule,
+    MatDividerModule,
+    MatSelectModule,
+  ],
   providers: [
     AuthService,
     ApplicationEventBroadcaster,

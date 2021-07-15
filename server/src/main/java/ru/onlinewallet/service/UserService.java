@@ -1,6 +1,7 @@
 package ru.onlinewallet.service;
 
 import com.nimbusds.jose.JOSEException;
+import ru.onlinewallet.dto.security.ChangePassRequestDto;
 import ru.onlinewallet.entity.User;
 import ru.onlinewallet.entity.security.JwtUserDetails;
 
@@ -24,5 +25,6 @@ public interface UserService {
 
     User changeTwoFactorState(String user, String action);
 
+    JwtUserDetails changePassword(ChangePassRequestDto changePassRequest) throws JOSEException;
 }
 

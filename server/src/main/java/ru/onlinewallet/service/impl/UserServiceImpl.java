@@ -11,11 +11,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.onlinewallet.config.security.jwt.JwtUtils;
+import ru.onlinewallet.dto.security.ChangePassRequestDto;
 import ru.onlinewallet.entity.User;
 import ru.onlinewallet.entity.security.JwtUserDetails;
+import ru.onlinewallet.exceptions.PasswordMatchException;
 import ru.onlinewallet.repo.RoleRepository;
 import ru.onlinewallet.repo.UserRepository;
 import ru.onlinewallet.service.UserService;
+import ru.onlinewallet.util.PasswordUtil;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.Instant;
@@ -97,6 +100,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User update(User user) {
         return userRepository.save(user);
     }
@@ -112,6 +116,32 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("State not recognized");
         }
         return update(user);
+    }
+
+    @Override
+    public JwtUserDetails changePassword(ChangePassRequestDto changePassRequest) throws JOSEException {
+        User user = getUser(changePassRequest.getUserId());
+        final JwtUserDetails userDetails = jwtUserDetailsService.getJwtUserDetailsFromUser(user);
+        String oldPass = PasswordUtil.decodeBtoaPassword(changePassRequest.getOldPass());
+        if (!bCryptPasswordEncoder.matches(oldPass, user.getPassword())) {
+            throw new PasswordMatchException();
+        }
+        String newPassword = PasswordUtil.decodeBtoaPassword(changePassRequest.getNewPass());
+        String newConfirmPassword = PasswordUtil.decodeBtoaPassword(changePassRequest.getConfirmNewPass());
+        if (!newPassword.equals(newConfirmPassword)) {
+            throw new RuntimeException("Пароли не совпадают");
+        }
+        changePassword(user, userDetails, newPassword);
+        return userDetails;
+    }
+
+    private void changePassword(User user, JwtUserDetails userDetails, String newPassword) throws JOSEException {
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        String jwtCreatedTimeHash = DigestUtils.md5Hex(LocalDateTime.now().toString());
+        String token = jwtUtils.generateJwtToken(userDetails, jwtCreatedTimeHash);
+        user.setJwtCreatedTimeHash(jwtCreatedTimeHash);
+        userDetails.setToken(token);
+        update(user);
     }
 }
 

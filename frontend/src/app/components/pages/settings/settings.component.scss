@@ -1,0 +1,59 @@
+.w-mat-card {
+  padding-bottom: 0;
+
+  .w-settings-menu {
+    border-right: 1px #e7e7e7 solid;
+    border-left: 1px #e7e7e7 solid;
+    // padding: 23px;
+
+    .w-menu-item {
+      padding: 19px 19px 0;
+      border-bottom: 1px #e7e7e7 solid;
+      transition: all .5s;
+
+      .w-menu-img {
+        color: #8592a4;
+        margin-right: 8px;
+      }
+
+      .w-text {
+        .w-title {
+          font-weight: bold;
+          font-size: 15px;
+        }
+
+        .w-description {
+          color: #8592a4;
+        }
+      }
+    }
+
+    .w-menu-item:hover {
+      cursor: pointer;
+      background-color: #f7faff;
+    }
+  }
+}
+
+
+.w-content {
+  padding: 2% 11%;
+  width: 100%;
+
+  .w-gray-text {
+    color: #8592a4;
+  }
+
+  .w-input {
+    margin-right: 27px;
+    background: white;
+    border-radius: 10px;
+    border: 1px #cbd5e1 solid;
+  }
+
+  .title {
+    font-weight: 600;
+    font-size: 18px;
+    color: #353535;
+  }
+}

@@ -1,0 +1,88 @@
+<div class="row" style="background-color: #f8fafc">
+  <div class="w-acc-settings">
+    <h2 class="font-weight-bold mb-3">Безопасность</h2>
+    <div class="content pb-3">
+      <div class="alert alert-primary">
+        Безопасность аккаунта является важным моментом, рекомендуем Вам менять пароль хотя бы раз в месяц.<br><br>
+
+        Двухфакторная аутентификация не позволит злоумышленникам войти под вашим аккаунтом, даже если они узнают ваш
+        пароль.<br><br>
+
+        Эта степень защиты даст вам возможность спокойно пользоваться сайтом и не беспокоиться о безопасности вашего аккаунта.<br><br>
+
+        На данный момент наша система работает с <b>Google Authenticator</b>. Для подключения
+        загрузите приложение на свой смартфон, отсканируйте QR-код, введите код из приложения в специальное поле ниже.
+      </div>
+    </div>
+  <div class="row">
+<!--    <div *ngIf="!user" class="col content d-flex justify-content-center w-100 mb-3 mt-3">-->
+<!--      <div class="spinner-grow text-primary" role="status">-->
+<!--        <span class="sr-only">Loading...</span>-->
+<!--      </div>-->
+<!--    </div>-->
+    <div *ngIf="true" class="col content">    <!--     <div *ngIf="user" class="col content">-->
+      <div class="title">Смена пароля</div>
+      <span class="mt-2 lite-info">Для смены пароля Вам необходимо указать актуальный пароль,а также новый.</span>
+      <div class=" d-flex mt-3">
+        <form class="w-100 text-center" [formGroup]="changePasswordGroup">
+          <mat-form-field  appearance="outline"  class="w-100 mb-4">
+            <mat-label>Текущий пароль:</mat-label>
+            <input formControlName="actualPassword" type="password" matInput placeholder="Текущий пароль">
+            <mat-error *ngIf="hasControlsErrors('actualPassword', 'required')">
+              Введите текущий пароль
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline"  class="w-100 mb-4">
+            <mat-label>Введите новый пароль:</mat-label>
+            <input formControlName="password" matInput placeholder="Новый пароль" type="password">
+            <mat-error *ngIf="hasControlsErrors('password', 'required')">Введите новый пароль</mat-error>
+            <mat-error *ngIf="hasControlsErrors('password', 'minlength')">Пароль должен быть больше 7 символов
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline"  class="w-100">
+            <mat-label>Повторите пароль:</mat-label>
+            <input formControlName="confirmPassword" matInput placeholder="Повторите пароль" type="password">
+            <mat-error *ngIf="hasControlsErrors('confirmPassword','confirmedValidator')">Пароли не совпадают</mat-error>
+          </mat-form-field>
+
+          <button [disabled]="!changePasswordGroup.valid" (click)="changePassword()" mat-raised-button color="primary"
+                  class="purchase-btn align-self-center mt-4">Сменить
+          </button>
+        </form>
+      </div>
+    </div>
+<!--    <div *ngIf="!imgBase64" class="col content d-flex justify-content-center w-100 align-items-center">-->
+<!--      <div class="spinner-grow text-primary" role="status">-->
+<!--        <span class="sr-only">Loading...</span>-->
+<!--      </div>-->
+<!--    </div>-->
+    <div *ngIf="true" class="col content"> <!--<div *ngIf="imgBase64" class="col content">-->
+      <div class="title">Двухфакторная аутентификация</div>
+      <span class="mt-2 lite-info">Двухфакторная аутентификация не позволит злоумышленникам войти под вашим аккаунтом, даже если они узнают ваш пароль.</span>
+      <div class="d-flex align-items-center mt-3 flex-column">
+        <div class="mb-3"><span style="color: red">* </span>Для активации двухфакторной аутентификации мы должны
+          удостовериться, что все в порядке.
+          <br>Пожалуйста, отсканируйте <b>QR</b> код и вставьте в поле для ввода код из Google Authenticator.
+        </div>
+        <mat-form-field appearance="outline"  class="w-100 mb-3">
+          <mat-label>Код из приложения:</mat-label>
+          <input matInput placeholder="Введите код из Google Authenticator" type="text" [value]="twoFactorKey"
+                 (keyup)="googleAuthKeyKeyUp($event)">
+        </mat-form-field>
+
+        <button (click)="regenerateQR()" mat-raised-button color="warn">Сгенерировать новый QR код.</button>
+        <div class="mb-3 mt-2" style="font-size: 10px"><span style="color: red">* </span>При генерации нового QR кода
+          старый становится недействительным.
+        </div>
+        <img style="width: 200px" *ngIf="imgBase64" src="data:image/png;base64,{{imgBase64}}">
+
+        <button [disabled]="twoFactorKey.length==0
+                &&!this.user?.twoFactorEnabled" (click)="changeTwoFactorState()"
+                mat-raised-button color="primary"
+                class="purchase-btn align-self-center mt-4">{{this.user?.twoFactorEnabled ? 'Отключить' : 'Включить'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
