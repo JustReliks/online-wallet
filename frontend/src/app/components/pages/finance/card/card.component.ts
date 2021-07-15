@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
-  @Input()  menuState: MenuState = MenuState.INCOME;
+  @Input()  menuState: MenuState = MenuState.MENU;
 
   constructor() { }
 

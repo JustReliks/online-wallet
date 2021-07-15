@@ -18,3 +18,68 @@
 .w-table {
   width: 100%;
 }
+
+.w-card-header {
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+.w-account{
+  position: relative;
+  padding: 21px;
+  //top: 17%;
+  width: 100%;
+  height: 100%;
+  box-shadow: 5px 4px 17px 4px rgb(7 12 16 / 48%);
+  border-radius: 8px;
+  background-color: #bdd4e7;
+  background-image: linear-gradient(315deg, #bdd4e7 0%, #8693ab 74%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.w-account:hover {
+  cursor: pointer;
+  transform: translate(1px, -4px);
+  background-image: linear-gradient(315deg, #abcce3 0%, #77839a 74%);
+}
+
+.w-account-description {
+  text-align: center;
+  color: #6c757d;
+  font-size: 15px;
+}
+
+.w-account-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.w-money {
+  font-family: fantasy;
+  font-size: 17px;
+  font-weight: 60;
+  color: #2e7103;
+  width: 50%;
+}
+
+.w-currency {
+  font-size: 14px;
+  vertical-align: top;
+  font-weight: 10;
+}
+
+.w-line {
+  size: 50px;
+  width: 107%;
+  color: #dddddd;
+}
+
+.w-account-title {
+  bottom: -7%;
+  font-size: 13px;
+  font-weight: bolder;
+  position: relative;
+}
