@@ -11,9 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.onlinewallet.entity.User;
+import ru.onlinewallet.entity.user.User;
 import ru.onlinewallet.entity.security.JwtUserDetails;
-import ru.onlinewallet.repo.UserRepository;
+import ru.onlinewallet.repo.user.UserRepository;
 
 import javax.annotation.ManagedBean;
 import javax.servlet.http.HttpServletRequest;

@@ -38,7 +38,7 @@
           </div>
         </div>
         <div *ngIf="settingsState.toString() == 'account'">
-          <app-account-settings ></app-account-settings>
+          <app-account-settings [user]="this.user" (changeState)="onChangeState($event)"></app-account-settings>
         </div>
         <div *ngIf="settingsState.toString() == 'security'">
           <app-security-settings [user]="this.user"></app-security-settings>

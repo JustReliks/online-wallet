@@ -1,7 +1,7 @@
 package ru.onlinewallet.dto;
 
 import lombok.Data;
-import ru.onlinewallet.entity.User;
+import ru.onlinewallet.entity.user.User;
 
 
 @Data

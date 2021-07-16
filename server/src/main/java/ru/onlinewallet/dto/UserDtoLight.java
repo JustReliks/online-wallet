@@ -2,7 +2,7 @@ package ru.onlinewallet.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.onlinewallet.entity.User;
+import ru.onlinewallet.entity.user.User;
 import ru.onlinewallet.entity.security.JwtUserDetails;
 
 

@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/observable';
 import {map} from 'rxjs/operators';
 import {environment} from "../../environments/environment";
 import {AuthUser, UserLight} from "../entities/user";
+import {UserSettings} from "../entities/user-settings";
 
 @Injectable({
   providedIn: 'root'
@@ -66,5 +67,14 @@ export class UserService {
 
   public changeTwoFactorState(username: string, action: string): Observable<UserLight> {
     return this.http.get<UserLight>(this.api + `/code/two-factor/${username}?action=${action}`);
+  }
+
+  public getUserSettings(id: number) {
+    return this.http.get<any>(this.api + `/user/settings?id=${id}`);
+  }
+
+  updateUserProfile(userProfile: UserSettings) {
+    return this.http.put<UserSettings>(this.api + `/user/settings`, userProfile
+    )
   }
 }

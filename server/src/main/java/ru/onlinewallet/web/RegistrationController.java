@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.onlinewallet.dto.ResponseMessage;
 import ru.onlinewallet.dto.UserRegistrationDto;
-import ru.onlinewallet.entity.User;
+import ru.onlinewallet.entity.user.User;
 import ru.onlinewallet.service.RegistrationService;
 
 import java.util.Objects;

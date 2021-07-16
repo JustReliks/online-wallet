@@ -15,12 +15,12 @@
       </div>
     </div>
   <div class="row">
-<!--    <div *ngIf="!user" class="col content d-flex justify-content-center w-100 mb-3 mt-3">-->
-<!--      <div class="spinner-grow text-primary" role="status">-->
-<!--        <span class="sr-only">Loading...</span>-->
-<!--      </div>-->
-<!--    </div>-->
-    <div *ngIf="true" class="col content">    <!--     <div *ngIf="user" class="col content">-->
+    <div *ngIf="!user" class="col content d-flex justify-content-center w-100 mb-3 mt-3">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="user" class="col content">    <!--     <div *ngIf="user" class="col content">-->
       <div class="title">Смена пароля</div>
       <span class="mt-2 lite-info">Для смены пароля Вам необходимо указать актуальный пароль,а также новый.</span>
       <div class=" d-flex mt-3">
@@ -51,12 +51,12 @@
         </form>
       </div>
     </div>
-<!--    <div *ngIf="!imgBase64" class="col content d-flex justify-content-center w-100 align-items-center">-->
-<!--      <div class="spinner-grow text-primary" role="status">-->
-<!--        <span class="sr-only">Loading...</span>-->
-<!--      </div>-->
-<!--    </div>-->
-    <div *ngIf="true" class="col content"> <!--<div *ngIf="imgBase64" class="col content">-->
+    <div *ngIf="!imgBase64" class="col content d-flex justify-content-center w-100 align-items-center">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="imgBase64" class="col content"> <!--<div *ngIf="imgBase64" class="col content">-->
       <div class="title">Двухфакторная аутентификация</div>
       <span class="mt-2 lite-info">Двухфакторная аутентификация не позволит злоумышленникам войти под вашим аккаунтом, даже если они узнают ваш пароль.</span>
       <div class="d-flex align-items-center mt-3 flex-column">

@@ -19,8 +19,8 @@ export class SecuritySettingsComponent implements OnInit {
   private _currentUser: AuthUser;
 
   constructor(private _fb: FormBuilder,
-              private userService: UserService,
-              private notificationService: NotificationService) {
+              private _userService: UserService,
+              private _notificationService: NotificationService) {
   }
 
   get user() {
@@ -30,7 +30,7 @@ export class SecuritySettingsComponent implements OnInit {
   @Input('user') set user(user: AuthUser) {
     if (user) {
       this._currentUser = _.cloneDeep(user);
-      this.userService.generateGoogleAuthKey(this.user.username).subscribe(res => {
+      this._userService.generateGoogleAuthKey(this.user.username).subscribe(res => {
         this.imgBase64 = res;
       });
     }
@@ -96,16 +96,16 @@ export class SecuritySettingsComponent implements OnInit {
     const newPass = this.controls.password.value;
     const confirmNewPass = this.controls.confirmPassword.value;
 
-    this.userService.changePassword(this.user.id, oldPass, newPass, confirmNewPass).subscribe(res => {
+    this._userService.changePassword(this.user.id, oldPass, newPass, confirmNewPass).subscribe(res => {
         localStorage.setItem('token', 'Bearer ' + res.token);
-        this.notificationService.showSuccess('Пароль успешно изменен.', 'Смена пароля')
+        this._notificationService.showSuccess('Пароль успешно изменен.', 'Смена пароля')
         this.changePasswordGroup.reset();
       }, error => {
         if (error.status === 403) {
-          this.notificationService.showError('Неверный текущий пароль.', 'Смена пароля')
+          this._notificationService.showError('Неверный текущий пароль.', 'Смена пароля')
           return;
         }
-        this.notificationService.showError('Возникла ошибка при смене пароля. Попробуйте позже.', 'Смена пароля')
+        this._notificationService.showError('Возникла ошибка при смене пароля. Попробуйте позже.', 'Смена пароля')
       }
     );
   }
@@ -116,7 +116,7 @@ export class SecuritySettingsComponent implements OnInit {
   }
 
   checkCode(value: any) {
-    this.userService.validateKey(this.user.username, value.target.value).subscribe(res => {
+    this._userService.validateKey(this.user.username, value.target.value).subscribe(res => {
       this.validKey = res;
     });
   }
@@ -134,19 +134,19 @@ export class SecuritySettingsComponent implements OnInit {
   }
 
   regenerateQR() {
-    this.userService.generateGoogleAuthKey(this.user.username, true).subscribe(res => {
+    this._userService.generateGoogleAuthKey(this.user.username, true).subscribe(res => {
       this.imgBase64 = res
       this.user.twoFactorEnabled = false;
-      this.notificationService.showSuccess('QR код успешно перегенерирован.', 'Двухфакторной аутентификация')
+      this._notificationService.showSuccess('QR код успешно перегенерирован.', 'Двухфакторной аутентификация')
     }, error => {
-      this.notificationService.showError('Возникла ошибка. Повторите попытку позже.', 'Двухфакторной аутентификация')
+      this._notificationService.showError('Возникла ошибка. Повторите попытку позже.', 'Двухфакторной аутентификация')
     });
   }
 
   private validateWithChange() {
-    this.userService.validateKey(this.user.username, this.twoFactorKey).subscribe(res => {
+    this._userService.validateKey(this.user.username, this.twoFactorKey).subscribe(res => {
       if (!res) {
-        this.notificationService.showError(
+        this._notificationService.showError(
           'Вы ввели неверный код из Google Authenticator. Попробуйте еще раз.'
           , 'Двухфакторной аутентификация'
         )
@@ -157,23 +157,23 @@ export class SecuritySettingsComponent implements OnInit {
   }
 
   private changeTwoFactorStateRequest() {
-    this.userService
+    this._userService
       .changeTwoFactorState(this.user.username, this.user.twoFactorEnabled ? 'off' : 'on')
       .subscribe((result) => {
         if (result) {
-          this.notificationService.showSuccess(
+          this._notificationService.showSuccess(
             'Настройки двухфакторной аутентификации успешно изменены.'
             , 'Двухфакторной аутентификация'
           )
           AuthUser.updateFromUserLight(this.user, result)
           return;
         }
-        this.notificationService.showError(
+        this._notificationService.showError(
           'Возникла ошибка. Повторите попытку позже.'
           , 'Двухфакторной аутентификация'
         )
       }, error => {
-        this.notificationService.showError(
+        this._notificationService.showError(
           'Возникла ошибка. Повторите попытку позже.'
           , 'Двухфакторной аутентификация'
         )

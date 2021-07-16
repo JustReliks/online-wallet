@@ -1,4 +1,4 @@
-package ru.onlinewallet.entity;
+package ru.onlinewallet.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
@@ -43,8 +43,6 @@ public class User {
 
     @Column(name = "access_token")
     private String accessToken;
-
-    private String currency;
 
     @Column(name = "created_at")
     private Instant createdAt;

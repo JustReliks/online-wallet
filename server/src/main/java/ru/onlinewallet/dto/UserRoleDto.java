@@ -3,7 +3,7 @@ package ru.onlinewallet.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import ru.onlinewallet.entity.Role;
+import ru.onlinewallet.entity.user.Role;
 
 @Data
 @NoArgsConstructor

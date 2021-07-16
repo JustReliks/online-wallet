@@ -1,4 +1,4 @@
-package ru.onlinewallet.entity;
+package ru.onlinewallet.entity.user;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -54,6 +54,7 @@ export class AuthUser implements User {
     this.token = json.token;
     this.twoFactorEnabled = json.twoFactorEnabled;
     this.userXenforoDto = json.userXenforoDto;
+    this.currency=json.currency;
   }
 
   id: number;
@@ -66,6 +67,7 @@ export class AuthUser implements User {
   twoFactorEnabled: boolean;
   roles: Array<UserRole>;
   userXenforoDto: UserXenforo;
+  currency:string;
 
   static updateFromUserLight(user: AuthUser, userLight: any) {
     user.id = userLight.id;

@@ -3,7 +3,7 @@ package ru.onlinewallet.entity.security;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.onlinewallet.entity.User;
+import ru.onlinewallet.entity.user.User;
 
 import javax.persistence.*;
 import java.time.Instant;

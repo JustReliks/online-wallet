@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ru.onlinewallet.dto.UserDtoBase;
-import ru.onlinewallet.entity.User;
+import ru.onlinewallet.entity.user.User;
 import ru.onlinewallet.entity.security.JwtUserDetails;
 
 @Data

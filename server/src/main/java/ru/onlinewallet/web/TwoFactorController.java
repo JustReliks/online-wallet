@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.onlinewallet.dto.UserDtoLight;
 import ru.onlinewallet.dto.security.ValidateCodeDto;
-import ru.onlinewallet.entity.User;
+import ru.onlinewallet.entity.user.User;
 import ru.onlinewallet.service.TwoFactorService;
 import ru.onlinewallet.service.UserService;
 

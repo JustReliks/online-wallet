@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.onlinewallet.entity.User;
+import ru.onlinewallet.entity.user.User;
 import ru.onlinewallet.service.RegistrationService;
 import ru.onlinewallet.service.UserService;
 
@@ -20,7 +20,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Transactional
     public Long register(User user) throws IOException{
-        return userService.save(user);
+        return userService.register(user);
     }
 
     @Override

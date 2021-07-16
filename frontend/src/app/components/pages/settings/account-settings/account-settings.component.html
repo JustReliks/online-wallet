@@ -1,5 +1,10 @@
 <div class="row" style="background-color: #f8fafc">
-  <div class="w-acc-settings">
+  <div *ngIf="!user && !userSettings" class="col content d-flex justify-content-center w-100 mb-3 mt-3">
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <div *ngIf="user && userSettings" class="w-acc-settings">
     <h2 class="font-weight-bold mb-3">Аккаунт</h2>
     <div [formGroup]="profileFormGroup">
       <section class="w-acc-section">
@@ -25,7 +30,7 @@
           </mat-form-field>
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Отчество</mat-label>
-            <input formControlName="surName" matInput placeholder="Отчество"/>
+            <input formControlName="middleName" matInput placeholder="Отчество"/>
           </mat-form-field>
         </div>
         <div class="w-section mb-4">
@@ -65,7 +70,7 @@
         <div class="w-fio d-flex">
           <mat-form-field appearance="outline" class="w-100 mr-2">
             <mat-label>Email</mat-label>
-            <input formControlName="email" matInput/>
+            <input [disabled]="true" [readonly]="true" formControlName="email" matInput/>
             <mat-error *ngIf="hasControlsErrors('email', 'required')"
             >Имя не может быть пустым
             </mat-error
@@ -90,16 +95,37 @@
           </mat-form-field>
         </div>
       </section>
+      <section class="w-acc-section">
+        <h5 class="mb-0">Другие настройки</h5>
+        <p class="w-gray-text">Данный раздел содержит в себе настройки и информацию, которая доступна только Вам.</p>
+        <div class="d-flex  flex-column">
+          <p class="w-title font-weight-bold mb-2">Валюта по-умолчанию</p>
+            <mat-form-field appearance="fill" style="max-width: 151px;">
+              <mat-select [(value)]="currency">
+                <mat-option [value]="'RUB'">
+                  RUB
+                </mat-option>
+                <mat-option  [value]="'USD'">
+                  USD
+                </mat-option>
+                <mat-option  [value]="'EUR'">
+                  EUR
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="hasControlsErrors('currency', 'required')">Выберите валюту</mat-error>
+            </mat-form-field>
+        </div>
+      </section>
     </div>
     <hr>
     <div class="float-right">
       <button color="warn" mat-raised-button class="mt-0 mr-4"
-              (click)="true">
+              (click)="close()">
         Отменить
       </button>
-      <button mat-raised-button color="primary"
+      <button [disabled]="!this.profileFormGroup.valid" mat-raised-button color="primary"
               class=" custom-btn-blue-gradient align-self-center mt-4"
-              (click)="true">
+              (click)="save()">
         Сохранить
       </button>
     </div>

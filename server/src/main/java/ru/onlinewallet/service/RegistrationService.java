@@ -1,6 +1,6 @@
 package ru.onlinewallet.service;
 
-import ru.onlinewallet.entity.User;
+import ru.onlinewallet.entity.user.User;
 
 import java.io.IOException;
 

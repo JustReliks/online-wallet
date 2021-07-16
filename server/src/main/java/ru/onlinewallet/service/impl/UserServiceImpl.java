@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.onlinewallet.config.security.jwt.JwtUtils;
 import ru.onlinewallet.dto.security.ChangePassRequestDto;
-import ru.onlinewallet.entity.User;
 import ru.onlinewallet.entity.security.JwtUserDetails;
+import ru.onlinewallet.entity.user.User;
+import ru.onlinewallet.entity.user.UserSettings;
 import ru.onlinewallet.exceptions.PasswordMatchException;
-import ru.onlinewallet.repo.RoleRepository;
-import ru.onlinewallet.repo.UserRepository;
+import ru.onlinewallet.repo.user.RoleRepository;
+import ru.onlinewallet.repo.user.UserRepository;
+import ru.onlinewallet.repo.user.UserSettingsRepository;
 import ru.onlinewallet.service.UserService;
 import ru.onlinewallet.util.PasswordUtil;
 
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final JwtUserDetailsService jwtUserDetailsService;
+    private final UserSettingsRepository userSettingsRepository;
 
     @Override
     @Transactional
@@ -133,6 +136,44 @@ public class UserServiceImpl implements UserService {
         }
         changePassword(user, userDetails, newPassword);
         return userDetails;
+    }
+
+    @Override
+    public UserSettings getUserProfile(Long userId) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
+        if (Objects.isNull(userSettings)) {
+            throw new EntityNotFoundException("Профиль пользователя не найден!");
+        }
+        return userSettings;
+    }
+
+    @Override
+    @Transactional
+    public UserSettings updateUserProfile(UserSettings userSettings) {
+        if (Objects.isNull(userSettings.getUserId())) {
+            throw new EntityNotFoundException("Такого пользователя не существует!");
+        }
+        if (Objects.isNull(userSettings.getId())) {
+            throw new EntityNotFoundException("Пользовательских настроек не существует!");
+        }
+
+        return this.userSettingsRepository.save(userSettings);
+    }
+
+    @Override
+    public Long register(User user) {
+        Long save = save(user);
+        if (Objects.nonNull(save)) {
+            UserSettings userSettings = createUserSettings(save);
+            updateUserProfile(userSettings);
+        }
+        return save;
+    }
+
+    private UserSettings createUserSettings(Long save) {
+        UserSettings userSettings = new UserSettings();
+        userSettings.setUserId(save);
+        return userSettings;
     }
 
     private void changePassword(User user, JwtUserDetails userDetails, String newPassword) throws JOSEException {

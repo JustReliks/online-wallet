@@ -50,6 +50,10 @@ export class SettingsComponent implements OnInit {
     console.log(state, ' ', SettingsState[state]);
     this.settingsState = SettingsState[state];
   }
+
+  onChangeState($event: SettingsState) {
+    this.settingsState = $event;
+  }
 }
 
 export enum SettingsState {

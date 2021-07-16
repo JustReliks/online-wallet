@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.onlinewallet.entity.User;
+import ru.onlinewallet.entity.user.User;
 
 
 import java.time.Instant;
@@ -26,6 +26,7 @@ public class JwtUserDetails implements UserDetails {
     private double bonuses;
     private int cases;
     private boolean isTwoFactorEnabled;
+    private String currency;
     private String jwtCreatedTimeHash;
     private List<GrantedAuthority> authorities;
     private Map<String, List<String>> rolePermissions = new HashMap<>();
