@@ -1,0 +1,46 @@
+<div class="w-add-account">
+  <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+          (click)="true">
+    <mat-icon style="top: -2px;position: relative; left: -4px">add_circle</mat-icon>
+    Создать счёт
+  </button>
+</div>
+<div class="col">
+  <div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Раздел счетов!</h4>
+    <p>В этом разделе вы можете создавать, удалять и редактировать ваши счета.</p>
+    <hr>
+    <p class="mb-0">©Online-wallet</p>
+  </div>
+  <div>
+    <div class="mat-card w-account-card">
+      <div class="w-account-header row">
+        <div class="w-avatar col-2">
+          <img src="assets/img/finance/account_icon.svg" class="w-avatar">
+        </div>
+        <div class="col w-account-title">
+          <div class="w-account-name">
+            Тестовый счет1
+          </div>
+          <div class="w-account-description">
+            Описание данного тестового счета123111111111111111111111111111111111155555555555555555555555555555511
+          </div>
+        </div>
+        <div class="col" style="max-width: 48px">
+          <button class="w-settings" #tooltip="matTooltip" matTooltip="Настройки" [matTooltipPosition]="'above'">
+            <mat-icon>settings</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="w-account-body row">
+        <div class="w-money-all">
+          <div class="w-money">15 <span class="w-currency">EUR</span></div>
+          <div class="w-money">15 <span class="w-currency">EUR</span></div>
+        </div>
+        <div class="col w-date-create">
+            Создан: 33.14.2032 в 14:22
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

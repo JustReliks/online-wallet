@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
-  @Input()  menuState: MenuState = MenuState.MENU;
+  @Input()  menuState: MenuState = MenuState.ACCOUNTS;
 
   constructor() { }
 
@@ -23,6 +23,7 @@ export class CardComponent implements OnInit {
   getTitle(): string {
     if(this.menuState == MenuState.MENU) return 'Меню'
     else if(this.menuState == MenuState.INCOME) return 'Ваша прибыль'
+    else if(this.menuState == MenuState.ACCOUNTS) return 'Ваши счета'
 
     return ''
   }
@@ -30,7 +31,7 @@ export class CardComponent implements OnInit {
 }
 
 export enum MenuState  {
-  MENU = "menu", INCOME = "income"
+  MENU = "menu", INCOME = "income", ACCOUNTS = "accounts"
 }
 
 

@@ -37,6 +37,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {SettingsComponent} from "./components/pages/settings/settings.component";
 import {AccountSettingsComponent} from "./components/pages/settings/account-settings/account-settings.component";
 import {SecuritySettingsComponent} from "./components/pages/settings/security-settings/security-settings.component";
+import {AccountsComponent} from "./components/pages/accounts/accounts.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -54,10 +55,11 @@ registerLocaleData(localeRu, 'ru');
     IncomeComponent,
     MenuComponent,
     CardComponent,
-    SelectAccountComponent,
     SettingsComponent,
     AccountSettingsComponent,
-    SecuritySettingsComponent
+    SecuritySettingsComponent,
+    SelectAccountComponent,
+    AccountsComponent
   ],
   imports: [
     BrowserModule,

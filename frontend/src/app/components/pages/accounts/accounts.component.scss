@@ -1,0 +1,87 @@
+.w-add-account {
+  position: absolute;
+  top: 23px;
+  right: 5%;
+}
+
+.w-account-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%
+}
+
+.w-avatar {
+  width: 100%;
+  height: 100%;
+  margin-left: 2px;
+  border-radius: 50%;
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.38));
+}
+
+.w-account-name {
+  font-size: 17px;
+  font-weight: 60;
+  width: 98%;
+}
+
+.w-account-title {
+  word-break: break-word;
+}
+
+.w-account-description {
+  font-size: 13px;
+  font-weight: 30;
+  width: 100%;
+  height: 100%;
+  color: #4d5773;
+}
+
+.w-settings {
+  max-height: 25px;
+  border: none;
+  background: none;
+}
+
+.w-account-card {
+  background: #eceeef;
+}
+
+.w-account-body {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}
+
+.w-money {
+  font-size: 43px;
+  font-weight: 600;
+  color: #2e7103;
+}
+
+.w-money-all {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+  width: 100%;
+  height: 100%;
+  justify-content: space-evenly;
+
+  -ms-flex: 0 0 75%;
+  flex: 0 0 75%;
+  max-width: 75%;
+}
+
+.w-date-create {
+
+  display: grid;
+  align-items: end;
+}
+
+.w-currency {
+  font-size: 25px;
+  vertical-align: top;
+  font-weight: 100;
+}

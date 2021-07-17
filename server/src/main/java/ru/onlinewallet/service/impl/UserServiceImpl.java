@@ -153,9 +153,9 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(userSettings.getUserId())) {
             throw new EntityNotFoundException("Такого пользователя не существует!");
         }
-        if (Objects.isNull(userSettings.getId())) {
-            throw new EntityNotFoundException("Пользовательских настроек не существует!");
-        }
+       // if (Objects.isNull(userSettings.getId())) {
+       //     throw new EntityNotFoundException("Пользовательских настроек не существует!");
+       // }
 
         return this.userSettingsRepository.save(userSettings);
     }
