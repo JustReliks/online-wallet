@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.onlinewallet.dto.UserSettingsDto;
 import ru.onlinewallet.dto.security.ChangePassRequestDto;
 import ru.onlinewallet.entity.security.JwtUserDetails;
@@ -54,5 +55,15 @@ public class UserController {
         }
         UserSettings userSettings = UserSettingsDto.fromDto(userSettingsDto);
         return ResponseEntity.ok(UserSettingsDto.toDto(userService.updateUserProfile(userSettings)));
+    }
+
+    @PostMapping(value = "/settings",consumes = {"multipart/form-data"})
+    private ResponseEntity<UserSettingsDto> setUserPhoto(
+            @RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) throws IOException {
+        //UserSettings userSettings = UserSettingsDto.fromDto(userSettingsDto);
+        if (Objects.isNull(userId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok(UserSettingsDto.toDto(userService.saveProfileImage(userId, file)));
     }
 }

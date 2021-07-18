@@ -46,4 +46,6 @@ public class UserSettings {
     @Column
     private String currency;
 
+    @Column(name = "profile_image")
+    private byte[] profileImage;
 }

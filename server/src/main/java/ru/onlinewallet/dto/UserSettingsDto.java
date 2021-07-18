@@ -20,6 +20,7 @@ public class UserSettingsDto {
     private String country;
     private String language;
     private String currency;
+    private byte[] profileImage;
 
     public static UserSettingsDto toDto(UserSettings userSettings) {
         UserSettingsDto userSettingsDto = new UserSettingsDto();
@@ -34,6 +35,7 @@ public class UserSettingsDto {
         userSettingsDto.setCountry(userSettings.getCountry());
         userSettingsDto.setLanguage(userSettings.getLanguage());
         userSettingsDto.setCurrency(userSettings.getCurrency());
+        userSettingsDto.setProfileImage(userSettings.getProfileImage());
 
         return userSettingsDto;
     }
@@ -54,6 +56,9 @@ public class UserSettingsDto {
         userSettings.setCountry(userSettingsDto.getCountry());
         userSettings.setLanguage(userSettingsDto.getLanguage());
         userSettings.setCurrency(userSettingsDto.getCurrency());
+        if (Objects.nonNull(userSettingsDto.getProfileImage())) {
+            userSettings.setProfileImage(userSettingsDto.getProfileImage());
+        }
         return userSettings;
     }
 }

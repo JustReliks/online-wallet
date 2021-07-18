@@ -26,6 +26,7 @@
     "animate.css": "^4.1.1",
     "bootstrap": "^4.5.0",
     "lodash": "^4.17.21",
+    "ngx-material-file-input": "^2.1.1",
     "ngx-toastr": "^14.0.0",
     "rxjs": "~6.6.0",
     "rxjs-compat": "^6.6.7",

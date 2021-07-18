@@ -7,6 +7,9 @@ import _ from "lodash";
 import {UserSettings} from "../../../../entities/user-settings";
 import {filter, take} from "rxjs/operators";
 import {SettingsState} from "../settings.component";
+import {FileService} from "../../../../service/file.service";
+import {DomSanitizer} from "@angular/platform-browser";
+import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'app-account-settings',
@@ -15,17 +18,20 @@ import {SettingsState} from "../settings.component";
 })
 export class AccountSettingsComponent implements OnInit {
 
+  @Output() changeState: EventEmitter<SettingsState> = new EventEmitter<SettingsState>();
+  currency: string = 'RUB';
+  profileImageSrc: any = ' ';
   profileFormGroup: FormGroup;
-
+  private reader: FileReader;
+  private timeStamp: any;
   private _currentUser: AuthUser;
   private _userSettings: UserSettings;
 
-  @Output() changeState: EventEmitter<SettingsState> = new EventEmitter<SettingsState>();
-  currency: string = 'RUB';
-
   constructor(private _fb: FormBuilder,
               private _userService: UserService,
-              private _notificationService: NotificationService
+              private _notificationService: NotificationService,
+              private _fileService: FileService,
+              private _sanitizer: DomSanitizer
   ) {
     this.profileFormGroup = new FormGroup({
       firstName: new FormControl('', [Validators.required]),
@@ -37,8 +43,19 @@ export class AccountSettingsComponent implements OnInit {
       phone: new FormControl('', []),
       country: new FormControl('', []),
       language: new FormControl('', []),
-      currency: new FormControl('', [Validators.required])
+      currency: new FormControl('', [Validators.required]),
+      file: new FormControl(undefined, []),
     });
+    this.reader = new FileReader();
+    this.reader.onload = (event: any) => {
+      this.profileImageSrc = event.target.result;
+    };
+
+    this._fileService.changeProfileImageSubjectObservable.subscribe(res => {
+      if (res.state != 'new') {
+        this.updateHeadTimeStamp();
+      }
+    })
   }
 
   get user() {
@@ -47,6 +64,10 @@ export class AccountSettingsComponent implements OnInit {
 
   get userSettings(): UserSettings {
     return this._userSettings;
+  }
+
+  set userSettings(value: UserSettings) {
+    this._userSettings = value;
   }
 
   @Input('user') set user(user: AuthUser) {
@@ -63,7 +84,6 @@ export class AccountSettingsComponent implements OnInit {
     this._userService.getUserSettings(this.user.id).pipe(filter(res => res != null), take(1)).subscribe(res => {
       this._userSettings = new UserSettings(res);
       this.initForm(this._userSettings);
-      console.log(this._userSettings)
     });
   }
 
@@ -78,7 +98,9 @@ export class AccountSettingsComponent implements OnInit {
     this.controls.country.setValue(userSettings.country);
     this.controls.language.setValue(userSettings.language);
     this.controls.currency.setValue(userSettings.currency);
+    this.profileImageSrc = userSettings.profileImage
     this.currency = userSettings.currency;
+    this.reader.readAsDataURL(new Blob([userSettings.profileImage]));
   }
 
   hasControlsErrors(controlName: string, errorName: string) {
@@ -90,7 +112,7 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   save() {
-    console.log(this.controls, ' ', this.userSettings.currency)
+    const currentFileUpload = this.getFile(this.profileFormGroup);
     this._userSettings.firstName = this.controls.firstName.value;
     this._userSettings.lastName = this.controls.lastName.value;
     this._userSettings.middleName = this.controls.middleName.value;
@@ -102,10 +124,30 @@ export class AccountSettingsComponent implements OnInit {
     this._userSettings.currency = this.currency;
 
     this._userService.updateUserProfile(this._userSettings).subscribe(res => {
+      if (currentFileUpload) {
+        this._fileService.saveProfileImage(this.user.id, currentFileUpload).subscribe(result => {
+          this._notificationService.showSuccess('Изображение загружено. Требуется перезагрузка страницы', 'Настройки' +
+            ' аккаунта')
+        })
+      }
       this.initForm(res);
       this._notificationService.showSuccess('Настройки успешно изменены.', 'Настройки аккаунта')
     }, error => {
       this._notificationService.showError('Возникла ошибка. Повторите попытку позже.', 'Настройки аккаунта')
-    });
+    })
+  }
+
+  public getFile(fb: FormGroup): File {
+    return fb.get('file').value?.files[0];
+  }
+
+  public updateHeadTimeStamp() {
+    console.log(this.userSettings)
+    this.profileImageSrc = this.userSettings.profileImage;
+    this.timeStamp = (new Date()).getTime();
+  }
+
+  getProfileImg() {
+    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${this.userSettings?.profileImage}`);
   }
 }

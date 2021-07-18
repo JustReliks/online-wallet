@@ -39,6 +39,7 @@ import {AccountSettingsComponent} from "./components/pages/settings/account-sett
 import {SecuritySettingsComponent} from "./components/pages/settings/security-settings/security-settings.component";
 import {AccountsComponent} from "./components/pages/accounts/accounts.component";
 import {CreateAccountComponent} from "./components/pages/accounts/createaccount/createaccount.component";
+import {MaterialFileInputModule} from "ngx-material-file-input";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -56,10 +57,10 @@ registerLocaleData(localeRu, 'ru');
     IncomeComponent,
     MenuComponent,
     CardComponent,
+    SelectAccountComponent,
     SettingsComponent,
     AccountSettingsComponent,
     SecuritySettingsComponent,
-    SelectAccountComponent,
     AccountsComponent,
     CreateAccountComponent
   ],
@@ -88,6 +89,7 @@ registerLocaleData(localeRu, 'ru');
     MatTooltipModule,
     MatDividerModule,
     MatSelectModule,
+    MaterialFileInputModule,
   ],
   providers: [
     AuthService,

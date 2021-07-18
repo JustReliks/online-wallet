@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.onlinewallet.config.security.jwt.JwtUtils;
 import ru.onlinewallet.dto.security.ChangePassRequestDto;
 import ru.onlinewallet.entity.security.JwtUserDetails;
@@ -23,6 +24,8 @@ import ru.onlinewallet.service.UserService;
 import ru.onlinewallet.util.PasswordUtil;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -153,9 +156,9 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(userSettings.getUserId())) {
             throw new EntityNotFoundException("Такого пользователя не существует!");
         }
-       // if (Objects.isNull(userSettings.getId())) {
-       //     throw new EntityNotFoundException("Пользовательских настроек не существует!");
-       // }
+        if (Objects.isNull(userSettings.getId())) {
+            throw new EntityNotFoundException("Пользовательских настроек не существует!");
+        }
 
         return this.userSettingsRepository.save(userSettings);
     }
@@ -168,6 +171,14 @@ public class UserServiceImpl implements UserService {
             updateUserProfile(userSettings);
         }
         return save;
+    }
+
+    @Override
+    @Transactional
+    public UserSettings saveProfileImage(long userId, MultipartFile file) throws IOException {
+        UserSettings byUserId = userSettingsRepository.findByUserId(userId);
+        byUserId.setProfileImage(file.getBytes());
+        return userSettingsRepository.save(byUserId);
     }
 
     private UserSettings createUserSettings(Long save) {

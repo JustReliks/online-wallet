@@ -37,12 +37,18 @@
           <p class="w-title font-weight-bold mb-2">Фото</p>
           <div class="d-flex align-items-center">
             <div class="w-profile-rounded-img mr-5">
-              <img src="https://davd.photo/wp-content/uploads/2019/03/rocco-roxie-employee-headshots-4.jpg">
+              <img [src]="getProfileImg()">
             </div>
-            <input type="file" id="file3"/>
-            <label for="file3" class="btn-3">
-              <span>Загрузить</span>
-            </label>
+            <div class="col-3">
+              <mat-form-field class="w-100">
+                <ngx-mat-file-input #removableInput formControlName="file" placeholder="Установить изображения профиля"
+                                    valuePlaceholder="Файл не выбран"></ngx-mat-file-input>
+                <button mat-icon-button matSuffix *ngIf="!removableInput.empty"
+                        (click)="removableInput.clear($event)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
             <button mat-raised-button color="warn" class="btn custom-btn">Удалить</button>
           </div>
         </div>
@@ -100,20 +106,20 @@
         <p class="w-gray-text">Данный раздел содержит в себе настройки и информацию, которая доступна только Вам.</p>
         <div class="d-flex  flex-column">
           <p class="w-title font-weight-bold mb-2">Валюта по-умолчанию</p>
-            <mat-form-field appearance="fill" style="max-width: 151px;">
-              <mat-select [(value)]="currency">
-                <mat-option [value]="'RUB'">
-                  RUB
-                </mat-option>
-                <mat-option  [value]="'USD'">
-                  USD
-                </mat-option>
-                <mat-option  [value]="'EUR'">
-                  EUR
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="hasControlsErrors('currency', 'required')">Выберите валюту</mat-error>
-            </mat-form-field>
+          <mat-form-field appearance="fill" style="max-width: 151px;">
+            <mat-select [(value)]="currency">
+              <mat-option [value]="'RUB'">
+                RUB
+              </mat-option>
+              <mat-option [value]="'USD'">
+                USD
+              </mat-option>
+              <mat-option [value]="'EUR'">
+                EUR
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasControlsErrors('currency', 'required')">Выберите валюту</mat-error>
+          </mat-form-field>
         </div>
       </section>
     </div>

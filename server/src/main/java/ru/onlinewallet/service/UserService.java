@@ -1,6 +1,7 @@
 package ru.onlinewallet.service;
 
 import com.nimbusds.jose.JOSEException;
+import org.springframework.web.multipart.MultipartFile;
 import ru.onlinewallet.dto.security.ChangePassRequestDto;
 import ru.onlinewallet.entity.user.User;
 import ru.onlinewallet.entity.security.JwtUserDetails;
@@ -33,5 +34,7 @@ public interface UserService {
     UserSettings updateUserProfile(UserSettings userSettings);
 
     Long register(User user);
+
+    UserSettings saveProfileImage(long userId, MultipartFile file) throws IOException;
 }
 

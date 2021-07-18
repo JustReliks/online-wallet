@@ -10,6 +10,7 @@ export class UserSettings {
   country: string;
   language: string;
   currency: string;
+  profileImage: any;
 
   constructor(json: any) {
     this.id = json.id;
@@ -23,6 +24,7 @@ export class UserSettings {
     this.country = json.country;
     this.language = json.language;
     this.currency = json.currency;
+    this.profileImage=json.profileImage
     console.log(json)
   }
 }
