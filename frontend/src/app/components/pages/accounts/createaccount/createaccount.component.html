@@ -1,0 +1,78 @@
+<div>
+  <div class="card-header w-header">
+    Создание счета
+  </div>
+  <div class="row">
+    <mat-icon class="col w-icon">account_balance</mat-icon>
+    <div class="col input-group mb-3">
+      <input type="text" class="form-control" placeholder="Название счета" aria-label="Название счета">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col w-money">
+      <mat-icon style="margin-top: 20px; margin-left: -23px">star</mat-icon>
+      <mat-form-field appearance="fill">
+        <mat-label>Основная валюта</mat-label>
+        <mat-select class="w-select" #fontSize value="16px" (selectionChange)="changeMainCurrency()">
+          <mat-option value="USD">USD</mat-option>
+          <mat-option value="RUB">RUB</mat-option>
+          <mat-option value="EUR">EUR</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field [style.fontSize]="fontSize.value" appearance="fill">
+        <mat-label>Начальная сумма</mat-label>
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col w-money">
+      <mat-icon style="margin-top: 20px; margin-left: -23px">star_half</mat-icon>
+      <mat-form-field appearance="fill">
+        <mat-label>Дополнительная валюта</mat-label>
+        <mat-select class="w-select" #fontSize value="16px" (selectionChange)="changeMainCurrency()">
+          <mat-option value="USD">USD</mat-option>
+          <mat-option value="RUB">RUB</mat-option>
+          <mat-option value="EUR">EUR</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field [style.fontSize]="fontSize.value" appearance="fill">
+        <mat-label>Начальная сумма</mat-label>
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div style="width: 100%;">
+    <mat-form-field class="w-form-field" [style.fontSize]="fontSize.value" appearance="fill">
+      <mat-label>Описание</mat-label>
+      <textarea matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"></textarea>
+    </mat-form-field>
+
+  </div>
+
+  <div>
+    <h4>Загрузите аватарку:</h4>
+    <input type="file" class="file-upload" onchange="console.log('upload')">
+  </div>
+  <div class="row" style="display: flex; justify-content: center">
+    <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+            (click)="true" style="align-content: center">
+      <mat-icon style="top: -2px;position: relative; left: -4px">add_circle</mat-icon>
+      Создать
+    </button>
+  </div>
+</div>

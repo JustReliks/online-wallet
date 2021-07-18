@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {LoginComponent} from "../../common/login/login.component";
+import {MatDialog} from "@angular/material/dialog";
+import {CreateAccountComponent} from "./createaccount/createaccount.component";
 
 @Component({
   selector: 'app-accounts',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
 
+  createAccount() {
+    const dialogRef = this.dialog.open(CreateAccountComponent, {
+      width: '550px',
+      data: {}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
 }

@@ -1,0 +1,34 @@
+.w-header {
+  text-align: center;
+  font-size: 25px;
+  color: #6977fa;
+  font-weight: 700;
+  line-height: 48px;
+  text-transform: uppercase;
+}
+
+.row {
+  margin-top: 15px;
+}
+
+.input-group {
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.38));
+}
+
+.w-money {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.w-form-field {
+  display: inline !important;
+}
+
+
+
+.w-icon {
+  margin-top: 2%;
+  max-width: 20px;
+}
