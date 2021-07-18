@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, Sanitizer, ViewChild} from '@angular/core';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {filter} from 'rxjs/operators';
@@ -9,6 +9,7 @@ import {AuthSuccessEvent, LogoutEvent} from "../../../entities/auth.events";
 import {AuthUser, UserRoleEnum} from "../../../entities/user";
 import {LoginComponent} from "../login/login.component";
 import {RegistrationComponent} from "../registration/registration.component";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-header',
@@ -27,11 +28,11 @@ export class HeaderComponent implements OnInit {
               private authService: AuthService,
               private broadcaster: ApplicationEventBroadcaster,
               private dialog: MatDialog,
-              private renderer2: Renderer2) {
+              private renderer2: Renderer2,
+              private _sanitizer:DomSanitizer) {
     this.broadcaster.onType(AuthSuccessEvent).pipe(filter(user => user != null)).subscribe(
       (e: AuthSuccessEvent) => {
         this.user = e.user;
-        this.updateHeadTimeStamp();
         this.userName = e.user.username;
         this.isAuthenticated = true;
 
@@ -45,9 +46,6 @@ export class HeaderComponent implements OnInit {
       }
     );
 
-    // this.skinService.changeSkinSubjectObservable.subscribe(res => {
-    //   this.updateHeadTimeStamp();
-    // })
     if (!this.user) {
       this.user = this.authService.getCurrentUser();
     }
@@ -108,11 +106,8 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  getUserHead() {
-    if (this.timeStamp) {
-      return this.linkPicture + '?' + this.timeStamp;
-    }
-    return this.linkPicture;
+  getProfileImage() {
+    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${this.user?.profileImage}`);
   }
 
   public updateHeadTimeStamp() {

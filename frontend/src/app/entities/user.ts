@@ -12,7 +12,6 @@ export interface UserLight {
   uuid: string;
   createdAt: string;
   twoFactorEnabled: boolean;
-  userXenforoDto: UserXenforo;
 }
 
 export interface Role {
@@ -53,8 +52,8 @@ export class AuthUser implements User {
     this.createdAt = json.createdAt;
     this.token = json.token;
     this.twoFactorEnabled = json.twoFactorEnabled;
-    this.userXenforoDto = json.userXenforoDto;
-    this.currency=json.currency;
+    this.currency = json.currency;
+    this.profileImage = json.profileImage;
   }
 
   id: number;
@@ -66,8 +65,8 @@ export class AuthUser implements User {
   token: string;
   twoFactorEnabled: boolean;
   roles: Array<UserRole>;
-  userXenforoDto: UserXenforo;
-  currency:string;
+  currency: string;
+  profileImage: any;
 
   static updateFromUserLight(user: AuthUser, userLight: any) {
     user.id = userLight.id;
@@ -77,7 +76,6 @@ export class AuthUser implements User {
     user.balance = userLight.balance;
     user.createdAt = userLight.createdAt;
     user.twoFactorEnabled = userLight.twoFactorEnabled;
-    user.userXenforoDto = userLight.userXenforoDto;
   }
 
   public getRole(roleName: string) {

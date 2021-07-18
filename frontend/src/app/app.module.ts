@@ -38,8 +38,9 @@ import {SettingsComponent} from "./components/pages/settings/settings.component"
 import {AccountSettingsComponent} from "./components/pages/settings/account-settings/account-settings.component";
 import {SecuritySettingsComponent} from "./components/pages/settings/security-settings/security-settings.component";
 import {AccountsComponent} from "./components/pages/accounts/accounts.component";
-import {CreateAccountComponent} from "./components/pages/accounts/createaccount/createaccount.component";
-import {MaterialFileInputModule} from "ngx-material-file-input";
+import {CreateAccountComponent} from "./components/pages/accounts/create-account/create-account.component";
+import {MaterialFileInputModule} from 'ngx-material-file-input';
+import {AngularGradientProgressbarModule} from "angular-gradient-progressbar";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -90,6 +91,7 @@ registerLocaleData(localeRu, 'ru');
     MatDividerModule,
     MatSelectModule,
     MaterialFileInputModule,
+    AngularGradientProgressbarModule
   ],
   providers: [
     AuthService,

@@ -135,3 +135,14 @@ body {
   background: rgb(39,60,214);
   background: linear-gradient(25deg, rgba(39,60,214,1) 3%, rgba(88,83,243,1) 55%, rgba(144,81,226,1) 100%);
 }
+
+
+.justify-items-right{
+ justify-items: right;
+}
+
+// Progress bar
+.display_{
+  margin: 0!important;
+  padding: .5rem 0!important;
+}

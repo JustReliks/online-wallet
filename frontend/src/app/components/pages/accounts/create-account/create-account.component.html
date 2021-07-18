@@ -1,11 +1,18 @@
 <div>
   <div class="card-header w-header">
-    Создание счета
+    Создание нового счета
   </div>
   <div class="row">
     <mat-icon class="col w-icon">account_balance</mat-icon>
-    <div class="col input-group mb-3">
-      <input type="text" class="form-control" placeholder="Название счета" aria-label="Название счета">
+    <div class="col input-group">
+      <mat-form-field [style.fontSize]="fontSize.value" appearance="fill" class="w-100">
+        <mat-label>Наименование счета</mat-label>
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
     </div>
   </div>
   <div class="row">
@@ -68,10 +75,13 @@
     <h4>Загрузите аватарку:</h4>
     <input type="file" class="file-upload" onchange="console.log('upload')">
   </div>
-  <div class="row" style="display: flex; justify-content: center">
+  <div class="row" style="display: flex; float:right">
+    <button color="warn" mat-raised-button class='btn custom-btn mr-3'
+            (click)="close()" style="align-content: center">
+      Закрыть
+    </button>
     <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
             (click)="true" style="align-content: center">
-      <mat-icon style="top: -2px;position: relative; left: -4px">add_circle</mat-icon>
       Создать
     </button>
   </div>

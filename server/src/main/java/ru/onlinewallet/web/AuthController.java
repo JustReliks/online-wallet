@@ -7,10 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.onlinewallet.dto.AuthUserDto;
 import ru.onlinewallet.dto.security.JwtRequestDto;
 import ru.onlinewallet.dto.security.JwtUserDto;
 import ru.onlinewallet.entity.security.JwtUserDetails;
+import ru.onlinewallet.entity.user.UserSettings;
 import ru.onlinewallet.service.LoginService;
+import ru.onlinewallet.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
@@ -18,6 +21,7 @@ import ru.onlinewallet.service.LoginService;
 public class AuthController {
 
     private final LoginService loginService;
+    private final UserService userService;
     private final GoogleAuthenticator gAuth;
 
     @PostMapping
@@ -46,7 +50,14 @@ public class AuthController {
     @GetMapping("/current")
     public ResponseEntity<JwtUserDto> getCurrentUser() {
         try {
-            return ResponseEntity.ok(new JwtUserDto(loginService.getCurrentUser()));
+            JwtUserDetails currentUser = loginService.getCurrentUser();
+            long id = currentUser.getId();
+            if (id == 0) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            }
+            UserSettings userProfile = userService.getUserProfile(id);
+            byte[] profileImage = userProfile.getProfileImage();
+            return ResponseEntity.ok(new AuthUserDto(currentUser, profileImage));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }

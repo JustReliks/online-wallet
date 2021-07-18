@@ -17,7 +17,7 @@
       </ul>
       <ul *ngIf="isAuthenticated; else notAuthBlock" class="d-lg-block profile">
         <li><a class="link" routerLink="cabinet">
-          <div class="user_pic"><img style="image-rendering: pixelated;" [src]="getUserHead()">
+          <div class="user_pic"><img [src]="getProfileImage()">
           </div>
           {{userName}}
         </a></li>
