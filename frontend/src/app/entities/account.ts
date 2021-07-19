@@ -1,18 +1,42 @@
-import {Operation} from "./operation";
+import {AccountBill} from "./account-bill";
 
 export class Account {
 
+  private _id: number;
+  private _userId: number;
   private _name: string;
-  private _currency: string;
-  private _value: number;
-  private _operations: Array<Operation>;
+  private _description: string;
+  private _createdAt: string;
+  private _lastTransaction: string;
+  private _icon: string;
+  private _accountBills: Array<AccountBill>;
 
-  constructor(name: string, value: number, currency: string) {
-    this._value = value;
-    this._currency = currency;
-    this._name = name;
+  constructor(json: any) {
+    this._id = json._id;
+    this._userId = json._userId;
+    this._name = json._name;
+    this._description = json._description;
+    this._createdAt = json._createdAt;
+    this._lastTransaction = json._lastTransaction;
+    this._icon = json._icon;
+    this._accountBills = json._accountBills.map(bill => new AccountBill(bill))
   }
 
+  get id(): number {
+    return this._id;
+  }
+
+  set id(value: number) {
+    this._id = value;
+  }
+
+  get userId(): number {
+    return this._userId;
+  }
+
+  set userId(value: number) {
+    this._userId = value;
+  }
 
   get name(): string {
     return this._name;
@@ -22,19 +46,43 @@ export class Account {
     this._name = value;
   }
 
-  get currency(): string {
-    return this._currency;
+  get description(): string {
+    return this._description;
   }
 
-  set currency(value: string) {
-    this._currency = value;
+  set description(value: string) {
+    this._description = value;
   }
 
-  get value(): number {
-    return this._value;
+  get createdAt(): string {
+    return this._createdAt;
   }
 
-  set value(value: number) {
-    this._value = value;
+  set createdAt(value: string) {
+    this._createdAt = value;
+  }
+
+  get lastTransaction(): string {
+    return this._lastTransaction;
+  }
+
+  set lastTransaction(value: string) {
+    this._lastTransaction = value;
+  }
+
+  get icon(): string {
+    return this._icon;
+  }
+
+  set icon(value: string) {
+    this._icon = value;
+  }
+
+  get accountBills(): Array<AccountBill> {
+    return this._accountBills;
+  }
+
+  set accountBills(value: Array<AccountBill>) {
+    this._accountBills = value;
   }
 }

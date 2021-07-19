@@ -5,7 +5,7 @@
   <div class="row">
     <mat-icon class="col w-icon">account_balance</mat-icon>
     <div class="col input-group">
-      <mat-form-field [style.fontSize]="fontSize.value" appearance="fill" class="w-100">
+      <mat-form-field formControlName="accountName" [style.fontSize]="fontSize.value" appearance="fill" class="w-100">
         <mat-label>Наименование счета</mat-label>
         <textarea matInput
                   cdkTextareaAutosize
@@ -18,7 +18,7 @@
   <div class="row">
     <div class="col w-money">
       <mat-icon style="margin-top: 20px; margin-left: -23px">star</mat-icon>
-      <mat-form-field appearance="fill">
+      <mat-form-field formControlName="mainCurrency" appearance="fill">
         <mat-label>Основная валюта</mat-label>
         <mat-select class="w-select" #fontSize value="16px" (selectionChange)="changeMainCurrency()">
           <mat-option value="USD">USD</mat-option>
@@ -60,7 +60,7 @@
     </div>
   </div>
   <div style="width: 100%;">
-    <mat-form-field class="w-form-field" [style.fontSize]="fontSize.value" appearance="fill">
+    <mat-form-field formControlName="description" class="w-form-field" [style.fontSize]="fontSize.value" appearance="fill">
       <mat-label>Описание</mat-label>
       <textarea matInput
                 cdkTextareaAutosize
@@ -81,7 +81,7 @@
       Закрыть
     </button>
     <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
-            (click)="true" style="align-content: center">
+            (click)="create()" style="align-content: center">
       Создать
     </button>
   </div>

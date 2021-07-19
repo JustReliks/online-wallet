@@ -13,10 +13,10 @@ export class SelectAccountComponent implements OnInit {
 
   constructor() {
 
-    this._accounts = new Array<Account>();
-    this._accounts.push(new Account("test1", 15, "RUB"));
-    this._accounts.push(new Account("test2", 31, "RUB"));
-    this._accounts.push(new Account("test3", 45, "EUR"));
+    // this._accounts = new Array<Account>();
+    // this._accounts.push(new Account("test1", 15, "RUB"));
+    // this._accounts.push(new Account("test2", 31, "RUB"));
+    // this._accounts.push(new Account("test3", 45, "EUR"));
 
 
   }

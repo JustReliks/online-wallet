@@ -26,9 +26,9 @@ export class IncomeComponent implements OnInit {
     this._operations.push(new Operation(4, OperationType.INCOME, 24,"33.10.2005", "test", "RUB"));
 
     this._accounts = new Array<Account>();
-    this._accounts.push(new Account("test1", 15, "RUB"));
-    this._accounts.push(new Account("test2", 31, "RUB"));
-    this._accounts.push(new Account("test3", 45, "EUR"));
+    // this._accounts.push(new Account("test1", 15, "RUB"));
+    // this._accounts.push(new Account("test2", 31, "RUB"));
+    // this._accounts.push(new Account("test3", 45, "EUR"));
   }
 
   get accounts(): Array<Account> {
