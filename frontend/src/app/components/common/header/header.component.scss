@@ -462,20 +462,15 @@ nav .nav_menu > ul > li + li {
 nav .profile .user_pic {
   display: inline-block;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  margin: 0 8px 0 0;
-  vertical-align: top;
+  overflow: hidden;
+  width: 21px;
+  height: 21px;
 }
 
 .user_pic img {
-  display: block;
   width: 100%;
   height: 100%;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  object-fit: cover;
 }
 
 nav .link:hover {
