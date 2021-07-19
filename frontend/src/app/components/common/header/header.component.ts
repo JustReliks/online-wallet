@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2, Sanitizer, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {filter} from 'rxjs/operators';
@@ -9,7 +9,8 @@ import {AuthSuccessEvent, LogoutEvent} from "../../../entities/auth.events";
 import {AuthUser, UserRoleEnum} from "../../../entities/user";
 import {LoginComponent} from "../login/login.component";
 import {RegistrationComponent} from "../registration/registration.component";
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {FileService} from "../../../service/file.service";
 
 @Component({
   selector: 'app-header',
@@ -23,16 +24,20 @@ export class HeaderComponent implements OnInit {
   private siteDomain = environment.siteDomain;
   private linkPicture;
   private timeStamp: any;
+  private _user: AuthUser;
+  profileImageSrc: SafeUrl;
 
   constructor(private router: Router,
               private authService: AuthService,
               private broadcaster: ApplicationEventBroadcaster,
               private dialog: MatDialog,
               private renderer2: Renderer2,
-              private _sanitizer:DomSanitizer) {
+              private _sanitizer: DomSanitizer,
+              private _fileService: FileService) {
     this.broadcaster.onType(AuthSuccessEvent).pipe(filter(user => user != null)).subscribe(
       (e: AuthSuccessEvent) => {
         this.user = e.user;
+        this.profileImageSrc = this.getProfileImage();
         this.userName = e.user.username;
         this.isAuthenticated = true;
 
@@ -60,9 +65,14 @@ export class HeaderComponent implements OnInit {
         }, 100);
       }
     });
-  }
 
-  private _user: AuthUser;
+    this._fileService.changeProfileImageSubjectObservable.subscribe(res => {
+      if (res.state != 'new') {
+        console.log(res)
+        this.profileImageSrc = this.getProfileImage(res.source);
+      }
+    })
+  }
 
   get user(): AuthUser {
     return this._user;
@@ -106,8 +116,8 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  getProfileImage() {
-    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${this.user?.profileImage}`);
+  getProfileImage(profileImage?: any) {
+    return profileImage ? profileImage : this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${this.user?.profileImage}`);
   }
 
   public updateHeadTimeStamp() {
@@ -115,7 +125,7 @@ export class HeaderComponent implements OnInit {
     this.timeStamp = (new Date()).getTime();
   }
 
-  isAdmin(){
+  isAdmin() {
     return this.user.getRole(UserRoleEnum.ADMIN);
   }
 

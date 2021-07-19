@@ -9,7 +9,6 @@ import {filter, take} from "rxjs/operators";
 import {SettingsState} from "../settings.component";
 import {FileService} from "../../../../service/file.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'app-account-settings',
@@ -23,7 +22,6 @@ export class AccountSettingsComponent implements OnInit {
   profileImageSrc: any = ' ';
   profileFormGroup: FormGroup;
   private reader: FileReader;
-  private timeStamp: any;
   private _currentUser: AuthUser;
   private _userSettings: UserSettings;
 
@@ -47,13 +45,9 @@ export class AccountSettingsComponent implements OnInit {
       file: new FormControl(undefined, []),
     });
     this.reader = new FileReader();
-    this.reader.onload = (event: any) => {
-      this.profileImageSrc = event.target.result;
-    };
-
     this._fileService.changeProfileImageSubjectObservable.subscribe(res => {
       if (res.state != 'new') {
-        this.updateHeadTimeStamp();
+        this.profileImageSrc = this.getProfileImg();
       }
     })
   }
@@ -98,7 +92,8 @@ export class AccountSettingsComponent implements OnInit {
     this.controls.country.setValue(userSettings.country);
     this.controls.language.setValue(userSettings.language);
     this.controls.currency.setValue(userSettings.currency);
-    this.profileImageSrc = userSettings.profileImage
+    this.profileImageSrc = this.getProfileImg(userSettings);
+    console.log(this.profileImageSrc)
     this.currency = userSettings.currency;
     this.reader.readAsDataURL(new Blob([userSettings.profileImage]));
   }
@@ -126,11 +121,15 @@ export class AccountSettingsComponent implements OnInit {
     this._userService.updateUserProfile(this._userSettings).subscribe(res => {
       if (currentFileUpload) {
         this._fileService.saveProfileImage(this.user.id, currentFileUpload).subscribe(result => {
-          this._notificationService.showSuccess('Изображение загружено. Требуется перезагрузка страницы', 'Настройки' +
-            ' аккаунта')
+          this._fileService.changeProfileImage({
+            source: this.getProfileImg(result.body),
+            state: 'update'
+          });
+          this.initForm(result.body);
         })
+      } else {
+        this.initForm(res);
       }
-      this.initForm(res);
       this._notificationService.showSuccess('Настройки успешно изменены.', 'Настройки аккаунта')
     }, error => {
       this._notificationService.showError('Возникла ошибка. Повторите попытку позже.', 'Настройки аккаунта')
@@ -141,13 +140,7 @@ export class AccountSettingsComponent implements OnInit {
     return fb.get('file').value?.files[0];
   }
 
-  public updateHeadTimeStamp() {
-    console.log(this.userSettings)
-    this.profileImageSrc = this.userSettings.profileImage;
-    this.timeStamp = (new Date()).getTime();
-  }
-
-  getProfileImg() {
-    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${this.userSettings?.profileImage}`);
+  getProfileImg(profileImage?: any) {
+    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${profileImage ? profileImage?.profileImage : this.userSettings?.profileImage}`);
   }
 }
