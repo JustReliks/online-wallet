@@ -1,0 +1,59 @@
+<div [formGroup]="addTransactionForm">
+  <div class="card-header w-header">
+    Добавление операции
+  </div>
+  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+    <div class="d-flex w-100 my-3 w-place-center">
+      <p>Добавьте денежную операцию, которую вы провели</p>
+    </div>
+    <div class="d-flex w-100 my-3 w-place-center flex-column">
+      <mat-form-field class="w-100" appearance="fill">
+        <mat-label>Выберите счет:</mat-label>
+        <mat-select formControlName="account" class="w-select"
+                    (selectionChange)="true">
+          <mat-option (click)="selectAccount(account)" *ngFor="let account of this.accounts"
+                      value="{{account.id}}">{{account.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="selectedAccount" class="d-flex flex-row w-100 pr-3 w-currency-toggle-menu">
+        <div *ngFor="let bill of selectedAccount.accountBills"
+             [ngClass]="selectedBill?.currency == bill.currency? 'w-currency-toggle-selected': 'w-currency-toggle'"
+             (click)="selectBill(bill)">
+          <div class="w-currency">
+            {{bill.currency.shortName}}
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedAccount && selectedBill" class="d-flex align-items-center w-place-center"
+           style="place-self: center">
+        <mat-form-field class="w-100 mt-2" appearance="fill">
+          <mat-label>Сумма операции</mat-label>
+          <input
+            formControlName="sum"
+            matInput
+            type="number"
+          />
+        </mat-form-field>
+        <mat-icon matTooltip="Будет записано в доходы" [matTooltipPosition]="'below'"
+                  *ngIf="isPlusState" (click)="isPlusState=!isPlusState" class="w-icon">add
+        </mat-icon>
+        <mat-icon matTooltip="Будет записано в расходы" [matTooltipPosition]="'below'" *ngIf="!isPlusState"
+                  (click)="isPlusState=!isPlusState" class="w-icon">remove
+        </mat-icon>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions class="row d-flex">
+    <div class="col d-flex" style="justify-content: flex-end">
+      <button color="warn" mat-raised-button class='btn custom-btn mr-3'
+              (click)="close()" style="align-content: center">
+        Закрыть
+      </button>
+      <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+              [disabled]="!this.addTransactionForm.valid"
+              (click)="add()" style="align-content: center">
+        Создать
+      </button>
+    </div>
+  </div>
+</div>

@@ -43,6 +43,7 @@ import {MaterialFileInputModule} from 'ngx-material-file-input';
 import {AngularGradientProgressbarModule} from "angular-gradient-progressbar";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
+import {AddTransactionModalComponent} from "./components/pages/finance/add-transaction-modal/add-transaction-modal.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -65,38 +66,39 @@ registerLocaleData(localeRu, 'ru');
     AccountSettingsComponent,
     SecuritySettingsComponent,
     AccountsComponent,
-    CreateAccountComponent
+    CreateAccountComponent,
+    AddTransactionModalComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        MatNativeDateModule,
-        // ServiceWorkerModule.register('ngsw-worker.js', {
-        //   enabled: environment.production,
-        //   // Register the ServiceWorker as soon as the app is stable
-        //   // or after 30 seconds (whichever comes first).
-        //   registrationStrategy: 'registerWhenStable:30000'
-        // }),
-        ToastrModule.forRoot({
-            positionClass: 'toast-bottom-right',
-        }),
-        RouterModule,
-        BrowserAnimationsModule,
-        NgbModule,
-        MaterialModule,
-        MatProgressSpinnerModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatTooltipModule,
-        MatDividerModule,
-        MatSelectModule,
-        MaterialFileInputModule,
-        AngularGradientProgressbarModule,
-        MatDatepickerModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatNativeDateModule,
+    // ServiceWorkerModule.register('ngsw-worker.js', {
+    //   enabled: environment.production,
+    //   // Register the ServiceWorker as soon as the app is stable
+    //   // or after 30 seconds (whichever comes first).
+    //   registrationStrategy: 'registerWhenStable:30000'
+    // }),
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+    }),
+    RouterModule,
+    BrowserAnimationsModule,
+    NgbModule,
+    MaterialModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatTooltipModule,
+    MatDividerModule,
+    MatSelectModule,
+    MaterialFileInputModule,
+    AngularGradientProgressbarModule,
+    MatDatepickerModule
+  ],
   providers: [
     AuthService,
     ApplicationEventBroadcaster,
