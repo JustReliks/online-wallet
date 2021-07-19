@@ -6,6 +6,7 @@ import ru.onlinewallet.entity.account.Account;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
@@ -29,13 +30,13 @@ public class AccountDto {
         accountDto.setCreatedAt(account.getCreatedAt());
         accountDto.setLastTransaction(account.getLastTransaction());
         accountDto.setIcon(account.getIcon());
-//        accountDto.setAccountBills(
-//                account
-//                        .getAccountBills()
-//                        .stream()
-//                        .map(AccountBillDto::toDto)
-//                        .collect(Collectors.toList())
-//        );
+        accountDto.setAccountBills(
+                account
+                        .getAccountBills()
+                        .stream()
+                        .map(AccountBillDto::toDto)
+                        .collect(Collectors.toList())
+        );
 
         return accountDto;
     }
@@ -46,8 +47,8 @@ public class AccountDto {
         account.setUserId(dto.getUserId());
         account.setName(dto.getName());
         account.setDescription(dto.getDescription());
-        account.setCreatedAt(dto.getCreatedAt());
-        account.setLastTransaction(dto.getLastTransaction());
+        account.setCreatedAt(Objects.isNull(dto.getCreatedAt()) ? Instant.now() : dto.getCreatedAt());
+        account.setLastTransaction(Objects.isNull(dto.getLastTransaction()) ? Instant.now() : dto.getLastTransaction());
         account.setIcon(dto.getIcon());
 //        account.setAccountBills(
 //                dto

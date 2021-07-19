@@ -33,4 +33,9 @@ public class AccountServiceImpl implements AccountService {
 
         return accountBillRepository.saveAll(collect);
     }
+
+    @Override
+    public List<Account> getAll(Long userId) {
+        return accountRepository.findAllByUserId(userId);
+    }
 }

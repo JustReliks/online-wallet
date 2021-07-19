@@ -37,9 +37,8 @@ public class Account {
     @Column
     private byte[] icon;
 
-//    @OneToMany
-//    @JoinTable(name = "w_account_bills",
-//            joinColumns = @JoinColumn(name = "account_id"),
-//            foreignKey = @ForeignKey(name = "w_account_bills_w_accounts_id_fk"))
-//    private List<AccountBill> accountBills = new ArrayList<>();
+    @OneToMany(mappedBy = "account")
+    private List<AccountBill> accountBills = new ArrayList<>();
+
+
 }

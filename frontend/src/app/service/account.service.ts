@@ -18,5 +18,10 @@ export class AccountService {
       headers: {
         'Content-Type': 'application/json'
       }
-    });  }
+    });
+  }
+
+  getAccounts(id: number): Observable<Array<Account>> {
+    return this.http.get<Array<Account>>(this.api + `/account?id=${id}`);
+  }
 }

@@ -8,7 +8,7 @@ create table w_accounts
     name varchar(255),
     description varchar(255),
     created_at timestamp default now(),
-    last_transaction int,
+    last_transaction timestamp default now(),
     icon bytea
 );
 

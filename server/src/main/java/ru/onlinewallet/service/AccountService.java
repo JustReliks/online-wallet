@@ -9,4 +9,6 @@ public interface AccountService {
     Account createAccount(Account account);
 
     List<AccountBill> createAccountBills(Long id, List<AccountBill> collect);
+
+    List<Account> getAll(Long userId);
 }

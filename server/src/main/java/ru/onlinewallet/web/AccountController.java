@@ -3,10 +3,7 @@ package ru.onlinewallet.web;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.onlinewallet.dto.account.AccountBillDto;
 import ru.onlinewallet.dto.account.AccountDto;
 import ru.onlinewallet.entity.account.Account;
@@ -37,5 +34,16 @@ public class AccountController {
         AccountDto accountDto = AccountDto.toDto(account);
         accountDto.setAccountBills(billDto);
         return ResponseEntity.ok(accountDto);
+    }
+
+    @GetMapping
+    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id){
+        return ResponseEntity.ok(
+                accountService
+                        .getAll(id)
+                        .stream()
+                        .map(AccountDto::toDto)
+                        .collect(Collectors.toList())
+        );
     }
 }

@@ -151,9 +151,10 @@ export class CreateAccountComponent implements OnInit {
     this._account.userId = this._user.id;
     console.log(this._account)
     this._accountService.createAccount(this.account).subscribe(res => {
-      this._notificationService.showSuccess('Настройки успешно изменены.', 'Настройки аккаунта')
+      this._notificationService.showSuccess('Новый счет успешно создан', 'Финанасы')
+      this.dialogRef.close();
     }, error => {
-      this._notificationService.showError('Возникла ошибка. Повторите попытку позже.', 'Настройки аккаунта')
+      this._notificationService.showError('Возникла ошибка. Повторите попытку позже.', 'Финанасы')
     })
   }
 

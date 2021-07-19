@@ -3,6 +3,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {CreateAccountComponent} from "./create-account/create-account.component";
 import {AuthUser} from "../../../entities/user";
 import _ from "lodash";
+import {AccountService} from "../../../service/account.service";
+import {Account} from "../../../entities/account";
 
 @Component({
   selector: 'app-accounts',
@@ -10,9 +12,9 @@ import _ from "lodash";
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnInit {
-
   private _currentUser: any;
   private _originalUser: any;
+  private _accounts: Array<Account>;
 
   @Input('user') set user(user: AuthUser) {
     this._originalUser = user;
@@ -23,10 +25,18 @@ export class AccountsComponent implements OnInit {
     return this._currentUser;
   }
 
-  constructor(private dialog: MatDialog) {
+  get accounts(): Array<Account> {
+    return this._accounts;
+  }
+
+  constructor(private dialog: MatDialog,
+              private _accountService: AccountService) {
+
   }
 
   ngOnInit(): void {
+    console.log(this.user)
+    this._accountService.getAccounts(this.user?.id).subscribe(res =>this._accounts=res);
   }
 
   createAccount() {
@@ -36,6 +46,7 @@ export class AccountsComponent implements OnInit {
       data: {user: this.user}
     });
     dialogRef.afterClosed().subscribe(result => {
+      this._accountService.getAccounts(this.user?.id).subscribe(res =>this._accounts=res);
     });
   }
 

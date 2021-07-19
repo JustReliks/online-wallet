@@ -25,4 +25,8 @@ public class AccountBill {
 
     @Column
     private Double balance;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false, insertable = false, updatable = false)
+    private Account account;
 }

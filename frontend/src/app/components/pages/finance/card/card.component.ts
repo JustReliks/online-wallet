@@ -9,7 +9,7 @@ import _ from "lodash";
 })
 export class CardComponent implements OnInit {
 
-  @Input() menuState: MenuState = MenuState.ACCOUNTS;
+  @Input() menuState: MenuState = MenuState.MENU;
   private _currentUser: any;
   private _originalUser: any;
 
