@@ -1,88 +1,115 @@
-<div>
+<div [formGroup]="createAccountForm">
   <div class="card-header w-header">
     Создание нового счета
   </div>
-  <div class="row">
-    <mat-icon class="col w-icon">account_balance</mat-icon>
-    <div class="col input-group">
-      <mat-form-field formControlName="accountName" [style.fontSize]="fontSize.value" appearance="fill" class="w-100">
-        <mat-label>Наименование счета</mat-label>
-        <textarea matInput
+  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+    <div class="d-flex w-100">
+      <mat-icon class="w-icon mr-3">account_balance</mat-icon>
+      <div class="input-group">
+        <mat-form-field [style.fontSize]="fontSize.value" appearance="fill" class="w-100">
+          <mat-label>Наименование счета</mat-label>
+          <textarea formControlName="accountName" matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"></textarea>
+          <mat-error *ngIf="hasControlsErrors('accountName', 'required')"
+          >Имя не может быть пустым
+          </mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="d-flex w-100">
+      <div class="col w-money">
+        <mat-icon style="margin-top: 20px; margin-left: -23px">star</mat-icon>
+        <mat-form-field appearance="fill">
+          <mat-label>Основная валюта</mat-label>
+          <mat-select formControlName="mainCurrency" class="w-select" #fontSize value="16px"
+                      (selectionChange)="changeMainCurrency()">
+            <mat-option value="USD">USD</mat-option>
+            <mat-option value="RUB">RUB</mat-option>
+            <mat-option value="EUR">EUR</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field [style.fontSize]="fontSize.value" appearance="fill">
+          <mat-label>Начальная сумма</mat-label>
+          <textarea matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="d-flex w-100">
+      <div class="col w-money">
+        <mat-icon style="margin-top: 20px; margin-left: -23px">star_half</mat-icon>
+        <mat-form-field appearance="fill">
+          <mat-label>Дополнительная валюта</mat-label>
+          <mat-select class="w-select" #fontSize value="16px" (selectionChange)="changeMainCurrency()">
+            <mat-option value="USD">USD</mat-option>
+            <mat-option value="RUB">RUB</mat-option>
+            <mat-option value="EUR">EUR</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field [style.fontSize]="fontSize.value" appearance="fill">
+          <mat-label>Начальная сумма</mat-label>
+          <textarea matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <div style="width: 100%;">
+      <mat-form-field class="w-form-field" [style.fontSize]="fontSize.value"
+                      appearance="fill">
+        <mat-label>Описание</mat-label>
+        <textarea formControlName="description" matInput
                   cdkTextareaAutosize
                   #autosize="cdkTextareaAutosize"
                   cdkAutosizeMinRows="1"
                   cdkAutosizeMaxRows="5"></textarea>
       </mat-form-field>
+
+    </div>
+
+  </div>
+  <div class="d-flex w-100 flex-column">
+    <p>Выберите иконку для счета: </p>
+    <div class="icons d-flex">
+      <div class="icon">
+        <img [src]="'https://mywallets.online/assets/img/cabinet/wallets/customWallets/2.png'"/></div>
+      <div class="icon">
+        <img [src]="'https://mywallets.online/assets/img/cabinet/wallets/customWallets/3.png'"/></div>
+      <div class="icon">
+        <img [src]="'https://mywallets.online/assets/img/cabinet/wallets/customWallets/4.png'"/></div>
+      <div class="icon">
+        <img [src]="'https://mywallets.online/assets/img/cabinet/wallets/customWallets/5.png'"/>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col w-money">
-      <mat-icon style="margin-top: 20px; margin-left: -23px">star</mat-icon>
-      <mat-form-field formControlName="mainCurrency" appearance="fill">
-        <mat-label>Основная валюта</mat-label>
-        <mat-select class="w-select" #fontSize value="16px" (selectionChange)="changeMainCurrency()">
-          <mat-option value="USD">USD</mat-option>
-          <mat-option value="RUB">RUB</mat-option>
-          <mat-option value="EUR">EUR</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field [style.fontSize]="fontSize.value" appearance="fill">
-        <mat-label>Начальная сумма</mat-label>
-        <textarea matInput
-                  cdkTextareaAutosize
-                  #autosize="cdkTextareaAutosize"
-                  cdkAutosizeMinRows="1"
-                  cdkAutosizeMaxRows="5"></textarea>
-      </mat-form-field>
+  <div mat-dialog-actions class="row d-flex">
+    <div class="col d-flex justify-content-left">
+      <button color="accent" mat-raised-button class='btn custom-btn mr-3'
+              (click)="close()" style="align-content: center">
+        Добавить цель по счету
+      </button>
     </div>
-  </div>
-  <div class="row">
-    <div class="col w-money">
-      <mat-icon style="margin-top: 20px; margin-left: -23px">star_half</mat-icon>
-      <mat-form-field appearance="fill">
-        <mat-label>Дополнительная валюта</mat-label>
-        <mat-select class="w-select" #fontSize value="16px" (selectionChange)="changeMainCurrency()">
-          <mat-option value="USD">USD</mat-option>
-          <mat-option value="RUB">RUB</mat-option>
-          <mat-option value="EUR">EUR</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field [style.fontSize]="fontSize.value" appearance="fill">
-        <mat-label>Начальная сумма</mat-label>
-        <textarea matInput
-                  cdkTextareaAutosize
-                  #autosize="cdkTextareaAutosize"
-                  cdkAutosizeMinRows="1"
-                  cdkAutosizeMaxRows="5"></textarea>
-      </mat-form-field>
+    <div class="col d-flex justify-content-right">
+      <button color="warn" mat-raised-button class='btn custom-btn mr-3'
+              (click)="close()" style="align-content: center">
+        Закрыть
+      </button>
+      <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+              [disabled]="!this.createAccountForm.valid"
+              (click)="create()" style="align-content: center">
+        Создать
+      </button>
     </div>
-  </div>
-  <div style="width: 100%;">
-    <mat-form-field formControlName="description" class="w-form-field" [style.fontSize]="fontSize.value" appearance="fill">
-      <mat-label>Описание</mat-label>
-      <textarea matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"></textarea>
-    </mat-form-field>
-
-  </div>
-
-  <div>
-    <h4>Загрузите аватарку:</h4>
-    <input type="file" class="file-upload" onchange="console.log('upload')">
-  </div>
-  <div class="row" style="display: flex; float:right">
-    <button color="warn" mat-raised-button class='btn custom-btn mr-3'
-            (click)="close()" style="align-content: center">
-      Закрыть
-    </button>
-    <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
-            (click)="create()" style="align-content: center">
-      Создать
-    </button>
   </div>
 </div>

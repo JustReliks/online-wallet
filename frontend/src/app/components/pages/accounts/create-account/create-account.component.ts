@@ -16,7 +16,7 @@ import {NotificationService} from "../../../../service/notification.service";
 export class CreateAccountComponent implements OnInit {
 
   accountNameFilled: boolean
-  private createAccountForm: FormGroup;
+   createAccountForm: FormGroup;
   private _account: Account;
   private _user: AuthUser;
 
@@ -70,5 +70,9 @@ export class CreateAccountComponent implements OnInit {
     }, error => {
       this._notificationService.showError('Возникла ошибка. Повторите попытку позже.', 'Настройки аккаунта')
     })
+  }
+
+  hasControlsErrors(controlName: string, errorName: string) {
+    return this.controls[controlName].hasError(errorName);
   }
 }
