@@ -27,9 +27,8 @@
           <mat-label>Основная валюта</mat-label>
           <mat-select formControlName="mainCurrency" class="w-select"
                       (selectionChange)="changeMainCurrency()">
-            <mat-option value="USD">USD</mat-option>
-            <mat-option value="RUB">RUB</mat-option>
-            <mat-option value="EUR">EUR</mat-option>
+            <mat-option *ngFor="let currency of this.currencies"
+                        value="{{currency.id}}">{{currency.shortName}}</mat-option>
           </mat-select>
         </mat-form-field>
 

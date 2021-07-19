@@ -29,13 +29,13 @@ public class AccountDto {
         accountDto.setCreatedAt(account.getCreatedAt());
         accountDto.setLastTransaction(account.getLastTransaction());
         accountDto.setIcon(account.getIcon());
-        accountDto.setAccountBills(
-                account
-                        .getAccountBills()
-                        .stream()
-                        .map(AccountBillDto::toDto)
-                        .collect(Collectors.toList())
-        );
+//        accountDto.setAccountBills(
+//                account
+//                        .getAccountBills()
+//                        .stream()
+//                        .map(AccountBillDto::toDto)
+//                        .collect(Collectors.toList())
+//        );
 
         return accountDto;
     }
@@ -49,13 +49,13 @@ public class AccountDto {
         account.setCreatedAt(dto.getCreatedAt());
         account.setLastTransaction(dto.getLastTransaction());
         account.setIcon(dto.getIcon());
-        account.setAccountBills(
-                dto
-                        .getAccountBills()
-                        .stream()
-                        .map(AccountBillDto::fromDto)
-                        .collect(Collectors.toList())
-        );
+//        account.setAccountBills(
+//                dto
+//                        .getAccountBills()
+//                        .stream()
+//                        .map(AccountBillDto::fromDto)
+//                        .collect(Collectors.toList())
+//        );
 
         return account;
     }

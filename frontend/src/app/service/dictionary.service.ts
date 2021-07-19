@@ -1,22 +1,20 @@
 import {Injectable} from '@angular/core';
-import {Account} from "../entities/account";
 import {Observable} from "rxjs/Observable";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
+import {Currency} from "../entities/currency";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
+export class DictionaryService {
   api = environment.apiUrl;
 
   constructor(private http: HttpClient) {
   }
 
-  createAccount(account: Account): Observable<any> {
-    return this.http.post<number>(this.api + '/account', account, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });  }
+  getAllCurrencies(): Observable<Array<Currency>> {
+    return this.http.get<Array<Currency>>(this.api + '/dictionary/currencies'
+    );
+  }
 }

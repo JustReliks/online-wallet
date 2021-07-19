@@ -1,4 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {AuthUser} from "../../../../entities/user";
+import _ from "lodash";
 
 @Component({
   selector: 'app-card',
@@ -7,9 +9,21 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
-  @Input()  menuState: MenuState = MenuState.ACCOUNTS;
+  @Input() menuState: MenuState = MenuState.ACCOUNTS;
+  private _currentUser: any;
+  private _originalUser: any;
 
-  constructor() { }
+  @Input('user') set user(user: AuthUser) {
+    this._originalUser = user;
+    this.cloneOriginalUser();
+  }
+
+  get user() {
+    return this._currentUser;
+  }
+
+  constructor() {
+  }
 
   ngOnInit(): void {
     console.log(MenuState.MENU.toString())
@@ -21,16 +35,19 @@ export class CardComponent implements OnInit {
   }
 
   getTitle(): string {
-    if(this.menuState == MenuState.MENU) return 'Меню'
-    else if(this.menuState == MenuState.INCOME) return 'Ваша прибыль'
-    else if(this.menuState == MenuState.ACCOUNTS) return 'Ваши счета'
+    if (this.menuState == MenuState.MENU) return 'Меню'
+    else if (this.menuState == MenuState.INCOME) return 'Ваша прибыль'
+    else if (this.menuState == MenuState.ACCOUNTS) return 'Ваши счета'
 
     return ''
   }
 
+  cloneOriginalUser() {
+    this._currentUser = _.cloneDeep(this._originalUser);
+  }
 }
 
-export enum MenuState  {
+export enum MenuState {
   MENU = "menu", INCOME = "income", ACCOUNTS = "accounts"
 }
 

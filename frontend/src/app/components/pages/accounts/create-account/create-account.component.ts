@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Goal} from "../../../../entities/goal";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Account} from "../../../../entities/account";
@@ -9,6 +9,7 @@ import {AuthUser} from "../../../../entities/user";
 import {AccountService} from "../../../../service/account.service";
 import {NotificationService} from "../../../../service/notification.service";
 import {Icon} from "../../../../entities/icon";
+import {DictionaryService} from "../../../../service/dictionary.service";
 
 @Component({
   selector: 'app-create-account',
@@ -18,7 +19,7 @@ import {Icon} from "../../../../entities/icon";
 export class CreateAccountComponent implements OnInit {
 
   private _goal: Goal;
-   createAccountForm: FormGroup;
+  createAccountForm: FormGroup;
   private _account: Account;
   private _user: AuthUser;
   private _firstBill: AccountBill;
@@ -27,19 +28,24 @@ export class CreateAccountComponent implements OnInit {
   _icons: Icon[] = [];
   private _selectedIcon: Icon;
   minDate: Date;
+  private _currencies: Array<Currency>;
 
-
-  constructor(private dialogRef: MatDialogRef<any>,
-              private _accountService:AccountService,
-              private _notificationService:NotificationService) {
+  constructor(
+    private dialogRef: MatDialogRef<any>,
+    private _accountService: AccountService,
+    private _notificationService: NotificationService, @Inject(MAT_DIALOG_DATA) public data: { user: AuthUser },
+    private _dictionaryService: DictionaryService) {
+    this._user = data.user;
     this.createAccountForm = new FormGroup({
       accountName: new FormControl('', [Validators.required]),
       mainCurrency: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       file: new FormControl(undefined, []),
     });
-      this.minDate = new Date();
+    this.minDate = new Date();
     // this.minDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() + 1);
+
+    this._dictionaryService.getAllCurrencies().subscribe(res => this._currencies = res)
 
     this._icons = [];
     this._icons.push(new Icon('assets/img/accounts/1.png'))
@@ -49,14 +55,16 @@ export class CreateAccountComponent implements OnInit {
 
   }
 
+  get currencies(): Array<Currency> {
+    return this._currencies;
+  }
 
   get selectedIcon(): Icon {
     return this._selectedIcon;
   }
 
   set selectedIcon(value: Icon) {
-    if (value == this.selectedIcon)
-    {
+    if (value == this.selectedIcon) {
       this._selectedIcon = null;
     } else {
       this._selectedIcon = value;
@@ -132,21 +140,25 @@ export class CreateAccountComponent implements OnInit {
   }
 
   create() {
+    this._account = new Account({});
+    console.log(this.controls)
     this._account.name = this.controls.accountName.value;
-    let currency = new Currency({
-      _shortName: this.controls.mainCurrency.value
-    });
+    this._account.description = this.controls.description.value;
     let accountBill = new AccountBill({
-      _currency: currency
+      currency: this.getCurrency(this.controls.mainCurrency.value)
     });
     this._account.accountBills = new Array<AccountBill>(accountBill);
     this._account.userId = this._user.id;
-
+    console.log(this._account)
     this._accountService.createAccount(this.account).subscribe(res => {
       this._notificationService.showSuccess('Настройки успешно изменены.', 'Настройки аккаунта')
     }, error => {
       this._notificationService.showError('Возникла ошибка. Повторите попытку позже.', 'Настройки аккаунта')
     })
+  }
+
+  private getCurrency(currId: number) {
+    return this.currencies?.find(curr => curr.id == currId);
   }
 
   hasControlsErrors(controlName: string, errorName: string) {

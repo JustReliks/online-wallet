@@ -7,11 +7,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.onlinewallet.dto.account.AccountBillDto;
 import ru.onlinewallet.dto.account.AccountDto;
 import ru.onlinewallet.entity.account.Account;
+import ru.onlinewallet.entity.account.AccountBill;
 import ru.onlinewallet.service.AccountService;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/account")
@@ -21,12 +25,17 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping
-    private ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto) {
-        Account account = accountService.createAccount(AccountDto.fromDto(accountDto));
-        if (Objects.nonNull(account)) {
-            return ResponseEntity.ok(AccountDto.toDto(account));
+    private ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto dto) {
+        Account account = accountService.createAccount(AccountDto.fromDto(dto));
+        if (Objects.isNull(account)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        List<AccountBill> collect =
+                dto.getAccountBills().stream().map(AccountBillDto::fromDto).collect(Collectors.toList());
+        List<AccountBill> list = accountService.createAccountBills(account.getId(), collect);
+        List<AccountBillDto> billDto = list.stream().map(AccountBillDto::toDto).collect(Collectors.toList());
+        AccountDto accountDto = AccountDto.toDto(account);
+        accountDto.setAccountBills(billDto);
+        return ResponseEntity.ok(accountDto);
     }
-
 }

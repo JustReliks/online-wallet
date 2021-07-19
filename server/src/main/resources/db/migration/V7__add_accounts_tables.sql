@@ -5,8 +5,8 @@ create table w_accounts
         constraint w_accounts_w_users_id_fk
             references w_users
             on delete cascade,
-    name int,
-    description int,
+    name varchar(255),
+    description varchar(255),
     created_at timestamp default now(),
     last_transaction int,
     icon bytea

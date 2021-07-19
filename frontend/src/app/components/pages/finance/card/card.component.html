@@ -9,7 +9,7 @@
       <app-income></app-income>
     </div>
     <div *ngIf="menuState.toString() == 'accounts'">
-      <app-accounts></app-accounts>
+      <app-accounts [user]="this.user"></app-accounts>
     </div>
   </mat-card-content>
 </mat-card>

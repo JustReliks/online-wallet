@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.onlinewallet.entity.account.AccountBill;
 
+import java.util.Objects;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +26,7 @@ public class AccountBillDto {
         accountBill.setId(accountBillDto.getId());
         accountBill.setAccountId(accountBillDto.getAccountId());
         accountBill.setCurrency(CurrencyDto.fromDto(accountBillDto.getCurrency()));
-        accountBill.setBalance(accountBillDto.getBalance());
+        accountBill.setBalance(Objects.isNull(accountBillDto.getBalance()) ? 0 : accountBillDto.getBalance());
 
         return accountBill;
     }
