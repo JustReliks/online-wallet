@@ -8,6 +8,7 @@ import {Currency} from "../../../../entities/currency";
 import {AuthUser} from "../../../../entities/user";
 import {AccountService} from "../../../../service/account.service";
 import {NotificationService} from "../../../../service/notification.service";
+import {Icon} from "../../../../entities/icon";
 
 @Component({
   selector: 'app-create-account',
@@ -23,6 +24,10 @@ export class CreateAccountComponent implements OnInit {
   private _firstBill: AccountBill;
   private _secondBill: AccountBill;
   private _hasSecondBill: boolean = false;
+  _icons: Icon[] = [];
+  private _selectedIcon: Icon;
+  minDate: Date;
+
 
   constructor(private dialogRef: MatDialogRef<any>,
               private _accountService:AccountService,
@@ -33,8 +38,34 @@ export class CreateAccountComponent implements OnInit {
       description: new FormControl('', [Validators.required]),
       file: new FormControl(undefined, []),
     });
+      this.minDate = new Date();
+    // this.minDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() + 1);
+
+    this._icons = [];
+    this._icons.push(new Icon('assets/img/accounts/1.png'))
+    this._icons.push(new Icon('assets/img/accounts/2.png'))
+    this._icons.push(new Icon('assets/img/accounts/3.png'))
+    this._icons.push(new Icon('assets/img/accounts/4.png'))
+
   }
 
+
+  get selectedIcon(): Icon {
+    return this._selectedIcon;
+  }
+
+  set selectedIcon(value: Icon) {
+    if (value == this.selectedIcon)
+    {
+      this._selectedIcon = null;
+    } else {
+      this._selectedIcon = value;
+    }
+  }
+
+  get icons(): Icon[] {
+    return this._icons;
+  }
 
   get hasSecondBill(): boolean {
     return this._hasSecondBill;

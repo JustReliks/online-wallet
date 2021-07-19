@@ -3,10 +3,10 @@
     Создание нового счета
   </div>
   <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
-    <div class="d-flex w-100">
+    <div class="d-flex w-100 my-3">
       <mat-icon class="w-icon mr-3">account_balance</mat-icon>
       <div class="input-group">
-        <mat-form-field [style.fontSize]="fontSize.value" appearance="fill" class="w-100">
+        <mat-form-field appearance="fill" class="w-100">
           <mat-label>Наименование счета</mat-label>
           <textarea formControlName="accountName" matInput
                     cdkTextareaAutosize
@@ -25,7 +25,7 @@
         <mat-icon style="margin-top: 20px; margin-left: -23px">star</mat-icon>
         <mat-form-field appearance="fill">
           <mat-label>Основная валюта</mat-label>
-          <mat-select formControlName="mainCurrency" class="w-select" #fontSize value="16px"
+          <mat-select formControlName="mainCurrency" class="w-select"
                       (selectionChange)="changeMainCurrency()">
             <mat-option value="USD">USD</mat-option>
             <mat-option value="RUB">RUB</mat-option>
@@ -33,7 +33,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field [style.fontSize]="fontSize.value" appearance="fill">
+        <mat-form-field appearance="fill">
           <mat-label>Начальная сумма</mat-label>
           <textarea matInput
                     cdkTextareaAutosize
@@ -43,12 +43,14 @@
         </mat-form-field>
       </div>
       <div *ngIf="!hasSecondBill" class="col-1" style="max-width: 48px; margin-left: -40px">
-        <button  style="background: none; border: none; margin-top: 20px;" #tooltip="matTooltip" matTooltip="Добавить валюту" [matTooltipPosition]="'above'" (click)="hasSecondBill = true">
+        <button style="background: none; border: none; margin-top: 20px;" #tooltip="matTooltip"
+                matTooltip="Добавить валюту" [matTooltipPosition]="'above'" (click)="hasSecondBill = true">
           <mat-icon>add_circle</mat-icon>
         </button>
       </div>
       <div *ngIf="hasSecondBill" class="col-1" style="max-width: 48px; margin-left: -48px">
-        <button  style="background: none; border: none; margin-top: 20px;" #tooltip="matTooltip" matTooltip="Удалить валюту" [matTooltipPosition]="'above'" (click)="hasSecondBill = false">
+        <button style="background: none; border: none; margin-top: 20px;" #tooltip="matTooltip"
+                matTooltip="Удалить валюту" [matTooltipPosition]="'above'" (click)="hasSecondBill = false">
           <mat-icon>delete_forever</mat-icon>
         </button>
       </div>
@@ -58,14 +60,14 @@
         <mat-icon style="margin-top: 20px; margin-left: -23px">star_half</mat-icon>
         <mat-form-field appearance="fill">
           <mat-label>Дополнительная валюта</mat-label>
-          <mat-select class="w-select" #fontSize value="16px" (selectionChange)="changeMainCurrency()">
+          <mat-select class="w-select" (selectionChange)="changeMainCurrency()">
             <mat-option value="USD">USD</mat-option>
             <mat-option value="RUB">RUB</mat-option>
             <mat-option value="EUR">EUR</mat-option>
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field [style.fontSize]="fontSize.value" appearance="fill">
+        <mat-form-field appearance="fill">
           <mat-label>Начальная сумма</mat-label>
           <textarea matInput
                     cdkTextareaAutosize
@@ -76,7 +78,7 @@
       </div>
     </div>
     <div style="width: 100%;">
-      <mat-form-field class="w-form-field" [style.fontSize]="fontSize.value"
+      <mat-form-field class="w-form-field"
                       appearance="fill">
         <mat-label>Описание</mat-label>
         <textarea formControlName="description" matInput
@@ -92,20 +94,15 @@
   <div class="d-flex w-100 flex-column">
     <p>Выберите иконку для счета: </p>
     <div class="icons d-flex">
-      <div class="icon">
-        <img [src]="'https://mywallets.online/assets/img/cabinet/wallets/customWallets/2.png'"/></div>
-      <div class="icon">
-        <img [src]="'https://mywallets.online/assets/img/cabinet/wallets/customWallets/3.png'"/></div>
-      <div class="icon">
-        <img [src]="'https://mywallets.online/assets/img/cabinet/wallets/customWallets/4.png'"/></div>
-      <div class="icon">
-        <img [src]="'https://mywallets.online/assets/img/cabinet/wallets/customWallets/5.png'"/>
+      <div class="icon" *ngFor="let icon of icons" (click)="selectedIcon = icon"
+           [ngStyle]=" (icon == selectedIcon) ? {'background-color': '#007bff', 'border-radius': '24px'} : {'background-color': 'white'}">
+        <img [src]="icon.path"/>
       </div>
     </div>
     <div *ngIf="goal != null" class="mat-card" style="margin-top: 10px; background: aliceblue;">
       <h4 style="margin-top: 5px">Ваша цель:</h4>
       <div class="row">
-        <mat-form-field class="w-form-field col" style="width: 65%" [style.fontSize]="fontSize.value" appearance="fill">
+        <mat-form-field class="w-form-field col" style="width: 65%" appearance="fill">
           <mat-label>Название цели</mat-label>
           <textarea matInput
                     cdkTextareaAutosize
@@ -113,13 +110,21 @@
                     cdkAutosizeMinRows="1"
                     cdkAutosizeMaxRows="5"></textarea>
         </mat-form-field>
-        <mat-form-field class="col w-form-field" style="width: 35%" [style.fontSize]="fontSize.value" appearance="fill">
+        <mat-form-field class="col w-form-field" style="width: 35%" appearance="fill">
           <mat-label>Сумма для достижения цели(в осн. валюте)</mat-label>
           <textarea matInput
                     cdkTextareaAutosize
                     #autosize="cdkTextareaAutosize"
                     cdkAutosizeMinRows="1"
                     cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+      </div>
+      <div style="width: 100%; display: flex; justify-content: space-around">
+        <mat-form-field appearance="fill">
+          <mat-label>Конечная дата</mat-label>
+          <input matInput [min]="minDate" [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
     </div>

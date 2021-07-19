@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Account} from "../../../../entities/account";
+import {Icon} from "../../../../entities/icon";
 
 @Component({
   selector: 'app-select-account',
@@ -12,7 +13,6 @@ export class SelectAccountComponent implements OnInit {
   private _selectedAccount: Account
 
   constructor() {
-
     // this._accounts = new Array<Account>();
     // this._accounts.push(new Account("test1", 15, "RUB"));
     // this._accounts.push(new Account("test2", 31, "RUB"));

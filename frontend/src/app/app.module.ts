@@ -41,6 +41,8 @@ import {AccountsComponent} from "./components/pages/accounts/accounts.component"
 import {CreateAccountComponent} from "./components/pages/accounts/create-account/create-account.component";
 import {MaterialFileInputModule} from 'ngx-material-file-input';
 import {AngularGradientProgressbarModule} from "angular-gradient-progressbar";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -65,34 +67,36 @@ registerLocaleData(localeRu, 'ru');
     AccountsComponent,
     CreateAccountComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    // ServiceWorkerModule.register('ngsw-worker.js', {
-    //   enabled: environment.production,
-    //   // Register the ServiceWorker as soon as the app is stable
-    //   // or after 30 seconds (whichever comes first).
-    //   registrationStrategy: 'registerWhenStable:30000'
-    // }),
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-    }),
-    RouterModule,
-    BrowserAnimationsModule,
-    NgbModule,
-    MaterialModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatTooltipModule,
-    MatDividerModule,
-    MatSelectModule,
-    MaterialFileInputModule,
-    AngularGradientProgressbarModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        MatNativeDateModule,
+        // ServiceWorkerModule.register('ngsw-worker.js', {
+        //   enabled: environment.production,
+        //   // Register the ServiceWorker as soon as the app is stable
+        //   // or after 30 seconds (whichever comes first).
+        //   registrationStrategy: 'registerWhenStable:30000'
+        // }),
+        ToastrModule.forRoot({
+            positionClass: 'toast-bottom-right',
+        }),
+        RouterModule,
+        BrowserAnimationsModule,
+        NgbModule,
+        MaterialModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+        MatDividerModule,
+        MatSelectModule,
+        MaterialFileInputModule,
+        AngularGradientProgressbarModule,
+        MatDatepickerModule
+    ],
   providers: [
     AuthService,
     ApplicationEventBroadcaster,
