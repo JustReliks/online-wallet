@@ -13,7 +13,7 @@
     <p class="mb-0">©Online-wallet</p>
   </div>
   <div>
-    <div class="mat-card w-account-card d-flex mb-4">
+    <div *ngFor="let account of this.accounts" class="mat-card w-account-card d-flex mb-4">
       <div class="col-2">
         <div class="w-avatar ">
           <img src="assets/img/finance/account_icon.svg" class="w-avatar">
@@ -21,20 +21,21 @@
       </div>
       <div class="col">
         <div class="w-account-name mb-2">
-          Тестовый счет1
+          {{account.name}}
         </div>
         <div class="w-account-description">
-          Описание данного тестового счета123111111111111111111111111111111111155555555555555555555555555555511
+          {{account.description}}
         </div>
         <div class="w-account-body ">
           <div class="col-2"></div>
           <div class="col-4">
-            <div class="badge badge-pill badge-primary w-money mr-3">15 <span class="w-currency">EUR</span></div>
-            <div class="badge badge-pill badge-primary w-money mr-3">15 <span class="w-currency">EUR</span></div>
+            <div *ngFor="let bill of account.accountBills"
+                 class="badge badge-pill badge-primary w-money mr-3">{{bill.balance}} <span
+              class="w-currency">{{bill.currency.shortName}}</span></div>
           </div>
           <div class="col w-date-create justify-items-right">
-            Создан: 33.14.2032 в 14:22<br>
-            Последняя транзакция: 33.14.2032 в 14:22
+            Создан: {{account.createdAt | date:'medium'}}<br>
+            Последняя транзакция: {{account.lastTransaction | date:'medium'}}
           </div>
         </div>
       </div>

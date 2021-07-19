@@ -11,4 +11,6 @@ public interface AccountService {
     List<AccountBill> createAccountBills(Long id, List<AccountBill> collect);
 
     List<Account> getAll(Long userId);
+
+    AccountBill addTransaction(AccountBill accountBill, boolean isPlus, double value);
 }

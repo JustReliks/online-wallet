@@ -37,7 +37,7 @@ public class AccountController {
     }
 
     @GetMapping
-    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id){
+    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id) {
         return ResponseEntity.ok(
                 accountService
                         .getAll(id)
@@ -45,5 +45,14 @@ public class AccountController {
                         .map(AccountDto::toDto)
                         .collect(Collectors.toList())
         );
+    }
+
+    @PostMapping("/bill")
+    private ResponseEntity<AccountBillDto> addTransaction(@RequestBody AccountBillDto dto,
+                                                          @RequestParam("plus") boolean isPlus,
+                                                          @RequestParam("value") double value) {
+        AccountBill accountBill = AccountBillDto.fromDto(dto);
+        AccountBill bill = accountService.addTransaction(accountBill, isPlus, value);
+        return ResponseEntity.ok(AccountBillDto.toDto(bill));
     }
 }

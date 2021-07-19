@@ -16,7 +16,7 @@ public class AccountBill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "account_id")
+    @Column(name = "account_id", nullable = false)
     private Long accountId;
 
     @ManyToOne
@@ -26,7 +26,7 @@ public class AccountBill {
     @Column
     private Double balance;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "account_id", referencedColumnName = "id",insertable = false, updatable = false)
     private Account account;
 }

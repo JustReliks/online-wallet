@@ -7,7 +7,7 @@
           </mat-card-header>
           <div class="w-change-balance-btn">
             <button color="primary" mat-raised-button class="btn custom-btn custom-btn-blue-gradient"
-                    (click)="true">
+                    (click)="addTransaction()">
               <mat-icon style="top: -2px;position: relative;">attach_money</mat-icon>
               Изменить
             </button>
@@ -18,29 +18,22 @@
               <p class="w-summa">9900 <span class="w-currency">USD</span></p>
             </div>
             <div class="w-balance-table">
-              <div class="row w-100">
-                <div class="col w-25">333</div>
-                <div class="col-sm-2 w-25 font-weight-bold">RUB</div>
-              </div>
-              <hr align="center" width="90%" size="50" color="#dddddd"/>
-              <div class="row w-100">
-                <div class="col w-25">333</div>
-                <div class="col-sm-2 w-25 font-weight-bold">RUB</div>
-              </div>
-              <hr align="center" width="90%" size="50" color="#dddddd"/>
-              <div class="row w-100">
-                <div class="col w-25">333</div>
-                <div class="col-sm-2 w-25 font-weight-bold">RUB</div>
-              </div>
-              <hr align="center" width="90%" size="50" color="#dddddd"/>
-              <div class="row w-100">
-                <div class="col w-25">333</div>
-                <div class="col-sm-2 w-25 font-weight-bold">RUB</div>
+              <div *ngFor="let account of accounts">
+                <div class="row w-100  flex-column pl-3 pr-3">
+                  <div class="row m-0"><p class="w-acc-title">{{account.name}}</p></div>
+                  <div class="row m-0">
+                    <div class="mr-2" *ngFor="let bill of account.accountBills">
+                      <span style="font-size: 17px"
+                            class="badge badge-pill badge-primary">{{bill.balance}} {{bill.currency.shortName}}</span>
+                    </div>
+                  </div>
+                </div>
+                <hr align="center" width="90%" size="50" color="#dddddd"/>
               </div>
             </div>
           </mat-card-content>
           <mat-card-footer class="card-footer">
-            Всего счетов: 8
+            Всего счетов: {{accounts?.length}}
           </mat-card-footer>
         </mat-card>
       </div>
