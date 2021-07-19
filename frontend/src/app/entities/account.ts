@@ -1,9 +1,11 @@
 import {AccountBill} from "./account-bill";
+import {Goal} from "./goal";
 
 export class Account {
 
   private _id: number;
   private _userId: number;
+  private _goal: Goal;
   private _name: string;
   private _description: string;
   private _createdAt: string;
@@ -36,6 +38,13 @@ export class Account {
 
   set userId(value: number) {
     this._userId = value;
+  }
+  get goal(): Goal {
+    return this._goal;
+  }
+
+  set goal(value: Goal) {
+    this._goal = value;
   }
 
   get name(): string {

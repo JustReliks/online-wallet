@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
+import {Goal} from "../../../../entities/goal";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Account} from "../../../../entities/account";
 import {AccountBill} from "../../../../entities/account-bill";
@@ -15,10 +16,13 @@ import {NotificationService} from "../../../../service/notification.service";
 })
 export class CreateAccountComponent implements OnInit {
 
-  accountNameFilled: boolean
+  private _goal: Goal;
    createAccountForm: FormGroup;
   private _account: Account;
   private _user: AuthUser;
+  private _firstBill: AccountBill;
+  private _secondBill: AccountBill;
+  private _hasSecondBill: boolean = false;
 
   constructor(private dialogRef: MatDialogRef<any>,
               private _accountService:AccountService,
@@ -29,6 +33,31 @@ export class CreateAccountComponent implements OnInit {
       description: new FormControl('', [Validators.required]),
       file: new FormControl(undefined, []),
     });
+  }
+
+
+  get hasSecondBill(): boolean {
+    return this._hasSecondBill;
+  }
+
+  set hasSecondBill(value: boolean) {
+    this._hasSecondBill = value;
+  }
+
+  get firstBill(): AccountBill {
+    return this._firstBill;
+  }
+
+  set firstBill(value: AccountBill) {
+    this._firstBill = value;
+  }
+
+  get secondBill(): AccountBill {
+    return this._secondBill;
+  }
+
+  set secondBill(value: AccountBill) {
+    this._secondBill = value;
   }
 
   get account(): Account {
@@ -52,6 +81,23 @@ export class CreateAccountComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
+  }
+
+  createGoal() {
+    this._goal = new Goal();
+  }
+
+
+  get goal(): Goal {
+    return this._goal;
+  }
+
+  set goal(value: Goal) {
+    this._goal = value;
+  }
+
+  createAccount() {
+
   }
 
   create() {

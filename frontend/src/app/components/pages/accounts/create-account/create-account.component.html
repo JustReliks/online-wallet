@@ -42,8 +42,18 @@
                     cdkAutosizeMaxRows="5"></textarea>
         </mat-form-field>
       </div>
+      <div *ngIf="!hasSecondBill" class="col-1" style="max-width: 48px; margin-left: -40px">
+        <button  style="background: none; border: none; margin-top: 20px;" #tooltip="matTooltip" matTooltip="Добавить валюту" [matTooltipPosition]="'above'" (click)="hasSecondBill = true">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+      <div *ngIf="hasSecondBill" class="col-1" style="max-width: 48px; margin-left: -48px">
+        <button  style="background: none; border: none; margin-top: 20px;" #tooltip="matTooltip" matTooltip="Удалить валюту" [matTooltipPosition]="'above'" (click)="hasSecondBill = false">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </div>
     </div>
-    <div class="d-flex w-100">
+    <div *ngIf="hasSecondBill" class="d-flex w-100">
       <div class="col w-money">
         <mat-icon style="margin-top: 20px; margin-left: -23px">star_half</mat-icon>
         <mat-form-field appearance="fill">
@@ -92,12 +102,37 @@
         <img [src]="'https://mywallets.online/assets/img/cabinet/wallets/customWallets/5.png'"/>
       </div>
     </div>
+    <div *ngIf="goal != null" class="mat-card" style="margin-top: 10px; background: aliceblue;">
+      <h4 style="margin-top: 5px">Ваша цель:</h4>
+      <div class="row">
+        <mat-form-field class="w-form-field col" style="width: 65%" [style.fontSize]="fontSize.value" appearance="fill">
+          <mat-label>Название цели</mat-label>
+          <textarea matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+        <mat-form-field class="col w-form-field" style="width: 35%" [style.fontSize]="fontSize.value" appearance="fill">
+          <mat-label>Сумма для достижения цели(в осн. валюте)</mat-label>
+          <textarea matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
   </div>
   <div mat-dialog-actions class="row d-flex">
     <div class="col d-flex justify-content-left">
-      <button color="accent" mat-raised-button class='btn custom-btn mr-3'
-              (click)="close()" style="align-content: center">
+      <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'
+              (click)="createGoal()" style="align-content: center">
         Добавить цель по счету
+      </button>
+      <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'
+              (click)="goal = null" style="align-content: center">
+        Удалить цель
       </button>
     </div>
     <div class="col d-flex justify-content-right">
