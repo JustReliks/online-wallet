@@ -13,11 +13,17 @@
             </button>
           </div>
           <mat-card-content class="card-body mat-card-content">
-            <div class="w-available-balance">
-              <p class="text-black-50 mb-0">Доступно: </p>
-              <p class="w-summa">9900 <span class="w-currency">USD</span></p>
+            <div *ngIf="!this.balance || !this.accounts" class="col content d-flex justify-content-center w-100 mb-3 mt-3">
+              <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
             </div>
-            <div class="w-balance-table">
+            <div *ngIf="this.balance" class="w-available-balance">
+              <p class="text-black-50 mb-0">Доступно: </p>
+              <p class="w-summa d-inline-flex">{{this.balance?.balance}} <span class="w-currency" #tooltip="matTooltip" matTooltip="Конвертировать в другую валюту" [matTooltipPosition]="'above'" (click)="changeCurrency()">{{this.balance?.currency}}</span>
+              </p>
+            </div>
+            <div *ngIf="this.accounts" class="w-balance-table">
               <div *ngFor="let account of accounts">
                 <div class="row w-100  flex-column pl-3 pr-3">
                   <div class="row m-0"><p class="w-acc-title">{{account.name}}</p></div>
@@ -32,7 +38,7 @@
               </div>
             </div>
           </mat-card-content>
-          <mat-card-footer class="card-footer">
+          <mat-card-footer *ngIf="this.accounts" class="card-footer">
             Всего счетов: {{accounts?.length}}
           </mat-card-footer>
         </mat-card>

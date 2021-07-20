@@ -4,12 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.xml.sax.SAXException;
 import ru.onlinewallet.dto.account.AccountBillDto;
 import ru.onlinewallet.dto.account.AccountDto;
+import ru.onlinewallet.dto.account.ConvertedBalanceDto;
+import ru.onlinewallet.entity.ConvertedBalance;
 import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.AccountBill;
 import ru.onlinewallet.service.AccountService;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,7 +43,8 @@ public class AccountController {
     }
 
     @GetMapping
-    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id) {
+    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id) throws IOException,
+            ParserConfigurationException, TransformerException, SAXException {
         return ResponseEntity.ok(
                 accountService
                         .getAll(id)
@@ -45,6 +52,13 @@ public class AccountController {
                         .map(AccountDto::toDto)
                         .collect(Collectors.toList())
         );
+    }
+
+    @GetMapping("/balance")
+    private ResponseEntity<ConvertedBalanceDto> getBalance(@RequestParam("id") Long id,
+                                                           @RequestParam("currency") String currency) throws IOException {
+        ConvertedBalance convertedBalance = accountService.getConvertedBalance(id, currency);
+        return ResponseEntity.ok(ConvertedBalanceDto.toDto(convertedBalance));
     }
 
     @PostMapping("/bill")

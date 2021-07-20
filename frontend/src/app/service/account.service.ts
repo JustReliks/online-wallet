@@ -33,4 +33,8 @@ export class AccountService {
       }
     });
   }
+
+  getBalance(id: number, currencyToConvert: any):Observable<any> {
+    return this.http.get<Array<any>>(this.api + `/account/balance?id=${id}&currency=${currencyToConvert}`);
+  }
 }
