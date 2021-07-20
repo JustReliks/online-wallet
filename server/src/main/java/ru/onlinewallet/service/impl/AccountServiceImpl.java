@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.onlinewallet.entity.ConvertedBalance;
 import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.AccountBill;
+import ru.onlinewallet.entity.account.AccountGoal;
 import ru.onlinewallet.entity.user.UserSettings;
 import ru.onlinewallet.repo.account.AccountBillRepository;
+import ru.onlinewallet.repo.account.AccountGoalRepository;
 import ru.onlinewallet.repo.account.AccountRepository;
 import ru.onlinewallet.service.AccountService;
 import ru.onlinewallet.service.UserService;
@@ -31,6 +33,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final AccountBillRepository accountBillRepository;
     private final UserService userService;
+    private final AccountGoalRepository accountGoalRepository;
     private static final Map<String, Double> CURRENCIES_RATES_CACHE = new HashMap<>();
 
     @Override
@@ -118,5 +121,11 @@ public class AccountServiceImpl implements AccountService {
             JsonNode next = elements.next();
             CURRENCIES_RATES_CACHE.put(next.get(currency).asText(), next.get(rate).asDouble());
         }
+    }
+
+    @Override
+    public AccountGoal saveGoal(AccountGoal goal)
+    {
+        return accountGoalRepository.save(goal);
     }
 }

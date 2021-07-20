@@ -4,6 +4,7 @@ import org.xml.sax.SAXException;
 import ru.onlinewallet.entity.ConvertedBalance;
 import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.AccountBill;
+import ru.onlinewallet.entity.account.AccountGoal;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -23,4 +24,6 @@ public interface AccountService {
     Double convertCurrencies(double value, String from, String to) throws IOException;
 
     ConvertedBalance getConvertedBalance(Long id, String currency) throws IOException;
+
+    AccountGoal saveGoal(AccountGoal goal);
 }

@@ -15,6 +15,7 @@ public class AccountDto {
     private Long id;
     private Long userId;
     private String name;
+    private AccountGoalDto goal;
     private String description;
     private Instant createdAt;
     private Instant lastTransaction;

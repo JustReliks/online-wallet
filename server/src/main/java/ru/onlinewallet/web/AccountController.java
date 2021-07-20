@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import org.xml.sax.SAXException;
 import ru.onlinewallet.dto.account.AccountBillDto;
 import ru.onlinewallet.dto.account.AccountDto;
+import ru.onlinewallet.dto.account.AccountGoalDto;
 import ru.onlinewallet.dto.account.ConvertedBalanceDto;
 import ru.onlinewallet.entity.ConvertedBalance;
 import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.AccountBill;
+import ru.onlinewallet.entity.account.AccountGoal;
 import ru.onlinewallet.service.AccountService;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,8 +39,14 @@ public class AccountController {
                 dto.getAccountBills().stream().map(AccountBillDto::fromDto).collect(Collectors.toList());
         List<AccountBill> list = accountService.createAccountBills(account.getId(), collect);
         List<AccountBillDto> billDto = list.stream().map(AccountBillDto::toDto).collect(Collectors.toList());
+
+        AccountGoal goal = AccountGoalDto.fromDto(dto.getGoal());
+        goal.setAccountId(account.getId());
+        AccountGoalDto accountGoalDto = AccountGoalDto.toDto(accountService.saveGoal(goal));
         AccountDto accountDto = AccountDto.toDto(account);
         accountDto.setAccountBills(billDto);
+        accountDto.setGoal(accountGoalDto);
+
         return ResponseEntity.ok(accountDto);
     }
 

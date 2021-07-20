@@ -41,6 +41,9 @@ export class CreateAccountComponent implements OnInit {
       mainCurrency: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       file: new FormControl(undefined, []),
+      goalName: new FormControl('', [Validators.required]),
+      goalValue: new FormControl('', [Validators.required]),
+      goalDate: new FormControl(new Date().toDateString(), []),
     });
     this.minDate = new Date();
     // this.minDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() + 1);
@@ -123,7 +126,7 @@ export class CreateAccountComponent implements OnInit {
   }
 
   createGoal() {
-    this._goal = new Goal();
+    this._goal = new Goal({});
   }
 
 
@@ -149,6 +152,12 @@ export class CreateAccountComponent implements OnInit {
     });
     this._account.accountBills = new Array<AccountBill>(accountBill);
     this._account.userId = this._user.id;
+    if(this.goal != null) {
+      this.goal.value = this.controls.goalValue.value;
+      this.goal.name = this.controls.goalName.value;
+      this.goal.date = this.controls.goalDate.value;
+      this._account.goal = this.goal;
+    }
     console.log(this._account)
     this._accountService.createAccount(this.account).subscribe(res => {
       this._notificationService.showSuccess('Новый счет успешно создан', 'Финанасы')

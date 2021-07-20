@@ -103,7 +103,7 @@
       <div class="row">
         <mat-form-field class="w-form-field col" style="width: 65%" appearance="fill">
           <mat-label>Название цели</mat-label>
-          <textarea matInput
+          <textarea matInput formControlName="goalName"
                     cdkTextareaAutosize
                     #autosize="cdkTextareaAutosize"
                     cdkAutosizeMinRows="1"
@@ -111,7 +111,7 @@
         </mat-form-field>
         <mat-form-field class="col w-form-field" style="width: 35%" appearance="fill">
           <mat-label>Сумма для достижения цели(в осн. валюте)</mat-label>
-          <textarea matInput
+          <textarea formControlName="goalValue" matInput
                     cdkTextareaAutosize
                     #autosize="cdkTextareaAutosize"
                     cdkAutosizeMinRows="1"
@@ -121,7 +121,7 @@
       <div style="width: 100%; display: flex; justify-content: space-around">
         <mat-form-field appearance="fill">
           <mat-label>Конечная дата</mat-label>
-          <input matInput [min]="minDate" [matDatepicker]="picker">
+          <input matInput formControlName="goalDate" [min]="minDate" [matDatepicker]="picker">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>

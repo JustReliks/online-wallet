@@ -1,22 +1,12 @@
 export class Goal {
 
-  private _value: number;
-  private _name: string;
+  value: number;
+  name: string;
+  date: string;
 
-
-  get value(): number {
-    return this._value;
-  }
-
-  set value(value: number) {
-    this._value = value;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  set name(value: string) {
-    this._name = value;
+  constructor(json: any) {
+    this.value = json?.value;
+    this.name = json?.name;
+    this.date = json?.date;
   }
 }
