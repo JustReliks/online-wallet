@@ -17,15 +17,18 @@
 
 .w-available-balance {
   .w-summa {
-    font-size: 43px;
+    font-size: 32px;
     font-weight: 600;
     color: #2e7103;
+    width: 100%;
+    justify-content: space-between;
   }
 
   .w-currency {
     font-size: 25px;
     vertical-align: top;
     font-weight: 100;
+    cursor: pointer;
   }
 }
 
