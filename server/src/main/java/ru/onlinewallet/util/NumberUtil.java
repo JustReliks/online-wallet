@@ -8,6 +8,6 @@ import java.math.RoundingMode;
 @UtilityClass
 public class NumberUtil {
     public double round(Double number) {
-        return new BigDecimal(number.toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return new BigDecimal(number.doubleValue()).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 }

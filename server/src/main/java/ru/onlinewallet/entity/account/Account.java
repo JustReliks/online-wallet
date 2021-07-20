@@ -40,5 +40,7 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<AccountBill> accountBills = new ArrayList<>();
 
+    @OneToOne(mappedBy = "account")
+    private AccountGoal goal;
 
 }

@@ -3,6 +3,7 @@ package ru.onlinewallet.dto.account;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.onlinewallet.entity.account.Account;
+import ru.onlinewallet.entity.account.AccountGoal;
 
 import java.time.Instant;
 import java.util.List;
@@ -38,6 +39,10 @@ public class AccountDto {
                         .map(AccountBillDto::toDto)
                         .collect(Collectors.toList())
         );
+        AccountGoal goal = account.getGoal();
+        if (Objects.nonNull(goal)) {
+            accountDto.setGoal(AccountGoalDto.toDto(account.getGoal()));
+        }
 
         return accountDto;
     }
