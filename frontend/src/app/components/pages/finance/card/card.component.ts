@@ -34,6 +34,11 @@ export class CardComponent implements OnInit {
     this.menuState = $event;
   }
 
+  setMenu()
+  {
+    this.menuState = MenuState.MENU;
+  }
+
   getTitle(): string {
     if (this.menuState == MenuState.MENU) return 'Меню'
     else if (this.menuState == MenuState.INCOME) return 'Ваша прибыль'

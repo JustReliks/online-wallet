@@ -1,7 +1,11 @@
 <mat-card>
   <mat-card-header [textContent]="getTitle()" class="card-header w-card-header">
   </mat-card-header>
-  <mat-card-content class="card-body mat-card-content">
+  <div *ngIf="menuState.toString() != 'menu'" style="max-width: 48px">
+    <button class="w-return" #tooltip="matTooltip" matTooltip="На главную" [matTooltipPosition]="'above'" (click)="setMenu()">
+      <mat-icon>keyboard_backspace</mat-icon>
+    </button>
+  </div>  <mat-card-content class="card-body mat-card-content">
     <div *ngIf="menuState.toString() == 'menu'">
       <app-menu (menuState)="changeMenuState($event)"></app-menu>
     </div>
