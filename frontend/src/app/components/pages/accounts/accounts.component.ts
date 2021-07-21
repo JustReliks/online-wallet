@@ -25,17 +25,22 @@ export class AccountsComponent implements OnInit {
     return this._currentUser;
   }
 
+  set accounts(accounts: Array<Account>) {
+    this._accounts = _.sortBy(accounts, 'id');
+  }
+
   get accounts(): Array<Account> {
     return this._accounts;
   }
 
   constructor(private dialog: MatDialog,
               private _accountService: AccountService) {
+    _accountService.updateAccountsSubjectObservable.subscribe(res => this.accounts = res.accounts);
 
   }
 
   ngOnInit(): void {
-    this._accountService.getAccounts(this.user?.id).subscribe(res =>this._accounts=res);
+    this._accountService.getAccounts(this.user?.id).subscribe(res => this.accounts = res);
   }
 
   createAccount() {
@@ -45,11 +50,21 @@ export class AccountsComponent implements OnInit {
       data: {user: this.user}
     });
     dialogRef.afterClosed().subscribe(result => {
-      this._accountService.getAccounts(this.user?.id).subscribe(res =>this._accounts=res);
+      this._accountService.getAccounts(this.user?.id).subscribe(res => {
+        this.accounts = res
+        this._accountService.updateAccountsEvent({
+          accounts: this.accounts
+        })
+      });
     });
   }
 
   cloneOriginalUser() {
     this._currentUser = _.cloneDeep(this._originalUser);
+  }
+
+  getGoalProgressBarValue(account: Account) {
+    let percent = account.convertedBalance.balance * 100 / account.goal.value;
+    return percent > 100 ? 100 : percent
   }
 }

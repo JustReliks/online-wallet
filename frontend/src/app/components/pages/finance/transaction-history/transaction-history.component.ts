@@ -16,12 +16,7 @@ export class TransactionHistoryComponent implements OnInit {
   private _currentUser: any;
   private _originalUser: any;
   private _accounts: Array<Account>;
-  dataset: any[] = [];
-  @ViewChild("hot", {static: false}) hot: HotTableComponent;
-
-  settings: Handsontable.GridSettings = {
-    data: []
-  }
+  private hot: Handsontable;
 
   @Input('user') set user(user: AuthUser) {
     console.log(user)
@@ -34,13 +29,14 @@ export class TransactionHistoryComponent implements OnInit {
   }
 
   constructor(private _transactionHistoryService: TransactionHistoryService) {
+
   }
 
   ngOnInit(): void {
-    this._transactionHistoryService.getTransactions(this.user?.id).subscribe(res => this.prepareTableDataSet(res));
+    this._transactionHistoryService.getTransactions(this.user?.id).subscribe(res => this.prepareTable(res));
   }
 
-  private prepareTableDataSet(res: Array<Transaction>) {
+  private prepareTable(res: Array<Transaction>) {
     let arr: any[] = [];
     _.forEach(res, r => {
       arr.push({
@@ -48,12 +44,42 @@ export class TransactionHistoryComponent implements OnInit {
         account: r.account.name,
         category: r.categoryId,
         datetime: r.dateTime,
+        currency: r.accountBill.currency.shortName,
         sum: r.quantity
       })
     });
-    this.settings.data = arr;
-    this.hot.updateHotTable(this.settings);
-    console.log(this.dataset)
+
+    const container = document.getElementById('transaction-table');
+    this.hot = new Handsontable(container, {
+      data: arr,
+      colHeaders: ['ID', 'Счёт', 'Категория', 'Время транзакции', 'Валюта', 'Сумма'],
+      rowHeaders: true,
+      height: 'auto',
+      width: 'all',
+      stretchH: 'all',
+      filters: true,
+      dropdownMenu: true,
+      readOnly:true,
+      contextMenu:true,
+      language: "ru-RU",
+      licenseKey: "non-commercial-and-evaluation"
+    });
+  }
+
+  export() {
+    let plugin = this.hot.getPlugin("exportFile");
+    plugin.downloadFile('csv', {
+      bom: false,
+      columnDelimiter: ',',
+      columnHeaders: false,
+      exportHiddenColumns: true,
+      exportHiddenRows: true,
+      fileExtension: 'csv',
+      filename: 'Transactions-history_[YYYY]-[MM]-[DD]',
+      mimeType: 'text/csv',
+      rowDelimiter: '\r\n',
+      rowHeaders: true
+    });
   }
 
   cloneOriginalUser() {

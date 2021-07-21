@@ -28,14 +28,17 @@
         </div>
         <div class="row">
           <div *ngIf="account.goal != null" class="w-point mt-4 mb-4 col" style="width: 100%;">
-            <p class="m-0">Цель: <span class="font-weight-bold">{{account.convertedBalance.balance + '/' + account.goal.value + ' ' + account.convertedBalance.currency}}
-            </span> <span class="font-weight-bold" style="color:green" *ngIf="account.convertedBalance.balance > account.goal.value"> - Цель выполнена!</span></p>
-            <mat-progress-bar [value]="account.convertedBalance.balance* 100/account.goal.value" style="margin-top: 5px" color="primary"></mat-progress-bar>
+            <p class="m-0">Цель: <span
+              class="font-weight-bold">{{account.convertedBalance.balance + '/' + account.goal.value + ' ' + account.convertedBalance.currency}}
+            </span> <span class="font-weight-bold" style="color:green"
+                          *ngIf="account.convertedBalance.balance > account.goal.value"> - Цель выполнена!</span></p>
+            <angular-gradient-progressbar [type]="2" lowTextColor="red"
+                                          [secondValue]="getGoalProgressBarValue(account)"></angular-gradient-progressbar>
           </div>
         </div>
         <div class="w-account-body ">
           <div class="col-2"></div>
-          <div class="col-4">
+          <div class="col-5">
             <div *ngFor="let bill of account.accountBills"
                  class="badge badge-pill badge-primary w-money mr-3">{{bill.balance}} <span
               class="w-currency">{{bill.currency.shortName}}</span></div>
@@ -43,41 +46,6 @@
           <div class="col w-date-create justify-items-right">
             Создан: {{account.createdAt | date:'medium'}}<br>
             Последняя транзакция: {{account.lastTransaction | date:'medium'}}
-          </div>
-        </div>
-      </div>
-      <div class="col-1" style="max-width: 48px">
-        <button class="w-settings" #tooltip="matTooltip" matTooltip="Настройки" [matTooltipPosition]="'above'">
-          <mat-icon>settings</mat-icon>
-        </button>
-      </div>
-    </div>
-    <div class="mat-card w-account-card d-flex">
-      <div class="col-2">
-        <div class="w-avatar ">
-          <img src="assets/img/finance/account_icon.svg" class="w-avatar">
-        </div>
-      </div>
-      <div class="col">
-        <div class="w-account-name mb-2">
-          Тестовый счет1
-        </div>
-        <div class="w-account-description">
-          Описание данного тестового счета123111111111111111111111111111111111155555555555555555555555555555511
-        </div>
-        <div class="w-point mt-4 mb-4">
-          <p class="m-0">Цель: <span class="font-weight-bold">44444 RUB</span></p>
-          <angular-gradient-progressbar [type]="2" lowTextColor="red" value=""></angular-gradient-progressbar>
-        </div>
-        <div class="w-account-body ">
-          <div class="col-2"></div>
-          <div class="col-4">
-            <div class="badge badge-pill badge-primary w-money mr-3">15 <span class="w-currency">EUR</span></div>
-            <div class="badge badge-pill badge-primary w-money mr-3">15 <span class="w-currency">EUR</span></div>
-          </div>
-          <div class="col w-date-create justify-items-right">
-            Создан: 33.14.2032 в 14:22<br>
-            Последняя транзакция: 33.14.2032 в 14:22
           </div>
         </div>
       </div>

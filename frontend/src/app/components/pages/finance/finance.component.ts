@@ -33,6 +33,8 @@ export class FinanceComponent implements OnInit {
       this._accountService.getAccounts(this.user.id).subscribe(res => this.accounts = res);
       this._dictionaryService.getAllCurrencies().subscribe(res => this.currencies = res)
     });
+
+    this._accountService.updateAccountsSubjectObservable.subscribe(res => this.accounts = res.accounts);
   }
 
   get currencies(): Array<Currency> {
@@ -78,7 +80,13 @@ export class FinanceComponent implements OnInit {
       data: {user: this.user, accounts: this.accounts}
     });
     dialogRef.afterClosed().subscribe(result => {
-      this._accountService.getAccounts(this.user?.id).subscribe(res => this._accounts = res);
+      this._accountService.getAccounts(this.user?.id).subscribe(res => {
+        this._accounts = res
+        this._accountService.updateAccountsEvent({
+          accounts: this.accounts
+        })
+      });
+      this._accountService.getBalance(this.user.id, this.balance.currency).subscribe(res => this._balance = res);
     });
   }
 
