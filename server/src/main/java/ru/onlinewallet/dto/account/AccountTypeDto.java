@@ -18,5 +18,15 @@ public class AccountTypeDto {
 
         return accountTypeDto;
     }
+
+    public static AccountType fromDto(AccountTypeDto accountTypeDto) {
+        AccountType accountType = new AccountType();
+        accountType.setId(accountTypeDto.getId());
+        accountType.setAccountId(accountTypeDto.getAccountId());
+        accountType.setTypeId(accountTypeDto.getType().getId());
+        accountType.setType(TypeDto.fromDto(accountTypeDto.getType()));
+
+        return accountType;
+    }
 }
 

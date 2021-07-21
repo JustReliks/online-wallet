@@ -9,7 +9,7 @@ import ru.onlinewallet.entity.ConvertedBalance;
 import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.AccountBill;
 import ru.onlinewallet.entity.account.AccountGoal;
-import ru.onlinewallet.entity.account.Type;
+import ru.onlinewallet.entity.account.AccountType;
 import ru.onlinewallet.service.AccountService;
 
 import java.io.IOException;
@@ -44,6 +44,11 @@ public class AccountController {
             AccountGoalDto accountGoalDto = AccountGoalDto.toDto(accountService.saveGoal(goal));
             accountDto.setGoal(accountGoalDto);
         }
+        AccountTypeDto accountTypeDto = dto.getAccountType();
+        AccountType accountType = AccountTypeDto.fromDto(accountTypeDto);
+        accountType.setAccountId(account.getId());
+        AccountType aType = accountService.createAccountType(accountType);
+        accountDto.setAccountType(AccountTypeDto.toDto(aType));
 
         return ResponseEntity.ok(accountDto);
     }

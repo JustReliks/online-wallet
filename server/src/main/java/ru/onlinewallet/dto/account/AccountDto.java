@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.AccountGoal;
+import ru.onlinewallet.entity.account.AccountType;
 
 import java.time.Instant;
 import java.util.List;
@@ -23,6 +24,7 @@ public class AccountDto {
     private byte[] icon;
     private List<AccountBillDto> accountBills;
     private ConvertedBalanceDto convertedBalance;
+    private AccountTypeDto accountType;
 
     public static AccountDto toDto(Account account) {
         AccountDto accountDto = new AccountDto();
@@ -44,6 +46,10 @@ public class AccountDto {
         if (Objects.nonNull(goal)) {
             accountDto.setGoal(AccountGoalDto.toDto(account.getGoal()));
         }
+        AccountType accountType = account.getAccountType();
+        if (Objects.nonNull(accountType)) {
+            accountDto.setAccountType(AccountTypeDto.toDto(account.getAccountType()));
+        }
 
         return accountDto;
     }
@@ -57,7 +63,7 @@ public class AccountDto {
         account.setCreatedAt(Objects.isNull(dto.getCreatedAt()) ? Instant.now() : dto.getCreatedAt());
         account.setLastTransaction(Objects.isNull(dto.getLastTransaction()) ? Instant.now() : dto.getLastTransaction());
         account.setIcon(dto.getIcon());
-    //        account.setAccountBills(
+        //        account.setAccountBills(
 //                dto
 //                        .getAccountBills()
 //                        .stream()

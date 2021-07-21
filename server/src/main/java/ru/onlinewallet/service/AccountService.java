@@ -30,4 +30,6 @@ public interface AccountService {
     Account updateAccount(Account account);
 
     List<AccountType> getAllAccountTypes();
+
+    AccountType createAccountType(AccountType accountType);
 }

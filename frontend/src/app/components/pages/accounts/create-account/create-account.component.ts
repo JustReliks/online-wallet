@@ -13,6 +13,7 @@ import {DictionaryService} from "../../../../service/dictionary.service";
 import _ from "lodash";
 import {Type} from "../../../../entities/type";
 import {DomSanitizer} from "@angular/platform-browser";
+import {AccountType} from "../../../../entities/account-type";
 
 @Component({
   selector: 'app-create-account',
@@ -178,6 +179,9 @@ export class CreateAccountComponent implements OnInit {
       this.goal.date = this.controls.goalDate.value;
       this._account.goal = this.goal;
     }
+    this._account.accountType = new AccountType({
+      type: _.find(this.types, type => type.id == this.selectedTypeId)
+    })
     console.log(this._account)
     this._accountService.createAccount(this.account).subscribe(res => {
       this._notificationService.showSuccess('Новый счет успешно создан', 'Финанасы')

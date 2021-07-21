@@ -37,9 +37,12 @@ public class Account {
     @Column
     private byte[] icon;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account",cascade = {CascadeType.ALL})
     private List<AccountBill> accountBills = new ArrayList<>();
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(mappedBy = "account",cascade = {CascadeType.ALL})
     private AccountGoal goal;
+
+    @OneToOne(mappedBy = "account",cascade = {CascadeType.ALL})
+    private AccountType accountType;
 }

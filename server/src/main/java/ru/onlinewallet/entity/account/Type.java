@@ -20,6 +20,9 @@ public class Type {
     private String name;
 
     @Column
+    private String code;
+
+    @Column
     private byte[] icon;
 
 }
