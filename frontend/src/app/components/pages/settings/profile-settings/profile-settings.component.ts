@@ -11,11 +11,11 @@ import {FileService} from "../../../../service/file.service";
 import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-account-settings',
-  templateUrl: './account-settings.component.html',
-  styleUrls: ['./account-settings.component.scss']
+  selector: 'app-profile-settings',
+  templateUrl: './profile-settings.component.html',
+  styleUrls: ['./profile-settings.component.scss']
 })
-export class AccountSettingsComponent implements OnInit {
+export class ProfileSettingsComponent implements OnInit {
 
   @Output() changeState: EventEmitter<SettingsState> = new EventEmitter<SettingsState>();
   currency: string = 'RUB';

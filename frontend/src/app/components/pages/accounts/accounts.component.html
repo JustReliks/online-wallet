@@ -28,12 +28,25 @@
         </div>
         <div class="row">
           <div *ngIf="account.goal != null" class="w-point mt-4 mb-4 col" style="width: 100%;">
-            <p class="m-0">Цель: <span
-              class="font-weight-bold">{{account.convertedBalance.balance + '/' + account.goal.value + ' ' + account.convertedBalance.currency}}
-            </span> <span class="font-weight-bold" style="color:green"
-                          *ngIf="account.convertedBalance.balance > account.goal.value"> - Цель выполнена!</span></p>
+            <div class="row">
+              <p class="col m-0">Цель: <span
+                class="font-weight-bold">{{account.convertedBalance.balance + '/' + account.goal.value + ' ' + account.convertedBalance.currency}}
+            </span>
+              </p>
+              <div class="col m-0">
+                <p *ngIf="account.goal.value <= account.convertedBalance.balance" style="color: green">Цель выполнена!</p>
+                <p *ngIf="isGoalExpired(account)" style="color: red">Вы не успели выполнить цель!</p>
+                <p *ngIf="account.goal.value > account.convertedBalance.balance && !isGoalExpired(account)"> Выполнить до: {{account.goal.date | date: 'medium'}}</p>
+              </div>
+            </div>
             <angular-gradient-progressbar [type]="2" lowTextColor="red"
                                           [secondValue]="getGoalProgressBarValue(account)"></angular-gradient-progressbar>
+
+<!--            <span class="font-weight-bold" style="color:green"-->
+<!--                  *ngIf="account.convertedBalance.balance > account.goal.value"> - Цель выполнена!</span> <span-->
+<!--            *ngIf="isGoalExpired(account)" style="color: red"-->
+<!--            class="font-weight-bold"> - Вы не успели выполнить цель!</span>-->
+
           </div>
         </div>
         <div class="w-account-body ">
@@ -50,7 +63,7 @@
         </div>
       </div>
       <div class="col-1" style="max-width: 48px">
-        <button class="w-settings" #tooltip="matTooltip" matTooltip="Настройки" [matTooltipPosition]="'above'">
+        <button class="w-settings" #tooltip="matTooltip" matTooltip="Настройки" [matTooltipPosition]="'above'" (click)="openSettings(account)">
           <mat-icon>settings</mat-icon>
         </button>
       </div>

@@ -35,7 +35,7 @@ import {CardComponent} from "./components/pages/finance/card/card.component";
 import {SelectAccountComponent} from "./components/pages/finance/select-account/select-account.component";
 import {MatSelectModule} from "@angular/material/select";
 import {SettingsComponent} from "./components/pages/settings/settings.component";
-import {AccountSettingsComponent} from "./components/pages/settings/account-settings/account-settings.component";
+import {ProfileSettingsComponent} from "./components/pages/settings/profile-settings/profile-settings.component";
 import {SecuritySettingsComponent} from "./components/pages/settings/security-settings/security-settings.component";
 import {AccountsComponent} from "./components/pages/accounts/accounts.component";
 import {CreateAccountComponent} from "./components/pages/accounts/create-account/create-account.component";
@@ -48,6 +48,7 @@ import {TransactionHistoryComponent} from "./components/pages/finance/transactio
 import {HotTableModule} from "@handsontable/angular";
 import 'handsontable/languages/ru-RU';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {AccountSettingsComponent} from "./components/pages/accounts/account-settings/account-settings.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -67,12 +68,13 @@ registerLocaleData(localeRu, 'ru');
     CardComponent,
     SelectAccountComponent,
     SettingsComponent,
-    AccountSettingsComponent,
+    ProfileSettingsComponent,
     SecuritySettingsComponent,
     AccountsComponent,
     CreateAccountComponent,
     AddTransactionModalComponent,
-    TransactionHistoryComponent
+    TransactionHistoryComponent,
+    AccountSettingsComponent
   ],
     imports: [
         BrowserModule,

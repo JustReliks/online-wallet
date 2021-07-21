@@ -25,4 +25,6 @@ public interface AccountService {
     ConvertedBalance getConvertedBalance(Long id, String currency) throws IOException;
 
     AccountGoal saveGoal(AccountGoal goal);
+
+    Account updateAccount(Account account);
 }

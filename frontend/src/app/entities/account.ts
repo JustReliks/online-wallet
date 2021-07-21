@@ -27,4 +27,6 @@ export class Account {
     this.accountBills = json?.accountBills?.map(bill => new AccountBill(bill));
     this.convertedBalance = json?.convertedBalance;//new ConvertedBalance(json?.convertedBalance.balance, json.convertedBalance.currency);
   }
+
+
 }

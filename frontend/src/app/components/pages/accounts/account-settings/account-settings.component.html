@@ -1,0 +1,98 @@
+<div [formGroup]="editAccountForm">
+  <div class="card-header w-header">
+    Редактирование счета
+  </div>
+  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+    <div class="d-flex w-100 my-3">
+      <mat-icon class="w-icon mr-3">account_balance</mat-icon>
+      <div class="input-group">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Наименование счета</mat-label>
+          <textarea formControlName="accountName" matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"></textarea>
+          <mat-error *ngIf="hasControlsErrors('accountName', 'required')"
+          >Имя не может быть пустым
+          </mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+    <div style="width: 100%;">
+      <mat-form-field class="w-form-field"
+                      appearance="fill">
+        <mat-label>Описание</mat-label>
+        <textarea formControlName="description" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
+
+    </div>
+
+  </div>
+  <div class="d-flex w-100 flex-column">
+    <p>Выберите иконку для счета: </p>
+    <div class="icons d-flex">
+      <div class="icon" *ngFor="let icon of icons" (click)="selectedIcon = icon"
+           [ngStyle]=" (icon == selectedIcon) ? {'background-color': '#007bff', 'border-radius': '24px'} : {'background-color': 'white'}">
+        <img [src]="icon.path"/>
+      </div>
+    </div>
+    <div *ngIf="goal != null" class="mat-card" style="margin-top: 10px; background: aliceblue;">
+      <h4 style="margin-top: 5px">Ваша цель:</h4>
+      <div class="row">
+        <mat-form-field class="w-form-field col" style="width: 65%" appearance="fill">
+          <mat-label>Название цели</mat-label>
+          <textarea matInput formControlName="goalName"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+        <mat-form-field class="col w-form-field" style="width: 35%" appearance="fill">
+          <mat-label>Сумма для достижения цели(в осн. валюте)</mat-label>
+          <textarea formControlName="goalValue" matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+      </div>
+      <div style="width: 100%; display: flex; justify-content: space-around">
+        <mat-form-field appearance="fill">
+          <mat-label>Конечная дата</mat-label>
+          <input matInput formControlName="goalDate" [min]="minDate" [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions class="row d-flex">
+    <div class="col d-flex justify-content-left">
+      <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'
+              (click)="createGoal()" style="align-content: center">
+        Добавить цель по счету
+      </button>
+      <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'
+              (click)="goal = null" style="align-content: center">
+        Удалить цель
+      </button>
+    </div>
+    <div class="col d-flex justify-content-right">
+      <button color="warn" mat-raised-button class='btn custom-btn mr-3'
+              (click)="close()" style="align-content: center">
+        Отменить изменения
+      </button>
+      <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+              [disabled]="!this.editAccountForm.valid"
+              (click)="edit()" style="align-content: center">
+        Изменить
+      </button>
+    </div>
+  </div>
+</div>

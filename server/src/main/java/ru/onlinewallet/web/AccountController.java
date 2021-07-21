@@ -53,6 +53,16 @@ public class AccountController {
         return ResponseEntity.ok(accountDto);
     }
 
+    @PutMapping
+    private ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto dto) {
+
+        Account account = AccountDto.fromDto(dto);
+        Account updateAccount = accountService.updateAccount(account);
+        AccountDto accountDto = AccountDto.toDto(updateAccount);
+        return ResponseEntity.ok(accountDto);
+    }
+
+
     @GetMapping
     private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id) throws IOException,
             ParserConfigurationException, TransformerException, SAXException {
@@ -70,7 +80,7 @@ public class AccountController {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                          return accountDto;
+                            return accountDto;
                         })
                         .collect(Collectors.toList())
         );

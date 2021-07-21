@@ -46,4 +46,14 @@ export class AccountService {
   updateAccountsEvent(event: any) {
     this.updateAccountsSubject.next(event)
   }
+
+  updateAccount(account: Account): Observable<Account>
+  {
+    return this.http.put<Account>(this.api + '/account', account, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+
 }

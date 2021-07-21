@@ -19,6 +19,7 @@ import ru.onlinewallet.service.TransactionHistoryService;
 import ru.onlinewallet.service.UserService;
 import ru.onlinewallet.util.NumberUtil;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -79,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
         accountBill.setBalance(balance);
         Account savedAccount = accountRepository.save(account);
         AccountBill savedAccountBill = accountBillRepository.save(accountBill);
-        transactionHistoryService.addTransaction(savedAccountBill, userId,0, newValue, now);
+        transactionHistoryService.addTransaction(savedAccountBill, userId, 0, newValue, now);
         return savedAccountBill;
     }
 
@@ -99,7 +100,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ConvertedBalance getConvertedBalance(Account account, String currency) throws IOException {
         Double value = 0.0;
-        for (AccountBill bill: account.getAccountBills()) {
+        for (AccountBill bill : account.getAccountBills()) {
             value += convertCurrencies(bill.getBalance(), bill.getCurrency().getShortName(), currency);
         }
         return new ConvertedBalance(currency, value);
@@ -147,10 +148,24 @@ public class AccountServiceImpl implements AccountService {
             throw new RuntimeException("Название цели не может быть null!");
         }
 
-        if (goal.getValue() == 0)
-        {
+        if (goal.getValue() == 0) {
             throw new RuntimeException("Значение цели не может быть 0");
         }
-            return accountGoalRepository.save(goal);
+        return accountGoalRepository.save(goal);
+    }
+
+    @Override
+    public Account updateAccount(Account account) {
+        if (Objects.isNull(account.getId())) {
+            throw new EntityNotFoundException();
+        }
+        Account byId = accountRepository.getById(account.getId());
+        byId.setName(account.getName());
+        byId.setDescription(account.getDescription());
+        byId.setGoal(account.getGoal());
+
+        accountRepository.save(byId);
+
+        return byId;
     }
 }

@@ -5,6 +5,7 @@ import {AuthUser} from "../../../entities/user";
 import _ from "lodash";
 import {AccountService} from "../../../service/account.service";
 import {Account} from "../../../entities/account";
+import {AccountSettingsComponent} from "./account-settings/account-settings.component";
 
 @Component({
   selector: 'app-accounts',
@@ -66,5 +67,19 @@ export class AccountsComponent implements OnInit {
   getGoalProgressBarValue(account: Account) {
     let percent = account.convertedBalance.balance * 100 / account.goal.value;
     return percent > 100 ? 100 : percent
+  }
+
+  isGoalExpired(account: Account): boolean {
+    if (account.goal != null && account.convertedBalance.balance < account.goal.value) {
+      return Date.now() > Date.parse(account.goal.date);
+    }
+    return false;
+  }
+
+  openSettings(account: Account) {
+    const dialogRef = this.dialog.open(AccountSettingsComponent, {
+      width: '550px',
+      data: {account: account}
+    });
   }
 }
