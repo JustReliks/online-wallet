@@ -4,6 +4,7 @@ import ru.onlinewallet.entity.ConvertedBalance;
 import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.AccountBill;
 import ru.onlinewallet.entity.account.AccountGoal;
+import ru.onlinewallet.entity.account.AccountType;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface AccountService {
     AccountGoal saveGoal(AccountGoal goal);
 
     Account updateAccount(Account account);
+
+    List<AccountType> getAllAccountTypes();
 }

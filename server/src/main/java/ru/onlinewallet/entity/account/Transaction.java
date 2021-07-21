@@ -26,11 +26,11 @@ public class Transaction {
     private Long billId;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id",insertable = false, updatable = false)
+    @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "bill_id", referencedColumnName = "id",insertable = false, updatable = false)
+    @JoinColumn(name = "bill_id", referencedColumnName = "id", insertable = false, updatable = false)
     private AccountBill accountBill;
 
     @Column(name = "category_id")

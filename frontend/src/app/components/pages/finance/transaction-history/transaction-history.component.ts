@@ -40,7 +40,6 @@ export class TransactionHistoryComponent implements OnInit {
     let arr: any[] = [];
     _.forEach(res, r => {
       arr.push({
-        id: r.account.id,
         account: r.account.name,
         category: r.categoryId,
         datetime: r.dateTime,
@@ -52,7 +51,7 @@ export class TransactionHistoryComponent implements OnInit {
     const container = document.getElementById('transaction-table');
     this.hot = new Handsontable(container, {
       data: arr,
-      colHeaders: ['ID', 'Счёт', 'Категория', 'Время транзакции', 'Валюта', 'Сумма'],
+      colHeaders: ['Счёт', 'Категория', 'Время транзакции', 'Валюта', 'Сумма'],
       rowHeaders: true,
       height: 'auto',
       width: 'all',

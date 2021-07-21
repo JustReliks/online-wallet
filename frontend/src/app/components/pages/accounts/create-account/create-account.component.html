@@ -92,9 +92,9 @@
   <div class="d-flex w-100 flex-column">
     <p>Выберите иконку для счета: </p>
     <div class="icons d-flex">
-      <div class="icon" *ngFor="let icon of icons" (click)="selectedIcon = icon"
-           [ngStyle]=" (icon == selectedIcon) ? {'background-color': '#007bff', 'border-radius': '24px'} : {'background-color': 'white'}">
-        <img [src]="icon.path"/>
+      <div #tooltip [matTooltip]="type.name" [matTooltipPosition]="'above'" class="icon" *ngFor="let type of types" (click)="selectedTypeId = type.id"
+           [ngStyle]=" (type.id == selectedTypeId) ? {'background-color': '#007bff', 'border-radius': '24px'} : {'background-color': 'white'}">
+        <img [src]="getTypeIcon(type)"/>
       </div>
     </div>
     <div *ngIf="goal != null" class="mat-card" style="margin-top: 10px; background: aliceblue;">

@@ -8,25 +8,25 @@ import javax.persistence.*;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "w_account_bills")
+@Table(name = "w_account_type")
 @PersistenceUnit(unitName = "postgres")
-public class AccountBill {
+public class AccountType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "account_id", nullable = false)
+    @Column(name = "account_id")
     private Long accountId;
 
-    @ManyToOne
-    @JoinColumn(name = "currency_id")
-    private Currency currency;
+    @Column(name = "type_id")
+    private Long typeId;
 
-    @Column
-    private Double balance;
-
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account account;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "type_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Type type;
 }

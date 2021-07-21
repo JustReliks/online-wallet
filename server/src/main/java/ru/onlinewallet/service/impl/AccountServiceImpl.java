@@ -7,13 +7,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.onlinewallet.entity.ConvertedBalance;
-import ru.onlinewallet.entity.account.Account;
-import ru.onlinewallet.entity.account.AccountBill;
-import ru.onlinewallet.entity.account.AccountGoal;
+import ru.onlinewallet.entity.account.*;
 import ru.onlinewallet.entity.user.UserSettings;
-import ru.onlinewallet.repo.account.AccountBillRepository;
-import ru.onlinewallet.repo.account.AccountGoalRepository;
-import ru.onlinewallet.repo.account.AccountRepository;
+import ru.onlinewallet.repo.account.*;
 import ru.onlinewallet.service.AccountService;
 import ru.onlinewallet.service.TransactionHistoryService;
 import ru.onlinewallet.service.UserService;
@@ -37,6 +33,8 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final AccountBillRepository accountBillRepository;
     private final AccountGoalRepository accountGoalRepository;
+    private final AccountTypeRepository accountTypeRepository;
+    private final TypeRepository typeRepository;
 
     private final UserService userService;
     private final TransactionHistoryService transactionHistoryService;
@@ -167,5 +165,10 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(byId);
 
         return byId;
+    }
+
+    @Override
+    public List<AccountType> getAllAccountTypes() {
+        return accountTypeRepository.findAll();
     }
 }

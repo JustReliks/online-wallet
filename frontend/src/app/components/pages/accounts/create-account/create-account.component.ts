@@ -11,6 +11,8 @@ import {NotificationService} from "../../../../service/notification.service";
 import {Icon} from "../../../../entities/icon";
 import {DictionaryService} from "../../../../service/dictionary.service";
 import _ from "lodash";
+import {Type} from "../../../../entities/type";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-create-account',
@@ -18,7 +20,6 @@ import _ from "lodash";
   styleUrls: ['./create-account.component.scss']
 })
 export class CreateAccountComponent implements OnInit {
-
   private _goal: Goal;
   createAccountForm: FormGroup;
   private _account: Account;
@@ -27,15 +28,17 @@ export class CreateAccountComponent implements OnInit {
   private _secondBill: AccountBill;
   private _hasSecondBill: boolean = false;
   _icons: Icon[] = [];
-  private _selectedIcon: Icon;
+  private _selectedTypeId: number;
   minDate: Date;
   private _currencies: Array<Currency>;
+  private _types: Array<Type>;
 
   constructor(
     private dialogRef: MatDialogRef<any>,
     private _accountService: AccountService,
     private _notificationService: NotificationService, @Inject(MAT_DIALOG_DATA) public data: { user: AuthUser },
-    private _dictionaryService: DictionaryService) {
+    private _dictionaryService: DictionaryService,
+    private _sanitizer: DomSanitizer) {
     this._user = data.user;
     this.createAccountForm = new FormGroup({
       accountName: new FormControl('', [Validators.required]),
@@ -51,6 +54,7 @@ export class CreateAccountComponent implements OnInit {
     // this.minDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() + 1);
 
     this._dictionaryService.getAllCurrencies().subscribe(res => this._currencies = res)
+    this._dictionaryService.getAllAccountTypes().subscribe(res => this.types = res);
 
     this._icons = [];
     this._icons.push(new Icon('assets/img/accounts/1.png'))
@@ -60,25 +64,27 @@ export class CreateAccountComponent implements OnInit {
 
   }
 
-  private getGoalValidate() {
-    if (this.goal) {
-      return Validators.required;
-    }
+  set types(value: Array<Type>) {
+    this._types = value;
+  }
+
+  get types(): Array<Type> {
+    return this._types;
   }
 
   get currencies(): Array<Currency> {
     return this._currencies;
   }
 
-  get selectedIcon(): Icon {
-    return this._selectedIcon;
+  get selectedTypeId(): number {
+    return this._selectedTypeId;
   }
 
-  set selectedIcon(value: Icon) {
-    if (value == this.selectedIcon) {
-      this._selectedIcon = null;
+  set selectedTypeId(value: number) {
+    if (value == this.selectedTypeId) {
+      this._selectedTypeId = null;
     } else {
-      this._selectedIcon = value;
+      this._selectedTypeId = value;
     }
   }
 
@@ -191,5 +197,9 @@ export class CreateAccountComponent implements OnInit {
 
   getCurrenciesWithoutMain() {
     return _.filter(this.currencies, curr => curr.id != this.controls.mainCurrency.value)
+  }
+
+  getTypeIcon(type: Type) {
+    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${type?.icon}`);
   }
 }
