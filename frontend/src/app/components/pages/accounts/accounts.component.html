@@ -26,6 +26,13 @@
         <div class="w-account-description">
           {{account.description}}
         </div>
+        <div class="row">
+          <div *ngIf="account.goal != null" class="w-point mt-4 mb-4 col" style="width: 100%;">
+            <p class="m-0">Цель: <span class="font-weight-bold">{{account.convertedBalance.balance + '/' + account.goal.value + ' ' + account.convertedBalance.currency}}
+            </span> <span class="font-weight-bold" style="color:green" *ngIf="account.convertedBalance.balance > account.goal.value"> - Цель выполнена!</span></p>
+            <mat-progress-bar [value]="account.convertedBalance.balance* 100/account.goal.value" style="margin-top: 5px" color="primary"></mat-progress-bar>
+          </div>
+        </div>
         <div class="w-account-body ">
           <div class="col-2"></div>
           <div class="col-4">
@@ -60,7 +67,7 @@
         </div>
         <div class="w-point mt-4 mb-4">
           <p class="m-0">Цель: <span class="font-weight-bold">44444 RUB</span></p>
-          <angular-gradient-progressbar [type]="2" lowTextColor="red"></angular-gradient-progressbar>
+          <angular-gradient-progressbar [type]="2" lowTextColor="red" value=""></angular-gradient-progressbar>
         </div>
         <div class="w-account-body ">
           <div class="col-2"></div>

@@ -35,7 +35,6 @@ export class AccountsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.user)
     this._accountService.getAccounts(this.user?.id).subscribe(res =>this._accounts=res);
   }
 

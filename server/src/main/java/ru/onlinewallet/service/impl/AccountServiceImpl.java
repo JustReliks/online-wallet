@@ -97,6 +97,16 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public ConvertedBalance getConvertedBalance(Account account, String currency) throws IOException {
+        Double value = 0.0;
+        for (AccountBill bill: account.getAccountBills()) {
+            value += convertCurrencies(bill.getBalance(), bill.getCurrency().getShortName(), currency);
+        }
+        return new ConvertedBalance(currency, value);
+    }
+
+
+    @Override
     public ConvertedBalance getConvertedBalance(Long id, String currency) throws IOException {
         double sum = 0;
         if (Objects.isNull(currency) || currency.length() > 3) {
@@ -133,6 +143,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountGoal saveGoal(AccountGoal goal) {
-        return accountGoalRepository.save(goal);
+        if (goal.getName() == null || goal.getName().isEmpty()) {
+            throw new RuntimeException("Название цели не может быть null!");
+        }
+
+        if (goal.getValue() == 0)
+        {
+            throw new RuntimeException("Значение цели не может быть 0");
+        }
+            return accountGoalRepository.save(goal);
     }
 }

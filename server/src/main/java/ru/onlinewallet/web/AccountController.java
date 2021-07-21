@@ -60,7 +60,18 @@ public class AccountController {
                 accountService
                         .getAll(id)
                         .stream()
-                        .map(AccountDto::toDto)
+                        .map(acc -> {
+                            AccountDto accountDto = AccountDto.toDto(acc);
+                            try {
+                                ConvertedBalanceDto balanceDto =
+                                        ConvertedBalanceDto.toDto(accountService.getConvertedBalance(acc,
+                                                acc.getAccountBills().get(0).getCurrency().getShortName()));
+                                accountDto.setConvertedBalance(balanceDto);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                          return accountDto;
+                        })
                         .collect(Collectors.toList())
         );
     }

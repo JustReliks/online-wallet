@@ -1,5 +1,6 @@
 import {AccountBill} from "./account-bill";
 import {Goal} from "./goal";
+import {ConvertedBalance} from "./converted-balance";
 
 export class Account {
 
@@ -12,16 +13,18 @@ export class Account {
   public lastTransaction: string;
   public icon: string;
   public accountBills: Array<AccountBill>;
+  public convertedBalance: ConvertedBalance;
 
   constructor(json: any) {
     this.id = json.id;
     this.userId = json.userId;
     this.name = json.name;
     this.description = json.description;
-    this.goal=json.goal;
+    this.goal = json.goal;
     this.createdAt = json.createdAt;
     this.lastTransaction = json.lastTransaction;
     this.icon = json.icon;
-    this.accountBills = json?.accountBills?.map(bill => new AccountBill(bill))
+    this.accountBills = json?.accountBills?.map(bill => new AccountBill(bill));
+    this.convertedBalance = json?.convertedBalance;//new ConvertedBalance(json?.convertedBalance.balance, json.convertedBalance.currency);
   }
 }

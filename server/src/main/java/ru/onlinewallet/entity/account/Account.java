@@ -2,6 +2,8 @@ package ru.onlinewallet.entity.account;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.onlinewallet.entity.ConvertedBalance;
+import ru.onlinewallet.service.impl.AccountServiceImpl;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -42,5 +44,4 @@ public class Account {
 
     @OneToOne(mappedBy = "account")
     private AccountGoal goal;
-
 }

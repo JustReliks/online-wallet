@@ -47,6 +47,7 @@ import {AddTransactionModalComponent} from "./components/pages/finance/add-trans
 import {TransactionHistoryComponent} from "./components/pages/finance/transaction-history/transaction-history.component";
 import {HotTableModule} from "@handsontable/angular";
 import 'handsontable/languages/ru-RU';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -73,37 +74,38 @@ registerLocaleData(localeRu, 'ru');
     AddTransactionModalComponent,
     TransactionHistoryComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    MatNativeDateModule,
-    // ServiceWorkerModule.register('ngsw-worker.js', {
-    //   enabled: environment.production,
-    //   // Register the ServiceWorker as soon as the app is stable
-    //   // or after 30 seconds (whichever comes first).
-    //   registrationStrategy: 'registerWhenStable:30000'
-    // }),
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-    }),
-    RouterModule,
-    BrowserAnimationsModule,
-    NgbModule,
-    MaterialModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatTooltipModule,
-    MatDividerModule,
-    MatSelectModule,
-    MaterialFileInputModule,
-    AngularGradientProgressbarModule,
-    MatDatepickerModule,
-    HotTableModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        MatNativeDateModule,
+        // ServiceWorkerModule.register('ngsw-worker.js', {
+        //   enabled: environment.production,
+        //   // Register the ServiceWorker as soon as the app is stable
+        //   // or after 30 seconds (whichever comes first).
+        //   registrationStrategy: 'registerWhenStable:30000'
+        // }),
+        ToastrModule.forRoot({
+            positionClass: 'toast-bottom-right',
+        }),
+        RouterModule,
+        BrowserAnimationsModule,
+        NgbModule,
+        MaterialModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+        MatDividerModule,
+        MatSelectModule,
+        MaterialFileInputModule,
+        AngularGradientProgressbarModule,
+        MatDatepickerModule,
+        HotTableModule,
+        MatProgressBarModule
+    ],
   providers: [
     AuthService,
     ApplicationEventBroadcaster,

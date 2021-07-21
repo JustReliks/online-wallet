@@ -8,7 +8,7 @@ import {AccountBill} from "../entities/account-bill";
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
+export class  AccountService {
   api = environment.apiUrl;
 
   constructor(private http: HttpClient) {

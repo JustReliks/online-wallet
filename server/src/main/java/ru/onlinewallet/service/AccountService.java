@@ -20,6 +20,8 @@ public interface AccountService {
 
     Double convertCurrencies(double value, String from, String to) throws IOException;
 
+    ConvertedBalance getConvertedBalance(Account account, String currency) throws IOException;
+
     ConvertedBalance getConvertedBalance(Long id, String currency) throws IOException;
 
     AccountGoal saveGoal(AccountGoal goal);

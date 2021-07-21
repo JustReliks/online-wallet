@@ -22,6 +22,7 @@ public class AccountDto {
     private Instant lastTransaction;
     private byte[] icon;
     private List<AccountBillDto> accountBills;
+    private ConvertedBalanceDto convertedBalance;
 
     public static AccountDto toDto(Account account) {
         AccountDto accountDto = new AccountDto();
@@ -56,7 +57,7 @@ public class AccountDto {
         account.setCreatedAt(Objects.isNull(dto.getCreatedAt()) ? Instant.now() : dto.getCreatedAt());
         account.setLastTransaction(Objects.isNull(dto.getLastTransaction()) ? Instant.now() : dto.getLastTransaction());
         account.setIcon(dto.getIcon());
-//        account.setAccountBills(
+    //        account.setAccountBills(
 //                dto
 //                        .getAccountBills()
 //                        .stream()
