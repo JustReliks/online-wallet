@@ -38,6 +38,7 @@ export class CardComponent implements OnInit {
     if (this.menuState == MenuState.MENU) return 'Меню'
     else if (this.menuState == MenuState.INCOME) return 'Ваша прибыль'
     else if (this.menuState == MenuState.ACCOUNTS) return 'Ваши счета'
+    else if (this.menuState == MenuState.TRANSACTIONS) return 'История транзакций по счетам'
 
     return ''
   }
@@ -48,7 +49,7 @@ export class CardComponent implements OnInit {
 }
 
 export enum MenuState {
-  MENU = "menu", INCOME = "income", ACCOUNTS = "accounts"
+  MENU = "menu", INCOME = "income", ACCOUNTS = "accounts", TRANSACTIONS = "transactions"
 }
 
 

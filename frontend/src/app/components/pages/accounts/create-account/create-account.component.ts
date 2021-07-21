@@ -10,6 +10,7 @@ import {AccountService} from "../../../../service/account.service";
 import {NotificationService} from "../../../../service/notification.service";
 import {Icon} from "../../../../entities/icon";
 import {DictionaryService} from "../../../../service/dictionary.service";
+import _ from "lodash";
 
 @Component({
   selector: 'app-create-account',
@@ -39,11 +40,12 @@ export class CreateAccountComponent implements OnInit {
     this.createAccountForm = new FormGroup({
       accountName: new FormControl('', [Validators.required]),
       mainCurrency: new FormControl('', [Validators.required]),
+      additionalCurrency: new FormControl('', []),
       description: new FormControl('', [Validators.required]),
       file: new FormControl(undefined, []),
-      goalName: new FormControl('', [Validators.required]),
-      goalValue: new FormControl('', [Validators.required]),
-      goalDate: new FormControl(new Date().toDateString(), []),
+      goalName: new FormControl('Моя первая цель', []),
+      goalValue: new FormControl('10000', []),
+      goalDate: new FormControl(new Date(), []),
     });
     this.minDate = new Date();
     // this.minDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() + 1);
@@ -56,6 +58,12 @@ export class CreateAccountComponent implements OnInit {
     this._icons.push(new Icon('assets/img/accounts/3.png'))
     this._icons.push(new Icon('assets/img/accounts/4.png'))
 
+  }
+
+  private getGoalValidate() {
+    if (this.goal) {
+      return Validators.required;
+    }
   }
 
   get currencies(): Array<Currency> {
@@ -147,12 +155,18 @@ export class CreateAccountComponent implements OnInit {
     console.log(this.controls)
     this._account.name = this.controls.accountName.value;
     this._account.description = this.controls.description.value;
-    let accountBill = new AccountBill({
+    let accountBills = new Array<AccountBill>();
+    accountBills.push(new AccountBill({
       currency: this.getCurrency(this.controls.mainCurrency.value)
-    });
-    this._account.accountBills = new Array<AccountBill>(accountBill);
+    }));
+    if (this.controls.additionalCurrency.value) {
+      accountBills.push(new AccountBill({
+        currency: this.getCurrency(this.controls.additionalCurrency.value)
+      }))
+    }
+    this._account.accountBills = accountBills;
     this._account.userId = this._user.id;
-    if(this.goal != null) {
+    if (this.goal != null) {
       this.goal.value = this.controls.goalValue.value;
       this.goal.name = this.controls.goalName.value;
       this.goal.date = this.controls.goalDate.value;
@@ -173,5 +187,9 @@ export class CreateAccountComponent implements OnInit {
 
   hasControlsErrors(controlName: string, errorName: string) {
     return this.controls[controlName].hasError(errorName);
+  }
+
+  getCurrenciesWithoutMain() {
+    return _.filter(this.currencies, curr => curr.id != this.controls.mainCurrency.value)
   }
 }

@@ -59,10 +59,9 @@
         <mat-icon style="margin-top: 20px; margin-left: -23px">star_half</mat-icon>
         <mat-form-field appearance="fill">
           <mat-label>Дополнительная валюта</mat-label>
-          <mat-select class="w-select" (selectionChange)="changeMainCurrency()">
-            <mat-option value="USD">USD</mat-option>
-            <mat-option value="RUB">RUB</mat-option>
-            <mat-option value="EUR">EUR</mat-option>
+          <mat-select formControlName="additionalCurrency" class="w-select" (selectionChange)="changeMainCurrency()">
+            <mat-option *ngFor="let currency of getCurrenciesWithoutMain()"
+                        value="{{currency.id}}">{{currency.shortName}}</mat-option>
           </mat-select>
         </mat-form-field>
 

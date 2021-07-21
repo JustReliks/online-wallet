@@ -40,12 +40,15 @@ public class AccountController {
         List<AccountBill> list = accountService.createAccountBills(account.getId(), collect);
         List<AccountBillDto> billDto = list.stream().map(AccountBillDto::toDto).collect(Collectors.toList());
 
-        AccountGoal goal = AccountGoalDto.fromDto(dto.getGoal());
-        goal.setAccountId(account.getId());
-        AccountGoalDto accountGoalDto = AccountGoalDto.toDto(accountService.saveGoal(goal));
         AccountDto accountDto = AccountDto.toDto(account);
         accountDto.setAccountBills(billDto);
-        accountDto.setGoal(accountGoalDto);
+        AccountGoalDto goal1 = dto.getGoal();
+        if (Objects.nonNull(goal1)) {
+            AccountGoal goal = AccountGoalDto.fromDto(dto.getGoal());
+            goal.setAccountId(account.getId());
+            AccountGoalDto accountGoalDto = AccountGoalDto.toDto(accountService.saveGoal(goal));
+            accountDto.setGoal(accountGoalDto);
+        }
 
         return ResponseEntity.ok(accountDto);
     }
@@ -71,10 +74,11 @@ public class AccountController {
 
     @PostMapping("/bill")
     private ResponseEntity<AccountBillDto> addTransaction(@RequestBody AccountBillDto dto,
+                                                          @RequestParam("userId") Long userId,
                                                           @RequestParam("plus") boolean isPlus,
                                                           @RequestParam("value") double value) {
         AccountBill accountBill = AccountBillDto.fromDto(dto);
-        AccountBill bill = accountService.addTransaction(accountBill, isPlus, value);
+        AccountBill bill = accountService.addTransaction(accountBill, userId, isPlus, value);
         return ResponseEntity.ok(AccountBillDto.toDto(bill));
     }
 }

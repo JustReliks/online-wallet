@@ -1,0 +1,16 @@
+<hot-table #hot
+  [data]="dataset"
+  [colHeaders]="true"
+  [rowHeaders]="true"
+  width="100%"
+  stretchH="all"
+  filters="true"
+  dropdownMenu="true"
+  language="ru-RU"
+  licenseKey="non-commercial-and-evaluation">
+  <hot-column data="id" [readOnly]="true" title="ID"></hot-column>
+  <hot-column data="account" title="Счёт"></hot-column>
+  <hot-column data="category" title="Категория"></hot-column>
+  <hot-column data="datetime" title="Время"></hot-column>
+  <hot-column data="sum" title="Сумма"></hot-column>
+</hot-table>

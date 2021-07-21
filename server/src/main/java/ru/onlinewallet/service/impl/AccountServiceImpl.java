@@ -15,6 +15,7 @@ import ru.onlinewallet.repo.account.AccountBillRepository;
 import ru.onlinewallet.repo.account.AccountGoalRepository;
 import ru.onlinewallet.repo.account.AccountRepository;
 import ru.onlinewallet.service.AccountService;
+import ru.onlinewallet.service.TransactionHistoryService;
 import ru.onlinewallet.service.UserService;
 import ru.onlinewallet.util.NumberUtil;
 
@@ -30,11 +31,14 @@ public class AccountServiceImpl implements AccountService {
 
     public static final String ECB_EUROFXREF = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
     public static final String EUR = "EUR";
+    private static final Map<String, Double> CURRENCIES_RATES_CACHE = new HashMap<>();
+
     private final AccountRepository accountRepository;
     private final AccountBillRepository accountBillRepository;
-    private final UserService userService;
     private final AccountGoalRepository accountGoalRepository;
-    private static final Map<String, Double> CURRENCIES_RATES_CACHE = new HashMap<>();
+
+    private final UserService userService;
+    private final TransactionHistoryService transactionHistoryService;
 
     @Override
     public Account createAccount(Account account) {
@@ -59,9 +63,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public AccountBill addTransaction(AccountBill accountBill, boolean isPlus, double value) {
+    public AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value) {
         Double currentBalance = accountBill.getBalance();
-        double balance = isPlus ? currentBalance + value : currentBalance - value;
+        double newValue = isPlus ? value : -value;
+        double balance = currentBalance + newValue;
         if (balance < 0) {
             throw new RuntimeException("Данная операция приводит к отрицательному балансу. Действие отменено.");
         }
@@ -69,10 +74,13 @@ public class AccountServiceImpl implements AccountService {
                 accountRepository.findById(accountBill.getAccountId()).orElseThrow(() -> new RuntimeException("Счет " +
                         "не найден."));
 
-        account.setLastTransaction(Instant.now());
+        Instant now = Instant.now();
+        account.setLastTransaction(now);
         accountBill.setBalance(balance);
-        accountRepository.save(account);
-        return accountBillRepository.save(accountBill);
+        Account savedAccount = accountRepository.save(account);
+        AccountBill savedAccountBill = accountBillRepository.save(accountBill);
+        transactionHistoryService.addTransaction(savedAccountBill, userId,0, newValue, now);
+        return savedAccountBill;
     }
 
     @Override
@@ -124,8 +132,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountGoal saveGoal(AccountGoal goal)
-    {
+    public AccountGoal saveGoal(AccountGoal goal) {
         return accountGoalRepository.save(goal);
     }
 }

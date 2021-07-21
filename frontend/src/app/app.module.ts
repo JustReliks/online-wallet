@@ -44,6 +44,9 @@ import {AngularGradientProgressbarModule} from "angular-gradient-progressbar";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {AddTransactionModalComponent} from "./components/pages/finance/add-transaction-modal/add-transaction-modal.component";
+import {TransactionHistoryComponent} from "./components/pages/finance/transaction-history/transaction-history.component";
+import {HotTableModule} from "@handsontable/angular";
+import 'handsontable/languages/ru-RU';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -67,7 +70,8 @@ registerLocaleData(localeRu, 'ru');
     SecuritySettingsComponent,
     AccountsComponent,
     CreateAccountComponent,
-    AddTransactionModalComponent
+    AddTransactionModalComponent,
+    TransactionHistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +101,8 @@ registerLocaleData(localeRu, 'ru');
     MatSelectModule,
     MaterialFileInputModule,
     AngularGradientProgressbarModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    HotTableModule
   ],
   providers: [
     AuthService,

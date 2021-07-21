@@ -55,7 +55,7 @@ export class AddTransactionModalComponent implements OnInit {
 
   add() {
     let value = this.addTransactionForm.controls.sum.value;
-    this._accountService.addTransaction(this.selectedBill, value, this.isPlusState).subscribe(res => {
+    this._accountService.addTransaction(this.selectedBill, this.user.id, value, this.isPlusState).subscribe(res => {
       this.selectedBill = res;
       this._notification.showSuccess('Операция успешно проведена.', 'Проведение операции по счету')
       this.dialogRef.close();

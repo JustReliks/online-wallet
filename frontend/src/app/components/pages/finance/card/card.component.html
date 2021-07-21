@@ -11,5 +11,8 @@
     <div *ngIf="menuState.toString() == 'accounts'">
       <app-accounts [user]="this.user"></app-accounts>
     </div>
+    <div *ngIf="menuState.toString() == 'transactions'">
+      <app-transaction-history [user]="this.user"></app-transaction-history>
+    </div>
   </mat-card-content>
 </mat-card>
