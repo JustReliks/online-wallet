@@ -2,15 +2,15 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MainComponent} from "./components/pages/main/main.component";
 import {FinanceComponent} from "./components/pages/finance/finance.component";
-import {IncomeComponent} from "./components/pages/income/income.component";
 import {SettingsComponent} from "./components/pages/settings/settings.component";
 import {AuthGuard} from "./guard/auth.guard";
+import {RestoreAccessComponent} from "./components/pages/restore-access/restore-access.component";
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', component: MainComponent},
-  {path: 'finance', pathMatch: 'full', component: FinanceComponent},
-  {path: 'income', pathMatch: 'full', component: IncomeComponent},
+  {path: 'finance', pathMatch: 'full', component: FinanceComponent, canActivate: [AuthGuard]},
   {path: 'settings', pathMatch: 'full', component: SettingsComponent, canActivate: [AuthGuard]},
+  {path: 'restore', component: RestoreAccessComponent},
   {path: '**', redirectTo: ''},]
 
 @NgModule({

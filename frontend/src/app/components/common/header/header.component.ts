@@ -109,7 +109,7 @@ export class HeaderComponent implements OnInit {
 
   register() {
     const dialogRef = this.dialog.open(RegistrationComponent, {
-      width: '450px',
+      width: '520px',
       data: {}
     });
     dialogRef.afterClosed().subscribe(result => {

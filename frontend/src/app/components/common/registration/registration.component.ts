@@ -5,6 +5,9 @@ import {LoginComponent} from '../login/login.component';
 import {AuthService} from "../../../service/auth.service";
 import {UserService} from "../../../service/user.service";
 import {NotificationService} from "../../../service/notification.service";
+import {DictionaryService} from "../../../service/dictionary.service";
+import {Currency} from "../../../entities/currency";
+import _ from "lodash";
 
 export function ConfirmedValidator(
   controlName: string,
@@ -30,15 +33,19 @@ export function ConfirmedValidator(
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
+  personalInfo: FormGroup;
   registerForm: FormGroup;
+  private _currencies: Array<Currency>;
 
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<LoginComponent>,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dictionaryService: DictionaryService
   ) {
+    this.dictionaryService.getAllCurrencies().subscribe(res => this._currencies = res);
   }
 
   get controls() {
@@ -47,6 +54,10 @@ export class RegistrationComponent implements OnInit {
 
   get form() {
     return this.registerForm;
+  }
+
+  get currencies(): Array<Currency> {
+    return this._currencies;
   }
 
   ngOnInit() {
@@ -62,11 +73,31 @@ export class RegistrationComponent implements OnInit {
         email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [Validators.required, Validators.minLength(7)]),
         confirmPassword: new FormControl(''),
-        // recaptchaReactive: new FormControl(null, Validators.required),
       },
       {
         validator: ConfirmedValidator('password', 'confirmPassword')
       }
+    );
+    this.personalInfo = this.formBuilder.group(
+      {
+        firstName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(17)
+        ]),
+        middleName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(17)
+        ]),
+        lastName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(17)
+        ]),
+        mainCurrency: new FormControl('', [Validators.required]),
+        recaptchaReactive: new FormControl(null, Validators.required),
+      },
     );
     // this.registerForm.setValidators(this.checkUserExistByUserName())
   }
@@ -107,7 +138,11 @@ export class RegistrationComponent implements OnInit {
     return {
       username: this.controls.username.value,
       password: this.controls.password.value,
-      email: this.controls.email.value
+      email: this.controls.email.value,
+      firstName: this.personalInfo.controls.firstName.value,
+      lastName: this.personalInfo.controls.lastName.value,
+      middleName: this.personalInfo.controls.middleName.value,
+      currency: this.personalInfo.controls.mainCurrency.value,
     };
   }
 
@@ -130,8 +165,8 @@ export class RegistrationComponent implements OnInit {
     );
   }
 
-  public hasControlsErrors = (controlName: string, errorName: string) => {
-    return this.controls[controlName].hasError(errorName);
+  public hasControlsErrors = (fg: FormGroup, controlName: string, errorName: string) => {
+    return fg.controls[controlName].hasError(errorName);
   };
 
   close() {

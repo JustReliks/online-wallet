@@ -1,117 +1,188 @@
-<!--<div #launcher class="row">
-  <div class="col-md-2">&nbsp;</div>
-  <div class="col-md-8  content">
-    <div class="inner">
-      <div class="headline">
-        <h2>Регистрация нового пользователя</h2>
-        <p>Для игры на наших серверах Вам необходимо зарегестрироваться!</p>
-      </div>
-      <div class="registration_form">
-        <label>
-          Username
-          <input [(ngModel)]="username" type="text">
-        </label>
-        <label>
-          Email
-          <input [(ngModel)]="email">
-        </label>
-        <label>
-          Password
-          <input [(ngModel)]="password" type="password">
-        </label>
-
-        <label>
-          Confirm password
-          <input [(ngModel)]="confirmPassword" type="password">
-        </label>
-
-        <button (click)="register()">Registration</button>
-      </div>
-    </div>
-  </div>
-</div>-->
-
-<div class="register-modal" [formGroup]="registerForm">
+<div class="register-modal">
   <div class="col-xs-1 text-center">
     <h1 mat-dialog-title>Регистрация</h1>
-    <p>Для игры на наших серверах Вам необходимо зарегистрироваться!</p>
+    <p>Добро пожаловать! Для дальейшего использования системы Вам необходимо пройти процедуру регистрации.</p>
   </div>
-  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
-    <div class="col-1 d-flex align-items-center">
-      <label class="register-icon"><i class="fas fa-user" aria-hidden="true"></i> </label>
-    </div>
-    <div class="col">
-      <mat-form-field class="w-100">
-        <input formControlName="username" matInput placeholder="Логин" (change)="checkUserExistByUserName($event)">
-        <mat-error *ngIf="hasControlsErrors('username', 'required')">Введите имя пользователя</mat-error>
-        <mat-error *ngIf="hasControlsErrors('username', 'usernameAlreadyExist')">Пользователь с таким именем уже
-          существуетn
-        </mat-error>
-<!--        <mat-error *ngIf="hasControlsErrors('username', 'whitespace')">Имя пользователя не может содержать пробелы-->
-<!--        </mat-error>-->
-        <mat-error *ngIf="hasControlsErrors('username','required')">
-          Имя игрока не может быть пустым
-        </mat-error>
-        <mat-error *ngIf="hasControlsErrors('username','pattern')">
-          Неверное имя игрока
-        </mat-error>
-        <mat-error *ngIf="hasControlsErrors('username','minlength')">
-          Имя игрока не может быть меньше, чем 3 символа
-        </mat-error>
-        <mat-error *ngIf="hasControlsErrors('username','maxlength')">
-          Имя игрока не может быть больше, чем 17 символов
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
-    <div class="col-1 d-flex align-items-center">
-      <label class="register-icon"><i class="fas fa-at" aria-hidden="true"></i> </label>
-    </div>
-    <div class="col">
-      <mat-form-field class="w-100">
-        <input formControlName="email" matInput placeholder="Email" (change)="checkUserExistByEmail($event)">
-        <mat-error *ngIf="hasControlsErrors('email', 'required')">Введите email</mat-error>
-        <mat-error *ngIf="hasControlsErrors('email', 'email')">Некорректный email адрес</mat-error>
-        <mat-error *ngIf="hasControlsErrors('email', 'emailAlreadyExist')">Пользователь с таким email уже существует
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
-    <div class="col-1 d-flex align-items-center">
-      <label class="register-icon"><i class="fas fa-unlock-alt" aria-hidden="true"></i> </label>
-    </div>
-    <div class="col">
-      <mat-form-field class="w-100">
-        <input formControlName="password" matInput placeholder="Пароль" type="password">
-        <mat-error *ngIf="hasControlsErrors('password', 'required')">Введите пароль</mat-error>
-        <mat-error *ngIf="hasControlsErrors('password', 'minlength')">Пароль должен быть больше 7 символов</mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit mb-0">
-    <div class="col-1 d-flex align-items-center">
-      <label class="register-icon"><i class="fas fa-unlock-alt" aria-hidden="true"></i> </label>
-    </div>
-    <div class="col">
-      <mat-form-field class="w-100">
-        <input formControlName="confirmPassword" matInput placeholder="Повторите пароль" type="password">
-        <mat-error *ngIf="hasControlsErrors('confirmPassword','confirmedValidator')">Пароли не совпадают</mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  <div *ngIf="form.hasError('authorizedError')" style="color: red">
-    <mat-error>Ошибка авторизации!</mat-error>
-  </div>
-  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit mb-0 justify-content-center">
-<!--   <re-captcha style="text-align-last: center" formControlName="recaptchaReactive"></re-captcha>-->
-  </div>
-  <div mat-dialog-actions class="row d-flex justify-content-center">
-    <button mat-raised-button color="primary" (click)="register()" [disabled]="!form.valid">Регистрация</button>
-    <button type="button" mat-raised-button color="warn" (click)="close()">Закрыть</button>
-    <!--[mat-dialog-close]="data"-->
-    <!--<button (click)="onSignIn()" cdkFocusInitial mat-button class="login-btn">Войти на сайт</button>
-    <button (click)="close()" mat-button>Закрыть</button>-->
-  </div>
+  <mat-stepper #stepper>
+    <mat-step [stepControl]="registerForm" errorMessage="Name is required.">
+      <ng-template matStepLabel>Основная информация</ng-template>
+      <div [formGroup]="registerForm">
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col-1 d-flex align-items-center">
+            <label class="register-icon"><i class="fas fa-user" aria-hidden="true"></i> </label>
+          </div>
+          <div class="col">
+            <mat-form-field class="w-100">
+              <input formControlName="username" matInput placeholder="Логин"
+                     (change)="checkUserExistByUserName($event)">
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'username','required')">Введите имя пользователя
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'username','usernameAlreadyExist')">Пользователь с
+                таким именем уже
+                существует
+              </mat-error>
+              <!--        <mat-error *ngIf="hasControlsErrors('username', 'whitespace')">Имя пользователя не может содержать пробелы-->
+              <!--        </mat-error>-->
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'username','required')">
+                Имя игрока не может быть пустым
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'username','pattern')">
+                Неверное имя игрока
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'username','minlength')">
+                Имя игрока не может быть меньше, чем 3 символа
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'username','maxlength')">
+                Имя игрока не может быть больше, чем 17 символов
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col-1 d-flex align-items-center">
+            <label class="register-icon"><i class="fas fa-at" aria-hidden="true"></i> </label>
+          </div>
+          <div class="col">
+            <mat-form-field class="w-100">
+              <input formControlName="email" matInput placeholder="Email" (change)="checkUserExistByEmail($event)">
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'email','required')">Введите email</mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'email','email')">Некорректный email адрес
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'email','emailAlreadyExist')">Пользователь с таким
+                email уже
+                существует
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col-1 d-flex align-items-center">
+            <label class="register-icon"><i class="fas fa-unlock-alt" aria-hidden="true"></i> </label>
+          </div>
+          <div class="col">
+            <mat-form-field class="w-100">
+              <input formControlName="password" matInput placeholder="Пароль" type="password">
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'password','required')">Введите пароль</mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'password','minlength')">Пароль должен быть больше 7
+                символов
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit mb-0">
+          <div class="col-1 d-flex align-items-center">
+            <label class="register-icon"><i class="fas fa-unlock-alt" aria-hidden="true"></i> </label>
+          </div>
+          <div class="col">
+            <mat-form-field class="w-100">
+              <input formControlName="confirmPassword" matInput placeholder="Повторите пароль" type="password">
+              <mat-error *ngIf="hasControlsErrors(this.registerForm,'confirmPassword','confirmedValidator')">Пароли не
+                совпадают
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="form.hasError('authorizedError')" style="color: red">
+          <mat-error>Ошибка авторизации!</mat-error>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit mb-0 justify-content-end">
+          <button mat-raised-button color="primary" matStepperNext>Далее</button>
+        </div>
+      </div>
+    </mat-step>
+    <mat-step [stepControl]="personalInfo" errorMessage="Name is required.">
+      <ng-template matStepLabel>Персональная информация</ng-template>
+      <div [formGroup]="personalInfo">
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col-1 d-flex align-items-center">
+            <mat-icon>looks_one</mat-icon>
+          </div>
+          <div class="col">
+            <mat-form-field class="w-100">
+              <input type="text" formControlName="firstName" matInput placeholder="Имя">
+              <mat-error *ngIf="hasControlsErrors(this.personalInfo,'firstName','required')">
+                Имя не может быть пустым
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.personalInfo,'firstName','minlength')">
+                Имя не может быть меньше, чем 3 символа
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.personalInfo,'firstName','maxlength')">
+                Имя не может быть больше, чем 17 символов
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col-1 d-flex align-items-center">
+            <mat-icon>looks_two</mat-icon>
+          </div>
+          <div class="col">
+            <mat-form-field class="w-100">
+              <input type="text" formControlName="lastName" matInput placeholder="Фамилия">
+              <mat-error *ngIf="hasControlsErrors(this.personalInfo,'lastName','required')">
+                Фамилия не может быть пустым
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.personalInfo,'lastName','minlength')">
+                Фамилия не может быть меньше, чем 3 символ
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.personalInfo,'lastName','maxlength')">
+                Фамилия не может быть больше, чем 17 символов
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col-1 d-flex align-items-center">
+            <mat-icon>looks_3</mat-icon>
+          </div>
+          <div class="col">
+            <mat-form-field class="w-100">
+              <input type="text" formControlName="middleName" matInput placeholder="Отчество">
+              <mat-error *ngIf="hasControlsErrors(this.personalInfo,'middleName','required')">
+                Отчество не может быть пустым
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.personalInfo,'middleName','minlength')">
+                Отчество не может быть меньше, чем 1 символ
+              </mat-error>
+              <mat-error *ngIf="hasControlsErrors(this.personalInfo,'middleName','maxlength')">
+                Отчество не может быть больше, чем 17 символов
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col-1 d-flex align-items-center">
+            <mat-icon>looks_4</mat-icon>
+          </div>
+          <div class="col">
+            <mat-form-field class="w-100">
+              <mat-label>Выберите валюту по-умолчанию:</mat-label>
+              <mat-select formControlName="mainCurrency" class="w-select">
+                <mat-option *ngFor="let currency of this.currencies"
+                            [value]="currency.shortName">{{currency.shortName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit mb-0 justify-content-center">
+          <re-captcha style="text-align-last: center" formControlName="recaptchaReactive"></re-captcha>
+        </div>
+      </div>
+      <div mat-dialog-actions class="row d-flex justify-content-end">
+        <div class="col-3">
+          <button mat-raised-button color="primary" matStepperPrevious>Назад</button>
+        </div>
+        <div class="col d-flex justify-content-end">
+          <button type="button" mat-raised-button color="warn" (click)="close()">Закрыть</button>
+          <button mat-raised-button color="primary" (click)="register()"
+                  [disabled]="!form.valid || !this.personalInfo.valid">Регистрация
+          </button>
+        </div>
+
+        <!--[mat-dialog-close]="data"-->
+        <!--<button (click)="onSignIn()" cdkFocusInitial mat-button class="login-btn">Войти на сайт</button>
+        <button (click)="close()" mat-button>Закрыть</button>-->
+      </div>
+    </mat-step>
+  </mat-stepper>
 </div>
