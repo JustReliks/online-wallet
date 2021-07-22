@@ -119,9 +119,14 @@ export class AccountSettingsComponent implements OnInit {
       this.goal.name = this.controls.goalName.value;
       this.goal.value = this.controls.goalValue.value;
       this.goal.date = this.controls.goalDate.value;
-      this.account.goal = this.goal;
     }
+    this.account.goal = this.goal;
     this.accountService.updateAccount(this.account).subscribe(res => console.log(res));
+    close();
+  }
+
+  delete() {
+    this.accountService.deleteAccount(this.account).subscribe(res => console.log(res));
     close();
   }
 }

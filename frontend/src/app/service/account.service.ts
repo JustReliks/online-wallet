@@ -56,4 +56,13 @@ export class AccountService {
     });
   }
 
+  deleteAccount(account: Account) {
+    return this.http.delete<Account>(this.api + `/account?id=${account.id}`);
+  }
+
+  //    return this.http.delete<boolean>(this.api + '/account', account, {
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
 }

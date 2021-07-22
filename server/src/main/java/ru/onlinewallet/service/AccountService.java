@@ -32,4 +32,6 @@ public interface AccountService {
     List<AccountType> getAllAccountTypes();
 
     AccountType createAccountType(AccountType accountType);
+
+    void deleteAccount(Long id);
 }

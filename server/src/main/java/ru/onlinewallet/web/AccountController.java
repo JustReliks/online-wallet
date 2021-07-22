@@ -12,6 +12,7 @@ import ru.onlinewallet.entity.account.AccountGoal;
 import ru.onlinewallet.entity.account.AccountType;
 import ru.onlinewallet.service.AccountService;
 
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -57,9 +58,18 @@ public class AccountController {
     private ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto dto) {
 
         Account account = AccountDto.fromDto(dto);
+        if(Objects.nonNull(dto.getGoal()))
+            account.setGoal(AccountGoalDto.fromDto(dto.getGoal()));
         Account updateAccount = accountService.updateAccount(account);
         AccountDto accountDto = AccountDto.toDto(updateAccount);
         return ResponseEntity.ok(accountDto);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    private ResponseEntity<Boolean> deleteAccount(@PathParam(   "id") Long id)
+    {
+        accountService.deleteAccount(id);
+        return ResponseEntity.ok(true);
     }
 
 

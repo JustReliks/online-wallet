@@ -1,6 +1,14 @@
 <div [formGroup]="editAccountForm">
-  <div class="card-header w-header">
-    Редактирование счета
+  <div class="card-header row" style="display: flex; justify-content: space-between">
+    <div class="w-header" style="position: relative; left: 16%">
+      Редактирование счета
+    </div>
+    <div class="" style="max-width: 48px; ">
+      <button class="w-delete" #tooltip="matTooltip" matTooltip="Удалить счет" [matTooltipPosition]="'above'"
+              (click)="delete()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
   </div>
   <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
     <div class="d-flex w-100 my-3">
@@ -35,13 +43,6 @@
 
   </div>
   <div class="d-flex w-100 flex-column">
-    <p>Выберите иконку для счета: </p>
-    <div class="icons d-flex">
-      <div class="icon" *ngFor="let icon of icons" (click)="selectedIcon = icon"
-           [ngStyle]=" (icon == selectedIcon) ? {'background-color': '#007bff', 'border-radius': '24px'} : {'background-color': 'white'}">
-        <img [src]="icon.path"/>
-      </div>
-    </div>
     <div *ngIf="goal != null" class="mat-card" style="margin-top: 10px; background: aliceblue;">
       <h4 style="margin-top: 5px">Ваша цель:</h4>
       <div class="row">
@@ -86,13 +87,36 @@
     <div class="col d-flex justify-content-right">
       <button color="warn" mat-raised-button class='btn custom-btn mr-3'
               (click)="close()" style="align-content: center">
-        Отменить изменения
+        Закрыть
       </button>
       <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
               [disabled]="!this.editAccountForm.valid"
               (click)="edit()" style="align-content: center">
-        Изменить
+        Сохранить
       </button>
     </div>
   </div>
 </div>
+<!--<div class="col d-flex justify-content-right">-->
+<!--  <div class="col">-->
+<!--    <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'-->
+<!--            (click)="createGoal()" style="align-content: center">-->
+<!--      Добавить цель по счету-->
+<!--    </button>-->
+<!--    <div class="col">-->
+<!--      <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'-->
+<!--              (click)="goal = null" style="align-content: center">-->
+<!--        Удалить цель-->
+<!--      </button>-->
+<!--    </div>-->
+<!--    <button color="warn" mat-raised-button class='btn custom-btn mr-3'-->
+<!--            (click)="close()" style="align-content: center">-->
+<!--      Отменить изменения-->
+<!--    </button>-->
+<!--    <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'-->
+<!--            [disabled]="!this.editAccountForm.valid"-->
+<!--            (click)="edit()" style="align-content: center">-->
+<!--      Изменить-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</div>-->

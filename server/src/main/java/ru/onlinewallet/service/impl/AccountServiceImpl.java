@@ -41,6 +41,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final UserService userService;
     private final TransactionHistoryService transactionHistoryService;
+    private final TransactionHistoryRepository transactionHistoryRepository;
 
     @Override
     public Account createAccount(Account account) {
@@ -163,8 +164,25 @@ public class AccountServiceImpl implements AccountService {
         Account byId = accountRepository.getById(account.getId());
         byId.setName(account.getName());
         byId.setDescription(account.getDescription());
-        byId.setGoal(account.getGoal());
+        AccountGoal goal;
+        if (account.getGoal() != null) {
+            if (byId.getGoal() == null) {
+                goal = new AccountGoal();
+                goal.setAccountId(byId.getId());
+                goal.setAccount(byId);
+            } else {
+                goal = accountGoalRepository.getById(account.getGoal().getId());
+            }
+            goal.setName(account.getGoal().getName());
+            goal.setValue(account.getGoal().getValue());
+            goal.setDate(account.getGoal().getDate());
+            byId.setGoal(goal);
 
+            accountGoalRepository.save(goal);
+        } else {
+            accountGoalRepository.deleteById(byId.getGoal().getId());
+            byId.setGoal(null);
+        }
         accountRepository.save(byId);
 
         return byId;
@@ -178,5 +196,18 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountType createAccountType(AccountType accountType) {
         return accountTypeRepository.save(accountType);
+    }
+
+    @Override
+    public void deleteAccount(Long id) {
+        Account account = accountRepository.getById(id);
+        AccountGoal goal = account.getGoal();
+        if (goal != null) {
+            accountGoalRepository.deleteById(goal.getId());
+        }
+        transactionHistoryRepository.findAllByUserId(account.getUserId()).stream().filter(transaction
+                -> transaction.getAccountId().equals(id)).
+                forEach(transactionHistoryRepository::delete);
+        accountRepository.deleteById(account.getId());
     }
 }
