@@ -1,0 +1,29 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
+<h2 class="title" mat-dialog-title>Восстановление доступа к аккаунту</h2>
+<mat-dialog-content style="overflow: hidden">
+  <div class="d-inline-flex flex-column">
+    <p class="mb-3">Для восстановления доступа к аккаунту необходимо указать логин или email пользователя. После этого
+      на почту будет выслана инструкция по восстановлению доступа над аккаунтом.
+    </p>
+    <form [formGroup]="restoreAccessForm">
+      <mat-form-field class="blue-p-input">
+        <mat-label>Введите логин или email:</mat-label>
+        <input formControlName="username"  matInput placeholder="Логин или email пользователя" type="text" [value]="usernameEmail"
+               (keyup)="usernameKeyUp($event)">
+      </mat-form-field>
+      <div class="row d-flex pl-3  mt-3 justify-content-center">
+        <re-captcha style="text-align-last: center" formControlName="recaptchaReactive"></re-captcha>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="w-100 d-flex justify-content-center">
+    <button style="padding: 12px;
+    margin-bottom: 10px;" [disabled]="!restoreAccessForm.valid" (click)="restore()" mat-raised-button color="primary"
+            class="blue-gradient-btn align-self-center mt-4">Применить
+    </button>
+  </div>
+</mat-dialog-actions>

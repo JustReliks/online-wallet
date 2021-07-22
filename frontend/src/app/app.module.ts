@@ -46,40 +46,44 @@ import {MatNativeDateModule} from "@angular/material/core";
 import {AddTransactionModalComponent} from "./components/pages/finance/add-transaction-modal/add-transaction-modal.component";
 import {TransactionHistoryComponent} from "./components/pages/finance/transaction-history/transaction-history.component";
 import {HotTableModule} from "@handsontable/angular";
+import {RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSettings} from 'ng-recaptcha';
 import 'handsontable/languages/ru-RU';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {AccountSettingsComponent} from "./components/pages/accounts/account-settings/account-settings.component";
 import {AccountsStatisticComponent} from "./components/pages/finance/accounts-statistic/accounts-statistic.component";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {ChartModule} from "angular-highcharts";
+import {RestoreAccessComponent} from "./components/pages/restore-access/restore-access.component";
+import {MatStepperModule} from "@angular/material/stepper";
 
 registerLocaleData(localeRu, 'ru');
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HeaderComponent,
-        FooterComponent,
-        MiddleComponent,
-        MainComponent,
-        TwoFactorModalComponent,
-        RegistrationComponent,
-        LoginComponent,
-        FinanceComponent,
-        IncomeComponent,
-        MenuComponent,
-        CardComponent,
-        SelectAccountComponent,
-        SettingsComponent,
-        ProfileSettingsComponent,
-        SecuritySettingsComponent,
-        AccountsComponent,
-        CreateAccountComponent,
-        AddTransactionModalComponent,
-        TransactionHistoryComponent,
-        AccountSettingsComponent,
-        AccountsStatisticComponent
-    ],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    FooterComponent,
+    MiddleComponent,
+    MainComponent,
+    TwoFactorModalComponent,
+    RegistrationComponent,
+    LoginComponent,
+    FinanceComponent,
+    IncomeComponent,
+    MenuComponent,
+    CardComponent,
+    SelectAccountComponent,
+    SettingsComponent,
+    ProfileSettingsComponent,
+    SecuritySettingsComponent,
+    AccountsComponent,
+    CreateAccountComponent,
+    AddTransactionModalComponent,
+    TransactionHistoryComponent,
+    AccountSettingsComponent,
+    AccountsStatisticComponent,
+    RestoreAccessComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -112,7 +116,10 @@ registerLocaleData(localeRu, 'ru');
     HotTableModule,
     MatProgressBarModule,
     MatExpansionModule,
-    ChartModule
+    ChartModule,
+    RecaptchaFormsModule,
+    RecaptchaModule,
+    MatStepperModule
 
   ],
   providers: [
@@ -123,6 +130,10 @@ registerLocaleData(localeRu, 'ru');
     {provide: MatDialogRef, useValue: {}},
     {provide: LOCALE_ID, useValue: 'ru'},
     {provide: APP_BASE_HREF, useValue: '/'},
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {siteKey: '6Lfza0oaAAAAAAR71FoyOHNRUIoAJV3See7fR2rr'} as RecaptchaSettings,
+    },
   ],
   bootstrap: [AppComponent]
 })

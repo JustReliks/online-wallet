@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.onlinewallet.dto.ResponseMessage;
 import ru.onlinewallet.dto.UserRegistrationDto;
 import ru.onlinewallet.entity.user.User;
+import ru.onlinewallet.entity.user.UserSettings;
 import ru.onlinewallet.service.RegistrationService;
+import ru.onlinewallet.service.UserService;
 
 import java.util.Objects;
 
@@ -19,6 +21,7 @@ import java.util.Objects;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<ResponseMessage> create(@RequestBody UserRegistrationDto dto) {
@@ -32,6 +35,10 @@ public class RegistrationController {
 
         try {
             Long userId = registrationService.register(user);
+            if (Objects.nonNull(userId)) {
+                UserSettings userSettings = getUserSettings(dto, userId);
+                userService.saveUserSettings(userSettings);
+            }
             message = "New user created successfully, id: " + userId;
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
@@ -47,5 +54,15 @@ public class RegistrationController {
         return Objects.nonNull(username)
                 ? ResponseEntity.ok(registrationService.checkUserExistByUserName(username))
                 : ResponseEntity.ok(registrationService.checkUserExistByUserEmail(email));
+    }
+
+    private UserSettings getUserSettings(UserRegistrationDto dto, Long userId) {
+        UserSettings userSettings = new UserSettings();
+        userSettings.setUserId(userId);
+        userSettings.setFirstName(dto.getFirstName());
+        userSettings.setLastName(dto.getLastName());
+        userSettings.setMiddleName(dto.getMiddleName());
+        userSettings.setCurrency(dto.getCurrency());
+        return userSettings;
     }
 }

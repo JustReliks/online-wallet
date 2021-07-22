@@ -1,15 +1,5 @@
-<div class="w-add-income-operation">
-  <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
-          (click)="true" [disabled]="!isAccountSelected()">
-    <mat-icon style="top: -2px;position: relative; left: -4px">add_circle</mat-icon>
-    Добавить операцию
-  </button>
-</div>
 <div class="row w-100">
   <div class="col">
-    <div *ngIf="isAccountSelected()">
-
-    </div>
     <div class="alert alert-success" role="alert">
       <h4 class="alert-heading">Раздел доходов!</h4>
       <p>Этот раздел отражает учет доходов, полученных в результате поступления денежных средств и (или) иных действий,
@@ -19,9 +9,20 @@
     </div>
   </div>
 </div>
-<div class="row p-3"><p class="font-weight-bold" style="font-size: 21px">Выберите счет, для отображения подробной
-  статистики: </p></div>
-<mat-expansion-panel [expanded]="accountsExpanded">
+<div class="row p-3">
+  <div class="col">
+    <p class="font-weight-bold"
+       style="font-size: 21px">{{this.accounts.length == 0 ? 'На данный момент к аккаунту не привязан ни один счёт. Вы можете создать его в\n' +
+      '      разделе "Мои счета"' : accountsExpanded
+      ? 'Выберите счет, для отображения подробной статистики:'
+      : 'Статистика по счету: ' + selectedAccount.name}} </p>
+  </div>
+  <div *ngIf="selectedAccount!=null" class="col-4">
+    <button (click)="accountsExpanded=!accountsExpanded;selectedAccount=null" class="btn_common">Отобразить счета
+    </button>
+  </div>
+</div>
+<mat-expansion-panel *ngIf="this.accounts.length!=0" [expanded]="accountsExpanded">
   <div class="row w-100 mt-2">
     <div class="col-3 mb-3" *ngFor="let account of accounts" (click)="showAccountStatistic(account)">
       <div class="w-account mat-form-field-flex justify-content-center">
@@ -40,27 +41,30 @@
     </div>
   </div>
 </mat-expansion-panel>
-<div class="row mt-3">
-  <div class="col w-text-align-last-center">
-    <button mat-raised-button color="primary" class="btn  purchase-btn">День</button>
+<div *ngIf="!accountsExpanded" class="w-account-statistic">
+  <div class="w-stats"></div>
+  <div class="row mt-3">
+    <div class="col w-text-align-last-center">
+      <button mat-raised-button color="primary" class="btn  purchase-btn">День</button>
+    </div>
+    <div class="col">
+      <button mat-raised-button color="primary" class=" bnt purchase-btn">Неделя</button>
+    </div>
+    <div class="col">
+      <button mat-raised-button color="primary" class="btn purchase-btn">Месяц</button>
+    </div>
   </div>
-  <div class="col">
-    <button mat-raised-button color="primary" class=" bnt purchase-btn">Неделя</button>
+  <div class="row chart">
+    <div class="col mt-3">
+      <div class="w-title w-text-align-last-center mb-3">Доходы</div>
+      <div [chart]="chartIncomeLine"></div>
+      <div [chart]="chartIncomeCircle"></div>
+    </div>
+    <div class="col mt-3">
+      <div class="w-title w-text-align-last-center mb-3">Расходы</div>
+      <div [chart]="chartExpensesLine"></div>
+      <div [chart]="chartExpensesCircle"></div>
+    </div>
   </div>
-  <div class="col">
-    <button mat-raised-button color="primary" class="btn purchase-btn">Месяц</button>
-  </div>
+
 </div>
-<div class="row chart">
-  <div class="col mt-3">
-    <div class="w-title w-text-align-last-center mb-3">Доходы</div>
-    <div [chart]="chartIncomeLine"></div>
-    <div [chart]="chartIncomeCircle"></div>
-  </div>
-  <div class="col mt-3">
-    <div class="w-title w-text-align-last-center mb-3">Расходы</div>
-    <div [chart]="chartExpensesLine"></div>
-    <div [chart]="chartExpensesCircle"></div>
-  </div>
-</div>
-<button (click)="accountsExpanded=!accountsExpanded" class="btn_common"></button>

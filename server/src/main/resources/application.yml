@@ -1,4 +1,16 @@
 spring:
+  mail:
+    debug: true
+    host: mail.online-wallet.ru
+    port: 25
+    username: no-reply@online-wallet.ru
+    password: 123456789!!!
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: false
   # first datasource [Oline-Wallet site]
   datasource:
     url: jdbc:postgresql://localhost:5432/online-wallet

@@ -31,6 +31,7 @@
     "handsontable": "^9.0.1",
     "highcharts": "^9.1.2",
     "lodash": "^4.17.21",
+    "ng-recaptcha": "^8.0.0",
     "ngx-material-file-input": "^2.1.1",
     "ngx-toastr": "^14.0.0",
     "rxjs": "~6.6.0",

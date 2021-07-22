@@ -8,6 +8,7 @@ import {filter} from 'rxjs/operators';
 import {AuthService} from "../../../service/auth.service";
 import {NotificationService} from "../../../service/notification.service";
 import {AuthUser} from "../../../entities/user";
+import {RestoreAccessComponent} from "../../pages/restore-access/restore-access.component";
 
 
 @Component({
@@ -110,12 +111,12 @@ export class LoginComponent implements OnInit {
   }
 
   openRestoreAccessModal() {
-    // this.dialogRef.close();
-    // const dialogRef = this.dialog.open(RestoreAccessComponent, {
-    //   width: '610px',
-    //    maxHeight: '95vh',
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    // });
+    this.dialogRef.close();
+    const dialogRef = this.dialog.open(RestoreAccessComponent, {
+      width: '610px',
+       maxHeight: '95vh',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 }

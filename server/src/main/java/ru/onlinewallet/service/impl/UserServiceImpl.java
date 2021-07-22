@@ -24,7 +24,6 @@ import ru.onlinewallet.service.UserService;
 import ru.onlinewallet.util.PasswordUtil;
 
 import javax.persistence.EntityNotFoundException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -142,6 +141,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User changePassword(User user, String password) throws JOSEException {
+        final JwtUserDetails userDetails = jwtUserDetailsService.getJwtUserDetailsFromUser(user);
+        changePassword(user, userDetails, password);
+        return user;
+    }
+
+    @Override
     public UserSettings getUserProfile(Long userId) {
         UserSettings userSettings = userSettingsRepository.findByUserId(userId);
         if (Objects.isNull(userSettings)) {
@@ -151,26 +157,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserSettings updateUserProfile(UserSettings userSettings) {
-        if (Objects.isNull(userSettings.getUserId())) {
-            throw new EntityNotFoundException("Такого пользователя не существует!");
-        }
+
         if (Objects.isNull(userSettings.getId())) {
             throw new EntityNotFoundException("Пользовательских настроек не существует!");
         }
 
-        return this.userSettingsRepository.save(userSettings);
+        return saveUserSettings(userSettings);
+    }
+
+    @Override
+    @Transactional
+    public UserSettings saveUserSettings(UserSettings userSettings) {
+        if (Objects.isNull(userSettings.getUserId())) {
+            throw new EntityNotFoundException("Такого пользователя не существует!");
+        }
+        return userSettingsRepository.save(userSettings);
     }
 
     @Override
     public Long register(User user) {
-        Long save = save(user);
-        if (Objects.nonNull(save)) {
-            UserSettings userSettings = createUserSettings(save);
-            updateUserProfile(userSettings);
-        }
-        return save;
+        return save(user);
     }
 
     @Override

@@ -62,10 +62,7 @@ public class LocalSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers(
                         "/auth/**",
-                        "/api/monitoring",
-                        "/api/news",
-                        "/api/top/vote",
-                        "/api/top/vote/**",
+                        "/api/dictionary/currencies",
                         "/api/code/validate/key"
                 ).permitAll()
                 .antMatchers("/auth/current").authenticated()

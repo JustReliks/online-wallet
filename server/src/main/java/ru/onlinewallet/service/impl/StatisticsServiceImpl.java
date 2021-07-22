@@ -1,8 +1,10 @@
 package ru.onlinewallet.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.onlinewallet.entity.account.statistics.AccountStatistics;
 import ru.onlinewallet.service.StatisticsService;
 
+@Service
 public class StatisticsServiceImpl implements StatisticsService {
 
     @Override

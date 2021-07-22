@@ -90,6 +90,7 @@ export class AccountsStatisticComponent implements OnInit {
 
   showAccountStatistic(account: Account) {
     this.accountsExpanded = false;
+    this.selectedAccount = account;
   }
 
   // @ts-ignore
