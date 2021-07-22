@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AuthUser} from "../../../../entities/user";
 import _ from "lodash";
+import {Account} from "../../../../entities/account";
 
 @Component({
   selector: 'app-card',
@@ -9,13 +10,19 @@ import _ from "lodash";
 })
 export class CardComponent implements OnInit {
 
+
   @Input() menuState: MenuState = MenuState.MENU;
   private _currentUser: any;
   private _originalUser: any;
+  private _accounts: Array<Account>;
 
   @Input('user') set user(user: AuthUser) {
     this._originalUser = user;
     this.cloneOriginalUser();
+  }
+
+  @Input('accounts') set accounts(accounts: Array<Account>) {
+    this._accounts = accounts;
   }
 
   get user() {
@@ -29,13 +36,16 @@ export class CardComponent implements OnInit {
     console.log(MenuState.MENU.toString())
   }
 
+  get accounts(): Array<Account> {
+    return this._accounts;
+  }
+
   changeMenuState($event: any) {
     console.log($event)
     this.menuState = $event;
   }
 
-  setMenu()
-  {
+  setMenu() {
     this.menuState = MenuState.MENU;
   }
 
@@ -44,6 +54,7 @@ export class CardComponent implements OnInit {
     else if (this.menuState == MenuState.INCOME) return 'Ваша прибыль'
     else if (this.menuState == MenuState.ACCOUNTS) return 'Ваши счета'
     else if (this.menuState == MenuState.TRANSACTIONS) return 'История транзакций по счетам'
+    else if (this.menuState == MenuState.STATISTIC) return 'Статистика'
 
     return ''
   }
@@ -54,7 +65,8 @@ export class CardComponent implements OnInit {
 }
 
 export enum MenuState {
-  MENU = "menu", INCOME = "income", ACCOUNTS = "accounts", TRANSACTIONS = "transactions"
+  MENU = "menu", INCOME = "income", ACCOUNTS = "accounts", TRANSACTIONS = "transactions",
+  STATISTIC = 'statistic',
 }
 
 

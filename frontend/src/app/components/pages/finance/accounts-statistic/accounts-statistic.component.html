@@ -1,0 +1,48 @@
+<div class="w-add-income-operation">
+  <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+          (click)="true" [disabled]="!isAccountSelected()">
+    <mat-icon style="top: -2px;position: relative; left: -4px">add_circle</mat-icon>
+    Добавить операцию
+  </button>
+</div>
+<div class="row w-100">
+  <div class="col">
+    <div *ngIf="isAccountSelected()">
+
+    </div>
+    <div class="alert alert-success" role="alert">
+      <h4 class="alert-heading">Раздел доходов!</h4>
+      <p>Этот раздел отражает учет доходов, полученных в результате поступления денежных средств и (или) иных действий,
+        приводящих к увеличению капитала</p>
+      <hr>
+      <p class="mb-0">©Online-wallet</p>
+    </div>
+  </div>
+</div>
+<div class="row p-3"><p class="font-weight-bold" style="font-size: 21px">Выберите счет, для отображения подробной
+  статистики: </p></div>
+<mat-expansion-panel [expanded]="accountsExpanded">
+  <div class="row w-100 mt-2">
+    <div class="col-3 mb-3" *ngFor="let account of accounts" (click)="showAccountStatistic(account)">
+      <div class="w-account mat-form-field-flex justify-content-center">
+        <div class=" w-account-header">
+          <div class="w-money">{{account.accountBills[0].balance}} <span
+            class="w-currency">{{account.accountBills[0].currency.shortName}}</span></div>
+          <div class="w-money" style="position: relative; left: 17%">{{account.accountBills[1]?.balance}} <span
+            class="w-currency">{{account.accountBills[1]?.currency.shortName}}</span></div>
+        </div>
+        <hr class="w-line"/>
+        <img [src]="getAccountImg(account)" class="w-img">
+        <div class="w-account-title">{{account.name}}</div>
+        <hr class="w-line"/>
+        <div class="w-account-description">{{account.description}}</div>
+      </div>
+    </div>
+  </div>
+</mat-expansion-panel>
+<div class="row chart">
+  <div class="col">1    <button (click)="add()">Add Point!</button>
+    <div [chart]="chart"></div></div>
+  <div class="col">2</div>
+</div>
+<button (click)="accountsExpanded=!accountsExpanded" class="btn_common"></button>

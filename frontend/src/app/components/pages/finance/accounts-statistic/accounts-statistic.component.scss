@@ -1,0 +1,102 @@
+.w-add-income-operation {
+  position: absolute;
+  top: 23px;
+  right: 5%;
+}
+
+.w-select-account {
+  //position: relative;
+  //left: 77%;
+}
+
+.w-acc-select-header {
+  font-size: 12px;
+  font-weight: lighter;
+  color: #363e40;
+}
+
+.w-table {
+  width: 100%;
+}
+
+.w-card-header {
+  font-size: 16px;
+  font-weight: bolder;
+}
+
+.w-account {
+  padding: 21px;
+  width: 100%;
+  height: 100%;
+  box-shadow: 5px 4px 17px 4px rgb(7 12 16 / 48%);
+  border-radius: 8px;
+  background: linear-gradient(25deg, #326dc1 3%, #524ade 55%, #7937d0 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: .3s all;
+}
+
+.w-account:hover {
+  cursor: pointer;
+  transform: translate(0px, -4px);
+  background-image: linear-gradient(25deg, #2e64b1 3%, #5048d2 55%, #7133c1 100%);
+}
+
+.w-account-description {
+  text-align: center;
+  color: #adb6be;
+  font-size: 12px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* white-space: pre; */
+  min-height: 67px;
+}
+
+.w-account-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.w-money {
+  font-family: fantasy;
+  font-size: 17px;
+  font-weight: 60;
+  color: #ffffffd6;
+  width: 50%;
+}
+
+.w-currency {
+  font-size: 14px;
+  vertical-align: top;
+  font-weight: 10;
+}
+
+.w-img {
+  width: 50%;
+  height: 50%;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.w-line {
+  size: 50px;
+  width: 100%;
+  color: #dddddd;
+  margin-bottom: 1%;
+  margin-top: 1%;
+}
+
+.w-account-title {
+  font-size: 17px;
+  font-weight: bolder;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+  min-height: 8%;
+  text-align: center;
+  color: white;
+}

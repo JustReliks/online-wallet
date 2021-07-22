@@ -1,10 +1,8 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Account} from "../../../../entities/account";
+import {Component, Input, OnInit} from '@angular/core';
 import {AuthUser} from "../../../../entities/user";
 import _ from "lodash";
 import {TransactionHistoryService} from "../../../../service/transaction-history.service";
 import {Transaction} from "../../../../entities/transaction";
-import {HotTableComponent} from "@handsontable/angular";
 import Handsontable from "handsontable";
 
 @Component({
@@ -15,7 +13,6 @@ import Handsontable from "handsontable";
 export class TransactionHistoryComponent implements OnInit {
   private _currentUser: any;
   private _originalUser: any;
-  private _accounts: Array<Account>;
   private hot: Handsontable;
 
   @Input('user') set user(user: AuthUser) {
@@ -48,6 +45,15 @@ export class TransactionHistoryComponent implements OnInit {
       })
     });
 
+    const sumRenderer = function (instance, td, row, col, prop, value, cellProperties) {
+      Handsontable.renderers.TextRenderer.apply(this, arguments);
+      if (value > 0) {
+        td.style.color = 'green';
+      } else {
+        td.style.color = 'red';
+      }
+    };
+
     const container = document.getElementById('transaction-table');
     this.hot = new Handsontable(container, {
       data: arr,
@@ -58,10 +64,17 @@ export class TransactionHistoryComponent implements OnInit {
       stretchH: 'all',
       filters: true,
       dropdownMenu: true,
-      readOnly:true,
-      contextMenu:true,
+      readOnly: true,
+      contextMenu: true,
       language: "ru-RU",
-      licenseKey: "non-commercial-and-evaluation"
+      licenseKey: "non-commercial-and-evaluation",
+      columns: [
+        {data: 'account'},
+        {data: 'category'},
+        {data: 'datetime'},
+        {data: 'currency'},
+        {data: 'sum', renderer: sumRenderer}
+      ]
     });
   }
 

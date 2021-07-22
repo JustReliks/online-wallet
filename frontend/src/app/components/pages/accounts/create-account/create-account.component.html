@@ -145,7 +145,7 @@
         Закрыть
       </button>
       <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
-              [disabled]="!this.createAccountForm.valid && this.selectedTypeId != null "
+              [disabled]="!this.createAccountForm.valid || this.selectedTypeId == null "
               (click)="create()" style="align-content: center">
         Создать
       </button>

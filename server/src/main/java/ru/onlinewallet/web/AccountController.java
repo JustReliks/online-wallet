@@ -72,10 +72,12 @@ public class AccountController {
                         .map(acc -> {
                             AccountDto accountDto = AccountDto.toDto(acc);
                             try {
-                                ConvertedBalanceDto balanceDto =
-                                        ConvertedBalanceDto.toDto(accountService.getConvertedBalance(acc,
-                                                acc.getAccountBills().get(0).getCurrency().getShortName()));
-                                accountDto.setConvertedBalance(balanceDto);
+                                if (acc.getAccountBills().size() > 0) {
+                                    ConvertedBalanceDto balanceDto =
+                                            ConvertedBalanceDto.toDto(accountService.getConvertedBalance(acc,
+                                                    acc.getAccountBills().get(0).getCurrency().getShortName()));
+                                    accountDto.setConvertedBalance(balanceDto);
+                                }
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

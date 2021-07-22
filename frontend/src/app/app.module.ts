@@ -49,65 +49,72 @@ import {HotTableModule} from "@handsontable/angular";
 import 'handsontable/languages/ru-RU';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {AccountSettingsComponent} from "./components/pages/accounts/account-settings/account-settings.component";
+import {AccountsStatisticComponent} from "./components/pages/finance/accounts-statistic/accounts-statistic.component";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {ChartModule} from "angular-highcharts";
 
 registerLocaleData(localeRu, 'ru');
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    FooterComponent,
-    MiddleComponent,
-    MainComponent,
-    TwoFactorModalComponent,
-    RegistrationComponent,
-    LoginComponent,
-    FinanceComponent,
-    IncomeComponent,
-    MenuComponent,
-    CardComponent,
-    SelectAccountComponent,
-    SettingsComponent,
-    ProfileSettingsComponent,
-    SecuritySettingsComponent,
-    AccountsComponent,
-    CreateAccountComponent,
-    AddTransactionModalComponent,
-    TransactionHistoryComponent,
-    AccountSettingsComponent
-  ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        MatNativeDateModule,
-        // ServiceWorkerModule.register('ngsw-worker.js', {
-        //   enabled: environment.production,
-        //   // Register the ServiceWorker as soon as the app is stable
-        //   // or after 30 seconds (whichever comes first).
-        //   registrationStrategy: 'registerWhenStable:30000'
-        // }),
-        ToastrModule.forRoot({
-            positionClass: 'toast-bottom-right',
-        }),
-        RouterModule,
-        BrowserAnimationsModule,
-        NgbModule,
-        MaterialModule,
-        MatProgressSpinnerModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatTooltipModule,
-        MatDividerModule,
-        MatSelectModule,
-        MaterialFileInputModule,
-        AngularGradientProgressbarModule,
-        MatDatepickerModule,
-        HotTableModule,
-        MatProgressBarModule
+    declarations: [
+        AppComponent,
+        HeaderComponent,
+        FooterComponent,
+        MiddleComponent,
+        MainComponent,
+        TwoFactorModalComponent,
+        RegistrationComponent,
+        LoginComponent,
+        FinanceComponent,
+        IncomeComponent,
+        MenuComponent,
+        CardComponent,
+        SelectAccountComponent,
+        SettingsComponent,
+        ProfileSettingsComponent,
+        SecuritySettingsComponent,
+        AccountsComponent,
+        CreateAccountComponent,
+        AddTransactionModalComponent,
+        TransactionHistoryComponent,
+        AccountSettingsComponent,
+        AccountsStatisticComponent
     ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatNativeDateModule,
+    // ServiceWorkerModule.register('ngsw-worker.js', {
+    //   enabled: environment.production,
+    //   // Register the ServiceWorker as soon as the app is stable
+    //   // or after 30 seconds (whichever comes first).
+    //   registrationStrategy: 'registerWhenStable:30000'
+    // }),
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+    }),
+    RouterModule,
+    BrowserAnimationsModule,
+    NgbModule,
+    MaterialModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatTooltipModule,
+    MatDividerModule,
+    MatSelectModule,
+    MaterialFileInputModule,
+    AngularGradientProgressbarModule,
+    MatDatepickerModule,
+    HotTableModule,
+    MatProgressBarModule,
+    MatExpansionModule,
+    ChartModule
+
+  ],
   providers: [
     AuthService,
     ApplicationEventBroadcaster,

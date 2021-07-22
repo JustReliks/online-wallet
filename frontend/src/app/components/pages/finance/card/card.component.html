@@ -2,15 +2,17 @@
   <mat-card-header [textContent]="getTitle()" class="card-header w-card-header">
   </mat-card-header>
   <div *ngIf="menuState.toString() != 'menu'" style="max-width: 48px">
-    <button class="w-return" #tooltip="matTooltip" matTooltip="На главную" [matTooltipPosition]="'above'" (click)="setMenu()">
+    <button class="w-return" #tooltip="matTooltip" matTooltip="На главную" [matTooltipPosition]="'above'"
+            (click)="setMenu()">
       <mat-icon>keyboard_backspace</mat-icon>
     </button>
-  </div>  <mat-card-content class="card-body mat-card-content">
+  </div>
+  <mat-card-content class="card-body mat-card-content">
     <div *ngIf="menuState.toString() == 'menu'">
       <app-menu (menuState)="changeMenuState($event)"></app-menu>
     </div>
-    <div *ngIf="menuState.toString() == 'income'">
-      <app-income></app-income>
+    <div *ngIf="menuState.toString() == 'statistic'">
+      <app-accounts-statistic [accounts]="this.accounts" [user]="this.user"></app-accounts-statistic>
     </div>
     <div *ngIf="menuState.toString() == 'accounts'">
       <app-accounts [user]="this.user"></app-accounts>
