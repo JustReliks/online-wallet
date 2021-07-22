@@ -31,8 +31,8 @@ export class AccountService {
     return this.http.get<Array<Account>>(this.api + `/account?id=${id}`);
   }
 
-  addTransaction(selectedBill: AccountBill, userId: number, value: any, isPlusState: boolean): Observable<AccountBill> {
-    return this.http.post<AccountBill>(this.api + `/account/bill?userId=${userId}&plus=${isPlusState}&value=${value}`, selectedBill, {
+  addTransaction(selectedBill: AccountBill, userId: number, value: any, isPlusState: boolean, categoryId: number): Observable<AccountBill> {
+    return this.http.post<AccountBill>(this.api + `/account/bill?userId=${userId}&plus=${isPlusState}&value=${value}&category=${categoryId}`, selectedBill, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -47,8 +47,7 @@ export class AccountService {
     this.updateAccountsSubject.next(event)
   }
 
-  updateAccount(account: Account): Observable<Account>
-  {
+  updateAccount(account: Account): Observable<Account> {
     return this.http.put<Account>(this.api + '/account', account, {
       headers: {
         'Content-Type': 'application/json'

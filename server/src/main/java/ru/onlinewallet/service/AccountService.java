@@ -17,7 +17,7 @@ public interface AccountService {
 
     List<Account> getAll(Long userId);
 
-    AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value);
+    AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value, Long categoryId);
 
     Double convertCurrencies(double value, String from, String to) throws IOException;
 

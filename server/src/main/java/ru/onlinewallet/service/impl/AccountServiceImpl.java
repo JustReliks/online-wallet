@@ -66,7 +66,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value) {
+    public AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value,
+                                      Long categoryId) {
         Double currentBalance = accountBill.getBalance();
         double newValue = isPlus ? value : -value;
         double balance = currentBalance + newValue;
@@ -82,7 +83,7 @@ public class AccountServiceImpl implements AccountService {
         accountBill.setBalance(balance);
         Account savedAccount = accountRepository.save(account);
         AccountBill savedAccountBill = accountBillRepository.save(accountBill);
-        transactionHistoryService.addTransaction(savedAccountBill, userId, 0, newValue, now);
+        transactionHistoryService.addTransaction(savedAccountBill, userId, categoryId, newValue, now);
         return savedAccountBill;
     }
 

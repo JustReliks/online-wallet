@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.onlinewallet.entity.account.AccountBill;
 import ru.onlinewallet.entity.account.Transaction;
-import ru.onlinewallet.repo.account.AccountBillRepository;
-import ru.onlinewallet.repo.account.AccountRepository;
 import ru.onlinewallet.repo.account.TransactionHistoryRepository;
 import ru.onlinewallet.service.TransactionHistoryService;
 
@@ -21,7 +19,7 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService 
 
     @Override
     @Transactional
-    public Transaction addTransaction(AccountBill accountBillId, Long userId, int categoryId, double quantity,
+    public Transaction addTransaction(AccountBill accountBillId, Long userId, Long categoryId, double quantity,
                                       Instant now) {
         Transaction transaction = new Transaction();
         transaction.setAccountId(accountBillId.getAccountId());

@@ -34,10 +34,15 @@ public class Transaction {
     private AccountBill accountBill;
 
     @Column(name = "category_id")
-    private Integer categoryId;
+    private Long categoryId;
 
     @Column(name = "datetime")
     private Instant dateTime;
 
+    @Column
     private Double quantity;
+
+    @OneToOne
+    @JoinColumn(name = "category_id", insertable = false, updatable = false)
+    private TransactionCategory category;
 }

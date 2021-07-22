@@ -94,7 +94,7 @@ export class AccountsStatisticComponent implements OnInit {
 
   // @ts-ignore
 
-  chart = new Chart({
+  chartIncomeLine = new Chart({
     chart: {
       type: 'line'
     },
@@ -114,7 +114,117 @@ export class AccountsStatisticComponent implements OnInit {
   });
 
   // add point to chart serie
+  chartIncomeCircle = new Chart({
+    chart: {
+      plotBorderWidth: null,
+      plotShadow: false
+    },
+    title: {
+      text: 'Browser market shares at a specific website, 2014'
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+          format: '<b>{point.name}%</b>: {point.percentage:.1f} %',
+          style: {
+            color:
+              'black'
+          }
+        }
+      }
+    },
+    series: [{
+      type: 'pie',
+      name: 'Browser share',
+      data: [
+        ['Firefox', 45.0],
+        ['IE', 26.8],
+        {
+          name: 'Chrome',
+          y: 12.8,
+          sliced: true,
+          selected: true
+        },
+        ['Safari', 8.5],
+        ['Opera', 6.2],
+        ['Others', 0.7]
+      ]
+    }]
+  });
+
+  chartExpensesCircle = new Chart({
+    chart: {
+      plotBorderWidth: null,
+      plotShadow: false
+    },
+    title: {
+      text: 'Browser market shares at a specific website, 2014'
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+          format: '<b>{point.name}%</b>: {point.percentage:.1f} %',
+          style: {
+            color:
+              'black'
+          }
+        }
+      }
+    },
+    series: [{
+      type: 'pie',
+      name: 'Browser share',
+      data: [
+        ['Firefox', 45.0],
+        ['IE', 26.8],
+        {
+          name: 'Chrome',
+          y: 12.8,
+          sliced: true,
+          selected: true
+        },
+        ['Safari', 8.5],
+        ['Opera', 6.2],
+        ['Others', 0.7]
+      ]
+    }]
+  });
+  chartExpensesLine = new Chart({
+    chart: {
+      type: 'spline'
+    },
+    title: {
+      text: 'График расходов за 1 сутки'
+    },
+    credits: {
+      enabled: false
+    },
+    xAxis:{
+      categories:["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    },
+    series: [
+      {
+        name: 'Расходы за сутки',
+        type: 'spline',
+        data: [1, 2, 3]
+      }
+    ]
+  });
+
   add() {
-    this.chart.addPoint(Math.floor(Math.random() * 10));
+    this.chartIncomeLine.addPoint(Math.floor(Math.random() * 10));
   }
 }

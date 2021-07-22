@@ -3,8 +3,10 @@ package ru.onlinewallet.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.onlinewallet.entity.account.Currency;
+import ru.onlinewallet.entity.account.TransactionCategory;
 import ru.onlinewallet.entity.account.Type;
 import ru.onlinewallet.repo.account.CurrencyRepository;
+import ru.onlinewallet.repo.account.TransactionCategoryRepository;
 import ru.onlinewallet.repo.account.TypeRepository;
 import ru.onlinewallet.service.DictionaryService;
 
@@ -16,6 +18,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
     private final CurrencyRepository currencyRepository;
     private final TypeRepository typeRepository;
+    private final TransactionCategoryRepository transactionCategoryRepository;
 
     @Override
     public List<Currency> getAllCurrencies() {
@@ -30,6 +33,11 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public List<Type> getAllTypes() {
         return typeRepository.findAll();
+    }
+
+    @Override
+    public List<TransactionCategory> getAllTransactionCategories() {
+        return transactionCategoryRepository.findAll();
     }
 
 }

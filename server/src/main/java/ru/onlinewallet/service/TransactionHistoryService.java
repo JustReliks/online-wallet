@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.List;
 
 public interface TransactionHistoryService {
-    Transaction addTransaction(AccountBill accountBillId, Long userId, int categoryId, double quantity, Instant now);
+    Transaction addTransaction(AccountBill accountBillId, Long userId, Long categoryId, double quantity, Instant now);
 
     List<Transaction> getAllTransactions(Long userId);
 

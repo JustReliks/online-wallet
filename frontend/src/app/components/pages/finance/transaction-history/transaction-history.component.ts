@@ -38,7 +38,7 @@ export class TransactionHistoryComponent implements OnInit {
     _.forEach(res, r => {
       arr.push({
         account: r.account.name,
-        category: r.categoryId,
+        category: r.category.title,
         datetime: r.dateTime,
         currency: r.accountBill.currency.shortName,
         sum: r.quantity

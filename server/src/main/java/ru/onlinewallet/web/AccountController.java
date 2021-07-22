@@ -107,9 +107,10 @@ public class AccountController {
     private ResponseEntity<AccountBillDto> addTransaction(@RequestBody AccountBillDto dto,
                                                           @RequestParam("userId") Long userId,
                                                           @RequestParam("plus") boolean isPlus,
-                                                          @RequestParam("value") double value) {
+                                                          @RequestParam("value") double value,
+                                                          @RequestParam("category") Long categoryId) {
         AccountBill accountBill = AccountBillDto.fromDto(dto);
-        AccountBill bill = accountService.addTransaction(accountBill, userId, isPlus, value);
+        AccountBill bill = accountService.addTransaction(accountBill, userId, isPlus, value,categoryId);
         return ResponseEntity.ok(AccountBillDto.toDto(bill));
     }
 

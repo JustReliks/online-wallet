@@ -17,15 +17,16 @@ public class TransactionDto {
     private Integer categoryId;
     private Instant dateTime;
     private Double quantity;
+    private TransactionCategoryDto category;
 
     public static TransactionDto toDto(Transaction transaction) {
         TransactionDto transactionDto = new TransactionDto();
         transactionDto.setId(transaction.getId());
         transactionDto.setAccount(AccountDto.toDto(transaction.getAccount()));
         transactionDto.setAccountBill(AccountBillDto.toDto(transaction.getAccountBill()));
-        transactionDto.setCategoryId(transaction.getCategoryId());
         transactionDto.setDateTime(transaction.getDateTime());
         transactionDto.setQuantity(transaction.getQuantity());
+        transactionDto.setCategory(TransactionCategoryDto.toDto(transaction.getCategory()));
 
         return transactionDto;
     }
@@ -35,9 +36,9 @@ public class TransactionDto {
         transaction.setId(transactionDto.getId());
         transaction.setAccount(AccountDto.fromDto(transactionDto.getAccount()));
         transaction.setAccountBill(AccountBillDto.fromDto(transactionDto.getAccountBill()));
-        transaction.setCategoryId(transactionDto.getCategoryId());
         transaction.setDateTime(transactionDto.getDateTime());
         transaction.setQuantity(transactionDto.getQuantity());
+        transaction.setCategory(TransactionCategoryDto.fromDto(transactionDto.getCategory()));
 
         return transaction;
     }
