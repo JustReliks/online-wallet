@@ -20,7 +20,6 @@ export class AccountSettingsComponent implements OnInit {
 
   _account: Account;
   public editAccountForm: FormGroup;
-  private _currencies: Array<Currency>;
   hasSecondBill: boolean;
   private _selectedIcon: Icon;
   private _goal: Goal;
@@ -42,13 +41,12 @@ export class AccountSettingsComponent implements OnInit {
       goalValue: new FormControl(this._account.goal?.value, []),
       goalDate: new FormControl(this._account.goal?.date, []),
     });
-    dictionary.getAllCurrencies().subscribe(value => this._currencies = value);
     this.hasSecondBill = this.account.accountBills.length == 2;
     if (this.hasSecondBill) this.secondBill = this.account.accountBills[1];
 
     this.minDate = new Date();
     this.goal = this.account.goal;
-    console.log(this._isGoalValid)
+    console.log(this.editAccountForm)
   }
 
 
@@ -91,11 +89,8 @@ export class AccountSettingsComponent implements OnInit {
     return this._account;
   }
 
-  get currencies(): Array<Currency> {
-    return this._currencies;
-  }
-
   ngOnInit(): void {
+    this._isGoalValid=true;
   }
 
   hasControlsErrors(controlName: string, errorName: string) {
@@ -124,16 +119,9 @@ export class AccountSettingsComponent implements OnInit {
     });
   }
 
-  isGoalValid() {
-    if (this.goal != null) {
-      return this.controls.goalName.value.length > 0 && this.controls.goalValue.value.length > 0 && this.controls.goalDate.value.length > 0;
-    }
-    return true;
-  }
-
   changeGoalValue(withoutDate?: any) {
-    console.log(this.controls.goalDate.value)
-    this._isGoalValid = this.controls.goalName.value?.length > 0 && this.controls.goalValue.value?.length > 0 && this.controls.goalDate.value != null;
+    console.log(this.editAccountForm)
+    this._isGoalValid = this.controls.goalName.value?.length!=0 && this.controls.goalValue.value?.length!=0 && this.controls.goalDate.value != null;
   }
 
   delete() {
