@@ -48,7 +48,7 @@
       <div class="row">
         <mat-form-field class="w-form-field col" style="width: 65%" appearance="fill">
           <mat-label>Название цели</mat-label>
-          <textarea matInput formControlName="goalName"
+          <textarea (ngModelChange)="changeGoalValue($event)" matInput formControlName="goalName"
                     cdkTextareaAutosize
                     #autosize="cdkTextareaAutosize"
                     cdkAutosizeMinRows="1"
@@ -56,7 +56,7 @@
         </mat-form-field>
         <mat-form-field class="col w-form-field" style="width: 35%" appearance="fill">
           <mat-label>Сумма для достижения цели(в осн. валюте)</mat-label>
-          <textarea formControlName="goalValue" matInput
+          <textarea (ngModelChange)="changeGoalValue($event)" formControlName="goalValue" matInput
                     cdkTextareaAutosize
                     #autosize="cdkTextareaAutosize"
                     cdkAutosizeMinRows="1"
@@ -66,7 +66,8 @@
       <div style="width: 100%; display: flex; justify-content: space-around">
         <mat-form-field appearance="fill">
           <mat-label>Конечная дата</mat-label>
-          <input matInput formControlName="goalDate" [min]="minDate" [matDatepicker]="picker">
+          <input (dateInput)="changeGoalValue(picker)" matInput formControlName="goalDate" [min]="minDate"
+                 [matDatepicker]="picker">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
@@ -80,7 +81,7 @@
         Добавить цель по счету
       </button>
       <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'
-              (click)="goal = null" style="align-content: center">
+              (click)="goal = null;_isGoalValid=true;" style="align-content: center">
         Удалить цель
       </button>
     </div>
@@ -90,7 +91,7 @@
         Закрыть
       </button>
       <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
-              [disabled]="!this.editAccountForm.valid"
+              [disabled]="!this.editAccountForm.valid || !_isGoalValid"
               (click)="edit()" style="align-content: center">
         Сохранить
       </button>

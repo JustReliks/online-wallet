@@ -14,14 +14,14 @@
   </div>
   <div>
     <div *ngFor="let account of this.accounts" class="mat-card w-account-card d-flex mb-4">
-      <div class="col-2">
+      <div class="col-2 align-self-center">
         <div class="w-avatar ">
-          <img src="assets/img/finance/account_icon.svg" class="w-avatar">
+          <img [src]="getTypeIcon(account.accountType.type)" class="w-avatar" style="width: 100%;height: 100%">
         </div>
       </div>
       <div class="col">
         <div class="w-account-name mb-2">
-          {{account.name}}
+          {{account.name}} <span style="opacity: .6">[{{account.accountType.type.name}} счёт]</span>
         </div>
         <div class="w-account-description">
           {{account.description}}
@@ -34,18 +34,20 @@
             </span>
               </p>
               <div class="col m-0">
-                <p *ngIf="account.goal.value <= account.convertedBalance.balance" style="color: green">Цель выполнена!</p>
+                <p *ngIf="account.goal.value <= account.convertedBalance.balance" style="color: green">Цель
+                  выполнена!</p>
                 <p *ngIf="isGoalExpired(account)" style="color: red">Вы не успели выполнить цель!</p>
-                <p *ngIf="account.goal.value > account.convertedBalance.balance && !isGoalExpired(account)"> Выполнить до: {{account.goal.date | date: 'medium'}}</p>
+                <p *ngIf="account.goal.value > account.convertedBalance.balance && !isGoalExpired(account)"> Выполнить
+                  до: {{account.goal.date | date: 'medium'}}</p>
               </div>
             </div>
             <angular-gradient-progressbar [type]="2" lowTextColor="red"
                                           [secondValue]="getGoalProgressBarValue(account)"></angular-gradient-progressbar>
 
-<!--            <span class="font-weight-bold" style="color:green"-->
-<!--                  *ngIf="account.convertedBalance.balance > account.goal.value"> - Цель выполнена!</span> <span-->
-<!--            *ngIf="isGoalExpired(account)" style="color: red"-->
-<!--            class="font-weight-bold"> - Вы не успели выполнить цель!</span>-->
+            <!--            <span class="font-weight-bold" style="color:green"-->
+            <!--                  *ngIf="account.convertedBalance.balance > account.goal.value"> - Цель выполнена!</span> <span-->
+            <!--            *ngIf="isGoalExpired(account)" style="color: red"-->
+            <!--            class="font-weight-bold"> - Вы не успели выполнить цель!</span>-->
 
           </div>
         </div>
@@ -63,7 +65,8 @@
         </div>
       </div>
       <div class="col-1" style="max-width: 48px">
-        <button class="w-settings" #tooltip="matTooltip" matTooltip="Настройки" [matTooltipPosition]="'above'" (click)="openSettings(account)">
+        <button class="w-settings" #tooltip="matTooltip" matTooltip="Настройки" [matTooltipPosition]="'above'"
+                (click)="openSettings(account)">
           <mat-icon>settings</mat-icon>
         </button>
       </div>

@@ -58,7 +58,7 @@ public class AccountController {
     private ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto dto) {
 
         Account account = AccountDto.fromDto(dto);
-        if(Objects.nonNull(dto.getGoal()))
+        if (Objects.nonNull(dto.getGoal()))
             account.setGoal(AccountGoalDto.fromDto(dto.getGoal()));
         Account updateAccount = accountService.updateAccount(account);
         AccountDto accountDto = AccountDto.toDto(updateAccount);
@@ -66,8 +66,7 @@ public class AccountController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    private ResponseEntity<Boolean> deleteAccount(@PathParam(   "id") Long id)
-    {
+    private ResponseEntity<Boolean> deleteAccount(@PathParam("id") Long id) {
         accountService.deleteAccount(id);
         return ResponseEntity.ok(true);
     }

@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Account} from "../../../../entities/account";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
@@ -8,8 +8,10 @@ import {Icon} from "../../../../entities/icon";
 import {Goal} from "../../../../entities/goal";
 import {AccountBill} from "../../../../entities/account-bill";
 import {AccountService} from "../../../../service/account.service";
+import {NotificationService} from "../../../../service/notification.service";
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-account-settings',
   templateUrl: './account-settings.component.html',
   styleUrls: ['./account-settings.component.scss']
@@ -20,17 +22,18 @@ export class AccountSettingsComponent implements OnInit {
   public editAccountForm: FormGroup;
   private _currencies: Array<Currency>;
   hasSecondBill: boolean;
-  _icons: Icon[] = [];
   private _selectedIcon: Icon;
   private _goal: Goal;
   minDate: Date;
   private _secondBill: AccountBill;
+  _isGoalValid: boolean = true;
 
 
   constructor(private accountService: AccountService,
               private dialogRef: MatDialogRef<any>,
               private dictionary: DictionaryService,
-              @Inject(MAT_DIALOG_DATA) public data: { account: Account }) {
+              @Inject(MAT_DIALOG_DATA) public data: { account: Account },
+              private notificationService: NotificationService) {
     this._account = data.account;
     this.editAccountForm = new FormGroup({
       accountName: new FormControl(this._account.name, [Validators.required]),
@@ -42,14 +45,10 @@ export class AccountSettingsComponent implements OnInit {
     dictionary.getAllCurrencies().subscribe(value => this._currencies = value);
     this.hasSecondBill = this.account.accountBills.length == 2;
     if (this.hasSecondBill) this.secondBill = this.account.accountBills[1];
-    this._icons = [];
-    this._icons.push(new Icon('assets/img/accounts/1.png'))
-    this._icons.push(new Icon('assets/img/accounts/2.png'))
-    this._icons.push(new Icon('assets/img/accounts/3.png'))
-    this._icons.push(new Icon('assets/img/accounts/4.png'))
 
     this.minDate = new Date();
     this.goal = this.account.goal;
+    console.log(this._isGoalValid)
   }
 
 
@@ -74,14 +73,10 @@ export class AccountSettingsComponent implements OnInit {
     }
   }
 
-  get icons(): Icon[] {
-    return this._icons;
-  }
-
   createGoal() {
     this._goal = new Goal({});
+    this._isGoalValid = false;
   }
-
 
   get goal(): Goal {
     return this._goal;
@@ -121,12 +116,32 @@ export class AccountSettingsComponent implements OnInit {
       this.goal.date = this.controls.goalDate.value;
     }
     this.account.goal = this.goal;
-    this.accountService.updateAccount(this.account).subscribe(res => console.log(res));
-    close();
+    this.accountService.updateAccount(this.account).subscribe(res => {
+      this.notificationService.showSuccess("Информация по счёту успешно обновлена.", "Редактирование счёта");
+      this.dialogRef.close();
+    }, error => {
+      this.notificationService.showError('Возникла ошибка. Повторите попытку позже.', "Редактирование счёта")
+    });
+  }
+
+  isGoalValid() {
+    if (this.goal != null) {
+      return this.controls.goalName.value.length > 0 && this.controls.goalValue.value.length > 0 && this.controls.goalDate.value.length > 0;
+    }
+    return true;
+  }
+
+  changeGoalValue(withoutDate?: any) {
+    console.log(this.controls.goalDate.value)
+    this._isGoalValid = this.controls.goalName.value?.length > 0 && this.controls.goalValue.value?.length > 0 && this.controls.goalDate.value != null;
   }
 
   delete() {
-    this.accountService.deleteAccount(this.account).subscribe(res => console.log(res));
-    close();
+    this.accountService.deleteAccount(this.account).subscribe(res => {
+      this.notificationService.showSuccess("Счёт успешно удален.", "Редактирование счёта");
+      this.dialogRef.close(this.account.id);
+    }, error => {
+      this.notificationService.showError('Возникла ошибка. Повторите попытку позже.', "Редактирование счёта")
+    });
   }
 }

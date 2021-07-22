@@ -6,6 +6,8 @@ import _ from "lodash";
 import {AccountService} from "../../../service/account.service";
 import {Account} from "../../../entities/account";
 import {AccountSettingsComponent} from "./account-settings/account-settings.component";
+import {Type} from "../../../entities/type";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-accounts',
@@ -35,7 +37,8 @@ export class AccountsComponent implements OnInit {
   }
 
   constructor(private dialog: MatDialog,
-              private _accountService: AccountService) {
+              private _accountService: AccountService,
+              private _sanitizer: DomSanitizer) {
     _accountService.updateAccountsSubjectObservable.subscribe(res => this.accounts = res.accounts);
 
   }
@@ -81,5 +84,17 @@ export class AccountsComponent implements OnInit {
       width: '550px',
       data: {account: account}
     });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.accounts = _.remove(this._accounts, acc => acc.id != res)
+        this._accountService.updateAccountsEvent({
+          accounts: this.accounts
+        });
+      }
+    })
+  }
+
+  getTypeIcon(type: Type) {
+    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${type?.icon}`);
   }
 }
