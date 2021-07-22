@@ -9,6 +9,7 @@ import {filter, take} from "rxjs/operators";
 import {SettingsState} from "../settings.component";
 import {FileService} from "../../../../service/file.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {Base64img} from "../../../../util/base64img";
 
 @Component({
   selector: 'app-profile-settings',
@@ -141,6 +142,6 @@ export class ProfileSettingsComponent implements OnInit {
   }
 
   getProfileImg(profileImage?: any) {
-    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${profileImage ? profileImage?.profileImage : this.userSettings?.profileImage}`);
+    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${profileImage ? profileImage?.profileImage || Base64img.base64DefaultAvatar : this.userSettings?.profileImage || Base64img.base64DefaultAvatar}`);
   }
 }

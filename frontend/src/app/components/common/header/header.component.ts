@@ -11,6 +11,7 @@ import {LoginComponent} from "../login/login.component";
 import {RegistrationComponent} from "../registration/registration.component";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {FileService} from "../../../service/file.service";
+import {Base64img} from "../../../util/base64img";
 
 @Component({
   selector: 'app-header',
@@ -117,7 +118,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getProfileImage(profileImage?: any) {
-    return profileImage ? profileImage : this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${this.user?.profileImage}`);
+    return profileImage ? profileImage : this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${this.user?.profileImage || Base64img.base64DefaultAvatar}`);
   }
 
   public updateHeadTimeStamp() {

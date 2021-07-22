@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {AddTransactionModalComponent} from "./add-transaction-modal/add-transaction-modal.component";
 import {DictionaryService} from "../../../service/dictionary.service";
 import {Currency} from "../../../entities/currency";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-finance',
@@ -26,7 +27,8 @@ export class FinanceComponent implements OnInit {
   constructor(private _authService: AuthService,
               private _accountService: AccountService,
               private _dictionaryService: DictionaryService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private _sanitizer: DomSanitizer) {
     this._authService.getCurrentLoggedUser().pipe(filter(res => res != null), take(1)).subscribe(res => {
       this.user = res;
       this._accountService.getBalance(this.user.id, this.currencyToConvert).subscribe(res => this._balance = res);
@@ -98,5 +100,9 @@ export class FinanceComponent implements OnInit {
       : this.currencyToConvert = _.slice(this.currencies, start + 1, start + 2 > this.currencies.length ? -1 : start + 2)[0].shortName;
     this._accountService.getBalance(this.user.id, this.currencyToConvert).subscribe(res => this._balance = res);
     console.log(this.currencyToConvert)
+  }
+
+  getAccountIcon(icon: string) {
+    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${icon}`);
   }
 }

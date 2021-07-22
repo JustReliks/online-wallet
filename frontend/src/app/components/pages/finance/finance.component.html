@@ -31,6 +31,11 @@
             <div *ngIf="this.accounts" class="w-balance-table">
               <div *ngFor="let account of accounts">
                 <div class="row w-100  flex-column pl-3 pr-3">
+                  <div style="max-width: 50px;
+                              max-height: 50px;
+                              position: absolute;
+                              right: 53px;">
+                    <img class="w-100 h-100" [src]="getAccountIcon(account.accountType.type.icon)"/></div>
                   <div class="row m-0"><p class="w-acc-title">{{account.name}}</p></div>
                   <div class="row m-0">
                     <div class="mr-2 mb-2" *ngFor="let bill of account.accountBills">
@@ -38,6 +43,7 @@
                             class="badge badge-pill badge-primary">{{bill.balance | number}} {{bill.currency.shortName}}</span>
                     </div>
                   </div>
+                  <p class="m-0 mt-3 w-acc-type">{{account.accountType.type.name }} счёт</p>
                 </div>
                 <hr align="center" width="90%" size="50" color="#dddddd"/>
               </div>
@@ -50,53 +56,6 @@
       </div>
     </div>
     <div class="col">
-      <!--test col-->
-      <!--    <div class="container">-->
-      <!--      <div class="row">-->
-      <!--        <div class="col">-->
-      <!--          <div class="card text-success">-->
-      <!--            <img class="card-img-top" src="/assets/img/main/finance-up.jpg">-->
-      <!--            <div class="card-block">-->
-      <!--              <h4 class="card-title">Доходы</h4>-->
-      <!--              <p class="card-text">Что-то</p>-->
-      <!--              <a href="#" class="btn btn-primary">Go somewhere</a>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <div class="col">-->
-      <!--          <div class="card text-success">-->
-      <!--            <img class="card-img-top" src="/assets/img/main/finance-up.jpg">-->
-      <!--            <div class="card-block">-->
-      <!--              <h4 class="card-title">Доходы</h4>-->
-      <!--              <p class="card-text">Что-то</p>-->
-      <!--              <a href="#" class="btn btn-primary">Go somewhere</a>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <div class="w-100 w-table"></div>-->
-      <!--        <div class="col">-->
-      <!--          <div class="card text-success">-->
-      <!--            <img class="card-img-top" src="/assets/img/main/finance-up.jpg">-->
-      <!--            <div class="card-block">-->
-      <!--              <h4 class="card-title">Доходы</h4>-->
-      <!--              <p class="card-text">Что-то</p>-->
-      <!--              <a href="#" class="btn btn-primary">Go somewhere</a>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <div class="col">-->
-      <!--          <div class="card text-success">-->
-      <!--            <img class="card-img-top" src="/assets/img/main/finance-up.jpg">-->
-      <!--            <div class="card-block">-->
-      <!--              <h4 class="card-title">Доходы</h4>-->
-      <!--              <p class="card-text">Что-то</p>-->
-      <!--              <a href="#" class="btn btn-primary">Go somewhere</a>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--    </div>-->
-
       <app-card [accounts]="this.accounts" [user]="this.user"></app-card>
     </div>
   </div>
