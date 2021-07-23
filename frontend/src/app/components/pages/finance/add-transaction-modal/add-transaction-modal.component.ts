@@ -37,7 +37,7 @@ export class AddTransactionModalComponent implements OnInit {
 
     this.addTransactionForm = new FormGroup({
       account: new FormControl('', [Validators.required]),
-      sum: new FormControl('', [Validators.min(1)]),
+      sum: new FormControl('', [Validators.required, Validators.min(1)]),
     })
 
     this._dictionaryService.getAllTransactionCategories().subscribe(res => this.categories = res);
