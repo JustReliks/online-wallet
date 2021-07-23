@@ -7,7 +7,7 @@ import {Account} from "../../../../entities/account";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Chart} from 'angular-highcharts';
 import {StatisticsService} from "../../../../service/statistics.service";
-import * as Highcharts from "highcharts";
+import {Statistics} from "../../../../entities/statistic/statistic";
 
 @Component({
   selector: 'app-accounts-statistic',
@@ -20,6 +20,8 @@ export class AccountsStatisticComponent implements OnInit {
   private _selectedAccount: Account;
   private _operations: any;
   private _accounts: Account[];
+  height: number;
+  width: number;
 
   @Input('user') set user(user: AuthUser) {
     console.log(user)
@@ -75,7 +77,6 @@ export class AccountsStatisticComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Loaded');
   }
 
   selectAccount($event: any) {
@@ -95,41 +96,113 @@ export class AccountsStatisticComponent implements OnInit {
     this.accountsExpanded = false;
     this.selectedAccount = account;
     console.log(this.chartIncomeLine)
-    let accountStatistic = this.statisticsService.getAccountStatistic(account.id, 30).subscribe(res => {
+    let accountStatistic = this.statisticsService.getAccountStatistic(account.id, 1).subscribe(res => {
       console.log(res)
-      this.chartIncomeLine.ref.update({
-        xAxis: {
-          categories: res.incomeLineChart.categories as any
-        },
-        series: [
-          {
-            name: 'Расходы за сутки',
-            type: 'spline',
-            data: res.incomeLineChart.seriesData as any
-          }
-      ]
-      });
+      this.initCharts(res);
       console.log(this.chartIncomeLine)
     });
     console.log(accountStatistic)
   }
 
-  // @ts-ignore
+  private initCharts(res: Statistics, days: number = 1) {
+    function getDaysName(days: number) {
+      if (days == 1) {
+        return 'сутки';
+      }
+      if (days > 1) {
+        return days + ' дней'
+      }
+    }
+
+    this.chartIncomeLine.ref.update({
+      xAxis: {
+        categories: res.incomeLineChart.categories as any
+      },
+      title: {
+        text: 'График доходов за ' + getDaysName(days)
+      },
+      series: [
+        {
+          name: 'Доходы за ' + getDaysName(days),
+          type: 'spline',
+          data: res.incomeLineChart.seriesData as any
+        }
+      ]
+    });
+    this.chartExpensesLine.ref.update({
+      xAxis: {
+        categories: res.expenseLineChart.categories as any
+      },
+      title: {
+        text: 'График расходов за ' + getDaysName(days)
+      },
+      series: [
+        {
+          name: 'Расходы за ' + getDaysName(days),
+          type: 'spline',
+          data: res.expenseLineChart.seriesData as any
+        }
+      ]
+    });
+
+    this.chartIncomeCircle.ref.update({
+      title: {
+        text: 'Доходы по категориям за ' + getDaysName(days)
+      },
+      series: [{
+        type: 'pie',
+        data: res.incomeCircleChart.data as any
+      }]
+    })
+
+    this.chartExpensesCircle.ref.update({
+      title: {
+        text: 'Расходы по категориям за ' + getDaysName(days)
+      },
+      series: [{
+        type: 'pie',
+        data: res.expenseCircleChart.data as any
+      }]
+    })
+
+    this.moneyLineChart.ref.update({
+      xAxis: {
+        categories: res.moneyLineChart.categories as any
+      },
+      title: {
+        text: 'Изменение баланса за ' + getDaysName(days)
+      },
+      series: [
+        {
+          name: 'Баланс',
+          type: 'spline',
+          data: res.moneyLineChart.seriesData as any
+        }
+      ]
+    })
+
+    this.moneyLineChart.ref.reflow();
+  }
+
+// @ts-ignore
 
   chartIncomeLine = new Chart({
     chart: {
       type: 'line'
     },
     title: {
-      text: 'Linechart'
+      text: 'График доходов за 1 сутки'
+    },
+    yAxis: {
+      title: null
     },
     credits: {
       enabled: false
     },
     series: [
       {
-        name: 'Line 1',
-        type: 'line',
+        name: 'Доходы за сутки',
+        type: 'spline',
         data: [1, 2, 3]
       }
     ]
@@ -142,7 +215,7 @@ export class AccountsStatisticComponent implements OnInit {
       plotShadow: false
     },
     title: {
-      text: 'Browser market shares at a specific website, 2014'
+      text: 'Доходы по категориям за сутки'
     },
     tooltip: {
       pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -153,7 +226,7 @@ export class AccountsStatisticComponent implements OnInit {
         cursor: 'pointer',
         dataLabels: {
           enabled: true,
-          format: '<b>{point.name}%</b>: {point.percentage:.1f} %',
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %',
           style: {
             color:
               'black'
@@ -164,19 +237,7 @@ export class AccountsStatisticComponent implements OnInit {
     series: [{
       type: 'pie',
       name: 'Browser share',
-      data: [
-        ['Firefox', 45.0],
-        ['IE', 26.8],
-        {
-          name: 'Chrome',
-          y: 12.8,
-          sliced: true,
-          selected: true
-        },
-        ['Safari', 8.5],
-        ['Opera', 6.2],
-        ['Others', 0.7]
-      ]
+      data: []
     }]
   });
 
@@ -186,7 +247,7 @@ export class AccountsStatisticComponent implements OnInit {
       plotShadow: false
     },
     title: {
-      text: 'Browser market shares at a specific website, 2014'
+      text: 'Расходы по категориям за сутки'
     },
     tooltip: {
       pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -208,19 +269,7 @@ export class AccountsStatisticComponent implements OnInit {
     series: [{
       type: 'pie',
       name: 'Browser share',
-      data: [
-        ['Firefox', 45.0],
-        ['IE', 26.8],
-        {
-          name: 'Chrome',
-          y: 12.8,
-          sliced: true,
-          selected: true
-        },
-        ['Safari', 8.5],
-        ['Opera', 6.2],
-        ['Others', 0.7]
-      ]
+      data: []
     }]
   });
   chartExpensesLine = new Chart({
@@ -245,8 +294,32 @@ export class AccountsStatisticComponent implements OnInit {
       }
     ]
   });
+  moneyLineChart = new Chart({
+    chart: {
+      type: 'spline',
+    },
+    title: {
+      text: 'График изменения баланса за сутки'
+    },
+    credits: {
+      enabled: false
+    },
+    xAxis: {
+      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    },
+    series: [
+      {
+        name: 'Баланс',
+        type: 'spline',
+        data: [1, 2, 3]
+      }
+    ]
+  });
 
-  add() {
-    this.chartIncomeLine.addPoint(Math.floor(Math.random() * 10));
+  loadStatistics(number: number) {
+    this.statisticsService.getAccountStatistic(this._selectedAccount.id, number).subscribe(res => {
+      this.initCharts(res, number);
+    });
   }
 }

@@ -45,16 +45,16 @@
   <div class="w-stats"></div>
   <div class="row mt-3">
     <div class="col w-text-align-last-center">
-      <button mat-raised-button color="primary" class="btn  purchase-btn">День</button>
+      <button mat-raised-button color="primary" class="btn  purchase-btn" (click)="loadStatistics(1)">День</button>
     </div>
-    <div class="col">
-      <button mat-raised-button color="primary" class=" bnt purchase-btn">Неделя</button>
+    <div class="col w-text-align-last-center">
+      <button mat-raised-button color="primary" class=" bnt purchase-btn" (click)="loadStatistics(7)">Неделя</button>
     </div>
-    <div class="col">
-      <button mat-raised-button color="primary" class="btn purchase-btn">Месяц</button>
+    <div class="col w-text-align-last-center">
+      <button mat-raised-button color="primary" class="btn purchase-btn" (click)="loadStatistics(30)">Месяц</button>
     </div>
   </div>
-  <div class="row chart">
+  <div class="row chart mt-3">
     <div class="col mt-3">
       <div class="w-title w-text-align-last-center mb-3">Доходы</div>
       <div [chart]="chartIncomeLine"></div>
@@ -65,6 +65,9 @@
       <div [chart]="chartExpensesLine"></div>
       <div [chart]="chartExpensesCircle"></div>
     </div>
+  </div>
+  <div class="row chart mt-4">
+    <div [ngStyle]="{'width':'100%','height':'100%','display':'block'}" [chart]="moneyLineChart"></div>
   </div>
 
 </div>
