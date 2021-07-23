@@ -10,6 +10,7 @@ import {AddTransactionModalComponent} from "./add-transaction-modal/add-transact
 import {DictionaryService} from "../../../service/dictionary.service";
 import {Currency} from "../../../entities/currency";
 import {DomSanitizer} from "@angular/platform-browser";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-finance',
@@ -23,17 +24,41 @@ export class FinanceComponent implements OnInit {
   currencyToConvert: any = null;
   private _balance: any;
   private _currencies: Array<Currency>;
+  currencyConverterForm: FormGroup;
+  convertFromValue: any;
+  convertToValue: any;
+  private currencyMap: {};
 
   constructor(private _authService: AuthService,
               private _accountService: AccountService,
               private _dictionaryService: DictionaryService,
               private dialog: MatDialog,
               private _sanitizer: DomSanitizer) {
+
+
+    this.currencyConverterForm = new FormGroup({
+      convertFrom: new FormControl('', [Validators.required]),
+      convertFromValue: new FormControl(1, [Validators.required]),
+      convertTo: new FormControl('', [Validators.required]),
+      convertToValue: new FormControl('', [])
+    })
+
+    this._dictionaryService.getAllCurrencies().subscribe(res => {
+      this.currencies = res
+      this.currencyMap = _.chain(res)
+        .keyBy('id')
+        .mapValues('shortName')
+        .value();
+    })
     this._authService.getCurrentLoggedUser().pipe(filter(res => res != null), take(1)).subscribe(res => {
       this.user = res;
-      this._accountService.getBalance(this.user.id, this.currencyToConvert).subscribe(res => this._balance = res);
+      this._accountService.getBalance(this.user.id, this.currencyToConvert).subscribe(res => {
+        this._balance = res;
+        this.convertFromValue = _.find(this.currencies, curr => curr.shortName == this.balance.currency)?.id
+        this.convertToValue = this.getCurrenciesWithoutMain()[0].id;
+        this.currencyConverterForm.controls.convertTo.setValue(this.convertToValue);
+      });
       this._accountService.getAccounts(this.user.id).subscribe(res => this.accounts = res);
-      this._dictionaryService.getAllCurrencies().subscribe(res => this.currencies = res)
     });
 
     this._accountService.updateAccountsSubjectObservable.subscribe(res => this.accounts = res.accounts);
@@ -94,15 +119,25 @@ export class FinanceComponent implements OnInit {
 
   changeCurrency() {
     let start = _.findIndex(this.currencies, curr => curr.shortName == this.balance.currency);
-    console.log(start, this.currencies.length)
     this.currencyToConvert = start + 1 == this.currencies.length
       ? this.currencies[0].shortName
       : this.currencyToConvert = _.slice(this.currencies, start + 1, start + 2 > this.currencies.length ? -1 : start + 2)[0].shortName;
     this._accountService.getBalance(this.user.id, this.currencyToConvert).subscribe(res => this._balance = res);
-    console.log(this.currencyToConvert)
   }
 
   getAccountIcon(icon: string) {
     return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${icon}`);
+  }
+
+  getCurrenciesWithoutMain() {
+    return _.filter(this.currencies, curr => curr.id != this.convertFromValue)
+  }
+
+  convertCurrency() {
+    this._accountService
+      .convertCurrencies(this.currencyMap[this.convertFromValue], this.currencyMap[this.convertToValue], this.currencyConverterForm.controls.convertFromValue.value)
+      .subscribe(res => {
+        this.currencyConverterForm.controls.convertToValue.setValue(res)
+      })
   }
 }

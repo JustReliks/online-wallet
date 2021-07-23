@@ -67,6 +67,7 @@ export class TransactionHistoryComponent implements OnInit {
       readOnly: true,
       contextMenu: true,
       language: "ru-RU",
+      multiColumnSorting: true,
       licenseKey: "non-commercial-and-evaluation",
       columns: [
         {data: 'account'},

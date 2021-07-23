@@ -8,6 +8,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {Chart} from 'angular-highcharts';
 import {StatisticsService} from "../../../../service/statistics.service";
 import {Statistics} from "../../../../entities/statistic/statistic";
+import {AccountService} from "../../../../service/account.service";
 
 @Component({
   selector: 'app-accounts-statistic',
@@ -22,6 +23,7 @@ export class AccountsStatisticComponent implements OnInit {
   private _accounts: Account[];
   height: number;
   width: number;
+  private selectedDays: number=1;
 
   @Input('user') set user(user: AuthUser) {
     console.log(user)
@@ -43,11 +45,17 @@ export class AccountsStatisticComponent implements OnInit {
 
   constructor(private dialog: MatDialog,
               private _sanitizer: DomSanitizer,
-              private statisticsService: StatisticsService) {
+              private statisticsService: StatisticsService,
+              private accountService: AccountService) {
     this._accounts = new Array<Account>();
-    // this._accounts.push(new Account("test1", 15, "RUB"));
-    // this._accounts.push(new Account("test2", 31, "RUB"));
-    // this._accounts.push(new Account("test3", 45, "EUR"));
+    this.accountService.updateAccountsSubjectObservable.subscribe(res => {
+      console.log(res);
+      console.log(this.selectedDays)
+      console.log(this.selectedAccount)
+      if (this.selectedAccount != null && this.selectedDays != null) {
+        this.statisticsService.getAccountStatistic(this.selectedAccount.id, this.selectedDays).subscribe(res => this.initCharts(res, this.selectedDays));
+      }
+    })
   }
 
   get accounts(): Array<Account> {
@@ -161,6 +169,7 @@ export class AccountsStatisticComponent implements OnInit {
       },
       series: [{
         type: 'pie',
+        name: '',
         data: res.expenseCircleChart.data as any
       }]
     })
@@ -318,6 +327,7 @@ export class AccountsStatisticComponent implements OnInit {
   });
 
   loadStatistics(number: number) {
+    this.selectedDays = number;
     this.statisticsService.getAccountStatistic(this._selectedAccount.id, number).subscribe(res => {
       this.initCharts(res, number);
     });

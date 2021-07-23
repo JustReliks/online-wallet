@@ -88,7 +88,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         createCircleData(statistics);
 
-        //Collections.reverse(categories);
+        Collections.reverse(categories);
         Collections.reverse(statistics.getIncomeLineChart().getSeriesData());
         Collections.reverse(statistics.getExpenseLineChart().getSeriesData());
         statistics.getIncomeLineChart().setCategories(categories);
