@@ -14,6 +14,6 @@ public class CircleChart {
 
     private HashMap<TransactionCategory, Double> rawData;
 
-    private List<Pair<String, Double>> data;
+    private List<List<Object>> data;
 
 }

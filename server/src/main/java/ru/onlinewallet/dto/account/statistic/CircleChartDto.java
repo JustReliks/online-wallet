@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class CircleChartDto {
 
-    private List<Pair<String, Double>> data;
+    private List<List<Object>> data;
 
     public static CircleChartDto toDto(CircleChart chart)
     {

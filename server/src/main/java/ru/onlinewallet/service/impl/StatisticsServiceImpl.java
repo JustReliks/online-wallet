@@ -88,7 +88,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         createCircleData(statistics);
 
-        Collections.reverse(categories);
+        //Collections.reverse(categories);
         Collections.reverse(statistics.getIncomeLineChart().getSeriesData());
         Collections.reverse(statistics.getExpenseLineChart().getSeriesData());
         statistics.getIncomeLineChart().setCategories(categories);
@@ -213,14 +213,14 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     private void createCircleData(AccountStatistics stat) {
-        List<Pair<String, Double>> circleData = new ArrayList<>();
+        List<List<Object>> circleData = new ArrayList<>();
         AtomicReference<Double> allValue = new AtomicReference<>((double) 0);
         stat.getExpenseCircleChart().getRawData().values().forEach(value -> allValue.updateAndGet(v -> v + value));
         for (Map.Entry<TransactionCategory, Double> entry : stat.getExpenseCircleChart().getRawData().entrySet()) {
             double percent = NumberUtil.round(entry.getValue() / allValue.get());
-            String name = entry.getKey().getCode();
+            String name = entry.getKey().getTitle();
 
-            circleData.add(Pair.of(name, percent));
+            circleData.add(List.of(name,percent));
         }
         stat.getExpenseCircleChart().setData(circleData);
 
@@ -229,9 +229,9 @@ public class StatisticsServiceImpl implements StatisticsService {
         stat.getIncomeCircleChart().getRawData().values().forEach(value -> allValue.updateAndGet(v -> v + value));
         for (Map.Entry<TransactionCategory, Double> entry : stat.getIncomeCircleChart().getRawData().entrySet()) {
             double percent = NumberUtil.round(entry.getValue() / allValue.get()) * 100;
-            String name = entry.getKey().getCode();
+            String name = entry.getKey().getTitle();
 
-            circleData.add(Pair.of(name, percent));
+            circleData.add(List.of(name,percent));
         }
         stat.getIncomeCircleChart().setData(circleData);
     }
