@@ -6,6 +6,8 @@ import {Operation} from "../../../../entities/operation";
 import {Account} from "../../../../entities/account";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Chart} from 'angular-highcharts';
+import {StatisticsService} from "../../../../service/statistics.service";
+import * as Highcharts from "highcharts";
 
 @Component({
   selector: 'app-accounts-statistic',
@@ -38,7 +40,8 @@ export class AccountsStatisticComponent implements OnInit {
   accountsExpanded: boolean = true;
 
   constructor(private dialog: MatDialog,
-              private _sanitizer: DomSanitizer) {
+              private _sanitizer: DomSanitizer,
+              private statisticsService: StatisticsService) {
     this._accounts = new Array<Account>();
     // this._accounts.push(new Account("test1", 15, "RUB"));
     // this._accounts.push(new Account("test2", 31, "RUB"));
@@ -91,6 +94,24 @@ export class AccountsStatisticComponent implements OnInit {
   showAccountStatistic(account: Account) {
     this.accountsExpanded = false;
     this.selectedAccount = account;
+    console.log(this.chartIncomeLine)
+    let accountStatistic = this.statisticsService.getAccountStatistic(account.id, 30).subscribe(res => {
+      console.log(res)
+      this.chartIncomeLine.ref.update({
+        xAxis: {
+          categories: res.incomeLineChart.categories as any
+        },
+        series: [
+          {
+            name: 'Расходы за сутки',
+            type: 'spline',
+            data: res.incomeLineChart.seriesData as any
+          }
+      ]
+      });
+      console.log(this.chartIncomeLine)
+    });
+    console.log(accountStatistic)
   }
 
   // @ts-ignore
@@ -212,8 +233,8 @@ export class AccountsStatisticComponent implements OnInit {
     credits: {
       enabled: false
     },
-    xAxis:{
-      categories:["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    xAxis: {
+      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     },
     series: [

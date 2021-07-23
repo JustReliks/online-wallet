@@ -72,7 +72,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 date = date.minus(1, ChronoUnit.DAYS);
                 calendar.setTime(Date.from(date));
                 day = calendar.get(Calendar.DAY_OF_MONTH);
-                month = calendar.get(Calendar.MONTH);
+                month = calendar.get(Calendar.MONTH) + 1;
                 categories.add((day < 10 ? "0" + day : day) + "." + (month < 10 ? "0" + month : month));
                 AccountStatistics tempStat = getAccountStatisticsForDay(date, transactions, currency);
                 mergeAccounts(statistics, tempStat);
@@ -80,6 +80,9 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         createCircleData(statistics);
 
+        Collections.reverse(categories);
+        Collections.reverse(statistics.getIncomeLineChart().getSeriesData());
+        Collections.reverse(statistics.getExpenseLineChart().getSeriesData());
         statistics.getIncomeLineChart().setCategories(categories);
         statistics.getExpenseLineChart().setCategories(categories);
 
@@ -188,7 +191,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         allValue.set(0d);
         stat.getIncomeCircleChart().getRawData().values().forEach(value -> allValue.updateAndGet(v -> v + value));
         for (Map.Entry<TransactionCategory, Double> entry : stat.getIncomeCircleChart().getRawData().entrySet()) {
-            double percent = NumberUtil.round(entry.getValue() / allValue.get());
+            double percent = NumberUtil.round(entry.getValue() / allValue.get()) * 100;
             String name = entry.getKey().getCode();
 
             circleData.add(Pair.of(name, percent));

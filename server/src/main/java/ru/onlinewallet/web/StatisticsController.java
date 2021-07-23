@@ -9,6 +9,8 @@ import ru.onlinewallet.dto.account.statistic.StatisticsDto;
 import ru.onlinewallet.entity.account.statistics.AccountStatistics;
 import ru.onlinewallet.service.StatisticsService;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/statistics")
 @RequiredArgsConstructor
@@ -17,9 +19,9 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
 
     @GetMapping
-    private StatisticsDto getStatistics(@RequestParam("account") Long accountId, @RequestParam("days") Long days) {
+    private StatisticsDto getStatistics(@RequestParam("account") Long accountId, @RequestParam("days") Long days) throws IOException {
         AccountStatistics statistics =  statisticsService.getStatistics(accountId, days);
-        return null;
+        return StatisticsDto.toDto(statistics);
     }
 
 }
