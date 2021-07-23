@@ -10,7 +10,9 @@ import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.AccountBill;
 import ru.onlinewallet.entity.account.AccountGoal;
 import ru.onlinewallet.entity.account.AccountType;
+import ru.onlinewallet.entity.account.statistics.AccountStatistics;
 import ru.onlinewallet.service.AccountService;
+import ru.onlinewallet.service.StatisticsService;
 
 import javax.websocket.server.PathParam;
 import java.io.IOException;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class AccountController {
 
     private final AccountService accountService;
+    private final StatisticsService statisticsService;
 
     @PostMapping
     private ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto dto) {
@@ -73,7 +76,7 @@ public class AccountController {
 
 
     @GetMapping
-    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id) {
+    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id) throws IOException {
         return ResponseEntity.ok(
                 accountService
                         .getAll(id)
