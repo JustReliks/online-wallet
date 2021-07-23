@@ -9,6 +9,7 @@ public class StatisticsDto {
     private CircleChartDto incomeCircleChart;
     private LineChartDto expenseLineChart;
     private CircleChartDto expenseCircleChart;
+    private LineChartDto moneyLineChart;
 
     public static StatisticsDto toDto(AccountStatistics accountStatistics)
     {
@@ -17,6 +18,7 @@ public class StatisticsDto {
         dto.setIncomeLineChart(LineChartDto.toDto(accountStatistics.getIncomeLineChart()));
         dto.setIncomeCircleChart(CircleChartDto.toDto(accountStatistics.getIncomeCircleChart()));
         dto.setExpenseCircleChart(CircleChartDto.toDto(accountStatistics.getExpenseCircleChart()));
+        dto.setMoneyLineChart(LineChartDto.toDto(accountStatistics.getMoneyLineChart()));
 
         return dto;
     }

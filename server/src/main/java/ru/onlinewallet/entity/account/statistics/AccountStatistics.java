@@ -9,5 +9,6 @@ public class AccountStatistics {
     private CircleChart incomeCircleChart;
     private LineChart expenseLineChart;
     private CircleChart expenseCircleChart;
+    private LineChart moneyLineChart;
 
 }
