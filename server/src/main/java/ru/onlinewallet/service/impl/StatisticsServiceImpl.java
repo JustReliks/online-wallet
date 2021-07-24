@@ -1,7 +1,6 @@
 package ru.onlinewallet.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.Transaction;
@@ -29,7 +28,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private static final String INCOME = "INCOME";
     private static final String EXPENSES = "EXPENSES";
 
-    private static final List<String> DAY_CATEGORIES = getDayCategories();
+    private static final LinkedList<String> DAY_CATEGORIES = getDayCategories();
 
     private final AccountRepository accountRepository;
     private final AccountService accountService;
@@ -42,7 +41,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         List<Transaction> transactions = transactionHistoryRepository.findAllByAccountId(accountId);
         String currency = userSettingsRepository.findByUserId(account.getUserId()).getCurrency();
         Instant date = Instant.now();
-        List<String> categories = new LinkedList<>();
+        LinkedList<String> categories = new LinkedList<>();
         AccountStatistics statistics = getAccountStatisticsForDay(date, transactions, currency);
         calculateMoneyChartCurrentDay(statistics, account, currency);
         if (days == 1) {
@@ -60,7 +59,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             List<Double> dataExpense = new LinkedList<>();
 
             dataMoney.add(accountService.getConvertedBalance(account, currency).getValue());
-            dataMoney.addFirst(((LinkedList<Double>)statistics.getMoneyLineChart().getSeriesData()).getFirst());
+            dataMoney.addFirst(calculateStartDayMoney(currency, transactions, date, dataMoney.getFirst()));
             dataExpense.add(getDaySum(statistics.getExpenseLineChart().getSeriesData()));
             dataIncome.add(getDaySum(statistics.getIncomeLineChart().getSeriesData()));
 
@@ -72,42 +71,39 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             statistics.setExpenseLineChart(chartExpense);
             statistics.setIncomeLineChart(chartIncome);
-
+            Instant dateMoney = Instant.now();
             for (int i = 0; i < days - 1; i++) {
-                date = date.minus(1, ChronoUnit.DAYS);
                 calendar.setTime(Date.from(date));
+                date = date.minus(1, ChronoUnit.DAYS);
+
                 day = calendar.get(Calendar.DAY_OF_MONTH);
                 month = calendar.get(Calendar.MONTH) + 1;
-                categories.add((day < 10 ? "0" + day : day) + "." + (month < 10 ? "0" + month : month));
+                categories.addFirst((day < 10 ? "0" + day : day) + "." + (month < 10 ? "0" + month : month));
                 AccountStatistics tempStat = getAccountStatisticsForDay(date, transactions, currency);
                 mergeAccounts(statistics, tempStat);
-                dataMoney.addFirst(calculateStartDayMoney(currency, transactions, date, dataMoney.getFirst()));
+                 if (i > 0)
+                    dataMoney.addFirst(calculateStartDayMoney(currency, transactions, dateMoney, dataMoney.getFirst()));
+                 dateMoney = dateMoney.minus(1, ChronoUnit.DAYS);
             }
             chartMoney.setSeriesData(dataMoney);
             statistics.setMoneyLineChart(chartMoney);
+            Collections.reverse(statistics.getExpenseLineChart().getSeriesData());
+            Collections.reverse(statistics.getIncomeLineChart().getSeriesData());
         }
         createCircleData(statistics);
-
-        //Collections.reverse(categories);
-        Collections.reverse(statistics.getIncomeLineChart().getSeriesData());
-        Collections.reverse(statistics.getExpenseLineChart().getSeriesData());
-        statistics.getIncomeLineChart().setCategories(categories);
         statistics.getMoneyLineChart().setCategories(categories);
+        statistics.getIncomeLineChart().setCategories(categories);
         statistics.getExpenseLineChart().setCategories(categories);
 
         return statistics;
     }
 
+
     private Double calculateStartDayMoney(String currency, List<Transaction> transactions,
                                           Instant day, Double endValue) throws IOException {
         AccountStatistics statistics = getAccountStatisticsForDay(day, transactions, currency);
-        Double[] data = new Double[24];
-        data[23] = endValue;
-        for(int i = data.length - 2; i >= 0; i--)
-        {
-            data[i] = data[i + 1] - statistics.getIncomeLineChart().getSeriesData().get(i) + statistics.getExpenseLineChart().getSeriesData().get(i);
-        }
-        return data[0];
+        return endValue - getDaySum(statistics.getIncomeLineChart().getSeriesData()) +
+                getDaySum(statistics.getExpenseLineChart().getSeriesData());
     }
 
     private void calculateMoneyChartCurrentDay(AccountStatistics statistics, Account account, String currency) throws IOException {
@@ -115,18 +111,16 @@ public class StatisticsServiceImpl implements StatisticsService {
         calendar.setTime(new Date());
         LineChart chartMoney = new LineChart();
         chartMoney.setCategories(DAY_CATEGORIES);
-        LinkedList<Double> data = new LinkedList<>();
+        Double[] data = new Double[24];
+        Arrays.fill(data, accountService.getConvertedBalance(account, currency).getValue());
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        data.add(accountService.getConvertedBalance(account, currency).getValue());
-
-        for (int i = hour - 1; i > 0; i--) {
-            data.offerFirst(NumberUtil.round(data.getFirst() + (getDaySum(statistics.getIncomeLineChart().getSeriesData())) -
-                    getDaySum(statistics.getExpenseLineChart().getSeriesData())));
+        for (int i = hour - 1; i >= 0; i--) {
+            data[i] = data[i + 1] - statistics.getIncomeLineChart().getSeriesData().get(i + 1) +
+                    statistics.getExpenseLineChart().getSeriesData().get(i + 1);
         }
-        chartMoney.setSeriesData(data);
+        chartMoney.setSeriesData(new LinkedList<>(List.of(data)));
         statistics.setMoneyLineChart(chartMoney);
     }
-
 
     private Double getDaySum(List<Double> list) {
         Double value = 0d;
@@ -177,9 +171,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             Instant time = transaction.getDateTime();
             Calendar calendar1 = GregorianCalendar.getInstance();
             calendar1.setTime(Date.from(time));
-            if (calendar1.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) &&
-                    calendar1.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
-                    calendar1.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH)) {
+            if (sameDay(calendar1, calendar)) {
                 int hour = calendar1.get(Calendar.HOUR);
                 String category = transaction.getCategory().getType();
                 if (category.equals(INCOME)) {
@@ -212,6 +204,23 @@ public class StatisticsServiceImpl implements StatisticsService {
         return statistics;
     }
 
+    private boolean sameDay(Instant instant1, Instant instant2) {
+        Calendar calendar1 = GregorianCalendar.getInstance();
+        calendar1.setTime(Date.from(instant1));
+
+        Calendar calendar2 = GregorianCalendar.getInstance();
+        calendar2.setTime(Date.from(instant2));
+
+        return sameDay(calendar1, calendar2);
+    }
+
+    private boolean sameDay(Calendar calendar1, Calendar calendar2) {
+        return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
+                calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) &&
+                calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
+    }
+
+
     private void createCircleData(AccountStatistics stat) {
         List<List<Object>> circleData = new ArrayList<>();
         AtomicReference<Double> allValue = new AtomicReference<>((double) 0);
@@ -220,7 +229,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             double percent = NumberUtil.round(entry.getValue() / allValue.get());
             String name = entry.getKey().getTitle();
 
-            circleData.add(List.of(name,percent));
+            circleData.add(List.of(name, percent));
         }
         stat.getExpenseCircleChart().setData(circleData);
 
@@ -231,16 +240,17 @@ public class StatisticsServiceImpl implements StatisticsService {
             double percent = NumberUtil.round(entry.getValue() / allValue.get()) * 100;
             String name = entry.getKey().getTitle();
 
-            circleData.add(List.of(name,percent));
+            circleData.add(List.of(name, percent));
         }
         stat.getIncomeCircleChart().setData(circleData);
     }
 
-    private static List<String> getDayCategories() {
-        List<String> category = new LinkedList<>();
+    private static LinkedList<String> getDayCategories() {
+        LinkedList<String> category = new LinkedList<>();
         for (int i = 0; i < 24; i++) {
-            category.add((i < 10 ? "0" + i : i) + ":00");
+            category.addFirst((i < 10 ? "0" + i : i) + ":00");
         }
+        Collections.reverse(category);
         return category;
     }
 }
