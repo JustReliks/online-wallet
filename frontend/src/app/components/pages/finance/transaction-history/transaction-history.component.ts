@@ -4,6 +4,7 @@ import _ from "lodash";
 import {TransactionHistoryService} from "../../../../service/transaction-history.service";
 import {Transaction} from "../../../../entities/transaction";
 import Handsontable from "handsontable";
+import {AccountService} from "../../../../service/account.service";
 
 @Component({
   selector: 'app-transaction-history',
@@ -25,8 +26,13 @@ export class TransactionHistoryComponent implements OnInit {
     return this._currentUser;
   }
 
-  constructor(private _transactionHistoryService: TransactionHistoryService) {
-
+  constructor(private _transactionHistoryService: TransactionHistoryService,
+              private accountService: AccountService) {
+    this.accountService.updateAccountsSubjectObservable.subscribe(res => {
+      if (this.user != null) {
+        this._transactionHistoryService.getTransactions(this.user?.id).subscribe(res => this.updateTable(res));
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -67,6 +73,7 @@ export class TransactionHistoryComponent implements OnInit {
       readOnly: true,
       contextMenu: true,
       language: "ru-RU",
+      multiColumnSorting: true,
       licenseKey: "non-commercial-and-evaluation",
       columns: [
         {data: 'account'},
@@ -98,4 +105,17 @@ export class TransactionHistoryComponent implements OnInit {
     this._currentUser = _.cloneDeep(this._originalUser);
   }
 
+  private updateTable(res: Array<Transaction>) {
+    let arr: any[] = [];
+    _.forEach(res, r => {
+      arr.push({
+        account: r.account.name,
+        category: r.category.title,
+        datetime: r.dateTime,
+        currency: r.accountBill.currency.shortName,
+        sum: r.quantity
+      })
+    });
+    this.hot.updateSettings({data: arr});
+  }
 }

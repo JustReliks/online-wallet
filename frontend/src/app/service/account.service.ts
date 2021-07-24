@@ -64,4 +64,7 @@ export class AccountService {
   //         'Content-Type': 'application/json'
   //       }
   //     });
+  convertCurrencies(convertFromValue: any, convertToValue: any, value: any) {
+    return this.http.get<Array<any>>(this.api + `/account/convert?from=${convertFromValue}&to=${convertToValue}&value=${value}`);
+  }
 }

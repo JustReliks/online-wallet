@@ -54,6 +54,57 @@
           </mat-card-footer>
         </mat-card>
       </div>
+      <div class="w-block mb-5">
+        <mat-card>
+          <mat-card-header [textContent]="'Конвертер валют'" class="card-header w-card-header">
+          </mat-card-header>
+          <mat-card-content class="card-body mat-card-content">
+            <div *ngIf="!this.currencies"
+                 class="col content d-flex justify-content-center w-100 mb-3 mt-3">
+              <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div>
+              <div *ngIf="this.currencies" class="w-available-balance d-flex">
+<!--                <p class="text-black-50 mb-0">Валюта, относительно которой будет конвертация</p>-->
+              </div>
+              <div *ngIf="this.currencies" class="w-balance-table" [formGroup]="currencyConverterForm">
+                <div class="row w-100 d-flex pl-3 pr-3 m-0">
+                  <mat-form-field appearance="fill" style="max-width: 45%;margin-right: 7px;">
+                    <mat-label>Валюта</mat-label>
+                    <mat-select formControlName="convertFrom" [(value)]="convertFromValue">
+                      <mat-option (click)="convertCurrency()" *ngFor="let currency of currencies" [value]="currency.id">
+                        {{currency.shortName}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width" appearance="fill" style="max-width: 51%">
+                    <mat-label>Кол-во</mat-label>
+                    <input (input)="convertCurrency()"  matInput placeholder="1" value="1" formControlName="convertFromValue">
+                  </mat-form-field>
+                  <hr align="center" width="90%" size="50" color="#dddddd"/>
+                  <mat-form-field appearance="fill" style="max-width: 45%;margin-right: 7px;">
+                    <mat-label>Валюта</mat-label>
+                    <mat-select formControlName="convertTo" [(value)]="convertToValue">
+                      <mat-option (click)="convertCurrency()" *ngFor="let currency of getCurrenciesWithoutMain()" [value]="currency.id">
+                        {{currency.shortName}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width" appearance="fill" style="max-width: 51%">
+                    <mat-label>Результат</mat-label>
+                    <input [readonly]="true" matInput placeholder="1" value="1" formControlName="convertToValue">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-footer *ngIf="this.accounts" class="card-footer">
+<!--            Всего счетов: {{accounts?.length}}-->
+          </mat-card-footer>
+        </mat-card>
+      </div>
     </div>
     <div class="col">
       <app-card [accounts]="this.accounts" [user]="this.user"></app-card>

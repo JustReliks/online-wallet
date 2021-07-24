@@ -10,7 +10,6 @@ import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.AccountBill;
 import ru.onlinewallet.entity.account.AccountGoal;
 import ru.onlinewallet.entity.account.AccountType;
-import ru.onlinewallet.entity.account.statistics.AccountStatistics;
 import ru.onlinewallet.service.AccountService;
 import ru.onlinewallet.service.StatisticsService;
 
@@ -113,8 +112,15 @@ public class AccountController {
                                                           @RequestParam("value") double value,
                                                           @RequestParam("category") Long categoryId) {
         AccountBill accountBill = AccountBillDto.fromDto(dto);
-        AccountBill bill = accountService.addTransaction(accountBill, userId, isPlus, value,categoryId);
+        AccountBill bill = accountService.addTransaction(accountBill, userId, isPlus, value, categoryId);
         return ResponseEntity.ok(AccountBillDto.toDto(bill));
+    }
+
+    @GetMapping("/convert")
+    private double convertCurrencies(@RequestParam String from,
+                                     @RequestParam String to,
+                                     @RequestParam Double value) throws IOException {
+        return this.accountService.convertCurrencies(value, from, to);
     }
 
 
