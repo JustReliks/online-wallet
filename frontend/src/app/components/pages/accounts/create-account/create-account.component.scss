@@ -1,3 +1,15 @@
+@media (max-width: 992px) {
+  .w-header {
+    font-size: 15px!important;
+  }
+  .w-money {
+    flex-direction: column!important;
+  }
+  .w-currency-icon{
+    display: none;
+  }
+}
+
 .w-header {
   text-align: center;
   font-size: 25px;
@@ -41,6 +53,7 @@
     height: 60px;
     cursor: pointer;
     padding: 10px;
+
     img {
       width: 100%;
       height: 100%;

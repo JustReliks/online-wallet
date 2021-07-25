@@ -61,6 +61,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("init")
     this.registerForm = this.formBuilder.group(
       {
         username: new FormControl('', [
@@ -99,6 +100,7 @@ export class RegistrationComponent implements OnInit {
         recaptchaReactive: new FormControl(null, Validators.required),
       },
     );
+    console.log("after init")
     // this.registerForm.setValidators(this.checkUserExistByUserName())
   }
 

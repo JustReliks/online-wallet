@@ -22,7 +22,7 @@
     </div>
     <div class="d-flex w-100">
       <div class="col w-money">
-        <mat-icon style="margin-top: 20px; margin-left: -23px">star</mat-icon>
+        <mat-icon class="w-currency-icon" style="margin-top: 20px; margin-left: -23px">star</mat-icon>
         <mat-form-field appearance="fill">
           <mat-label>Основная валюта</mat-label>
           <mat-select formControlName="mainCurrency" class="w-select"
@@ -56,7 +56,7 @@
     </div>
     <div *ngIf="hasSecondBill" class="d-flex w-100">
       <div class="col w-money">
-        <mat-icon style="margin-top: 20px; margin-left: -23px">star_half</mat-icon>
+        <mat-icon class="w-currency-icon" style="margin-top: 20px; margin-left: -23px">star_half</mat-icon>
         <mat-form-field appearance="fill">
           <mat-label>Дополнительная валюта</mat-label>
           <mat-select formControlName="additionalCurrency" class="w-select" (selectionChange)="changeMainCurrency()">
@@ -75,7 +75,7 @@
         </mat-form-field>
       </div>
     </div>
-    <div style="width: 100%;">
+    <div class="col" style="width: 100%;">
       <mat-form-field class="w-form-field"
                       appearance="fill">
         <mat-label>Описание</mat-label>
@@ -90,10 +90,10 @@
 
   </div>
   <div class="d-flex w-100 flex-column">
-    <div class="row">
-      <p class="col-10">Выберите тип счёта: </p>
+    <div class="row justify-content-between">
+      <p >Выберите тип счёта: </p>
       <mat-icon matTooltip="Информация о типах счёта" [matTooltipPosition]="'below'"
-                (click)="changeAccountTypeInfo()" class="w-info col">info
+                (click)="changeAccountTypeInfo()" class="w-info">info
       </mat-icon>
     </div>
     <div class="icons d-flex">
@@ -146,7 +146,7 @@
         </button>
       </div >
       <div *ngIf="selectedTypeId != 4 && selectedTypeId != 1">
-        <button color="primary" [disabled]="true" mat-raised-button class='btn custom-btn mr-3' style="align-content: center">
+        <button color="primary" [disabled]="true" mat-raised-button class='btn custom-btn mr-3 mb-1' style="align-content: center">
           Создание цели недоступно
         </button>
       </div>

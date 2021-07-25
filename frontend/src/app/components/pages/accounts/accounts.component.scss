@@ -49,6 +49,26 @@
   border-radius: 10px;
 }
 
+@media (max-width: 992px) {
+  .w-account-card{
+    display: block!important;
+  }
+  .w-account-body{
+    display: block!important;
+  }
+  .w-avatar{
+    width: 52%;
+    height: 52%;
+    margin: 7px auto
+  }
+  .w-settings-btn{
+    position: absolute;
+    top: 9px;
+    right: 9px;
+  }
+
+}
+
 .w-account-body {
   margin-top: 10px;
   display: flex;

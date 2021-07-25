@@ -20,7 +20,6 @@ export class TypeInfoComponent implements OnInit {
     return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${type?.icon}`);
   }
 
-
   returnBack() {
 
   }

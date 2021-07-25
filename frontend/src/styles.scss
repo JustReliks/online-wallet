@@ -21,7 +21,7 @@ body {
   font-family: 'Nunito-regular', sans-serif;
 }
 
-.mat-card{
+.mat-card {
   font-family: 'Nunito-regular', sans-serif;
 }
 
@@ -55,7 +55,7 @@ body {
   cursor: pointer;
 }
 
-.btn_common:hover{
+.btn_common:hover {
   background-color: #d2d2d2;
 }
 
@@ -123,22 +123,27 @@ body {
   animation: pulse 3.25s infinite cubic-bezier(0.01, 0.02, 0.99, 0.99)
 }
 
-.header a, footer .promo_box h3, nav .dropdown .link:after, nav .dropdown_menu a, nav .dropdown_menu a:before, nav .link, nav .link:before, nav  {
+.header a, footer .promo_box h3, nav .dropdown .link:after, nav .dropdown_menu a, nav .dropdown_menu a:before, nav .link, nav .link:before, nav {
   -webkit-transition: all .2s ease;
   transition: all .2s ease;
 }
 
 //Custom buttons
-.btn:hover{
+.btn:hover {
   color: #ffffff;
 }
 
-.custom-btn-blue-gradient{
-  background: rgb(39,60,214);
-  background: linear-gradient(25deg, rgba(39,60,214,1) 3%, rgba(88,83,243,1) 55%, rgba(144,81,226,1) 100%);
+.custom-btn-blue-gradient {
+  background: rgb(39, 60, 214);
+  background: linear-gradient(25deg, rgba(39, 60, 214, 1) 3%, rgba(88, 83, 243, 1) 55%, rgba(144, 81, 226, 1) 100%);
 }
 
 .purchase-btn {
+  @media (max-width: 992px) {
+    width: 100%;
+    overflow-wrap: break-word;
+    white-space: break-spaces !important;
+  }
   filter: drop-shadow(4px 3px 9px #3780d6);
   width: 60%;
   padding: 9px 0;
@@ -163,16 +168,37 @@ body {
   }
 }
 
-.justify-items-right{
- justify-items: right;
+.justify-items-right {
+  justify-items: right;
 }
 
 // Progress bar
-.display_{
-  margin: 0!important;
-  padding: .5rem 0!important;
+.display_ {
+  margin: 0 !important;
+  padding: .5rem 0 !important;
 }
 
-.w-place-center{
+.w-place-center {
   place-content: center;
+}
+
+mat-dialog-container {
+  max-height: calc(100vh - 210px) !important;
+  overflow-y: auto !important;
+}
+
+@media (max-width: 992px) {
+  .d-desktop {
+    display: none;
+  }
+
+  .mat-dialog-content {
+    font-size: 12px !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .w-mobile {
+    display: none;
+  }
 }

@@ -27,6 +27,8 @@ export class HeaderComponent implements OnInit {
   private timeStamp: any;
   private _user: AuthUser;
   profileImageSrc: SafeUrl;
+  mobileExpanded: boolean;
+  activeTab: string = 'main';
 
   constructor(private router: Router,
               private authService: AuthService,
@@ -100,6 +102,7 @@ export class HeaderComponent implements OnInit {
   }
 
   login() {
+    this.mobileExpanded = false;
     const dialogRef = this.dialog.open(LoginComponent, {
       width: '340px',
       data: {}
@@ -109,6 +112,7 @@ export class HeaderComponent implements OnInit {
   }
 
   register() {
+    this.mobileExpanded = false;
     const dialogRef = this.dialog.open(RegistrationComponent, {
       width: '520px',
       data: {}
@@ -137,5 +141,10 @@ export class HeaderComponent implements OnInit {
            VK.Widgets.Group("vk_groups", {mode: 4, no_cover: 1, width: "300", height: "400", color3: '2C2D2E'}, 33986902);
     `;
     this.renderer2.appendChild(this.vkGroupsElem.nativeElement, srcScript);
+  }
+
+  changeActiveTab(activeTab: string) {
+    this.mobileExpanded = false;
+    this.activeTab = activeTab;
   }
 }

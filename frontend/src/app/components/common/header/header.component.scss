@@ -266,7 +266,7 @@ nav .logo {
   }
 }
 
-nav .nav_menu > ul{
+nav .nav_menu > ul {
   margin-bottom: 0;
 }
 
@@ -317,7 +317,7 @@ nav .nav_menu > ul > li + li {
   margin-left: 30px;
 }
 
-nav .profile .user_pic {
+.user_pic {
   display: inline-block;
   border-radius: 50%;
   overflow: hidden;
@@ -590,16 +590,18 @@ header .btn {
   top: 0;
   margin: auto;
 }
+
 .bgTop {
   z-index: 15;
   opacity: 0.5;
 }
+
 .waveWrapperInner {
   position: absolute;
   width: 100%;
   overflow: hidden;
   height: 700px;
-  background-image: linear-gradient(to top, rgba(82,200,255,1) 17%, rgb(25, 96, 238) 83%);
+  background-image: linear-gradient(to top, rgba(82, 200, 255, 1) 17%, rgb(25, 96, 238) 83%);
 }
 
 .waveAnimation .waveTop {
@@ -608,6 +610,7 @@ header .btn {
   -webkit-animation-delay: 1s;
   animation-delay: 1s;
 }
+
 .waveTop {
   background-size: 50% 100px;
 }
@@ -616,6 +619,7 @@ header .btn {
   z-index: 10;
   opacity: 0.75;
 }
+
 .bgBottom {
   z-index: 5;
 }
@@ -646,3 +650,36 @@ header .btn {
   background-size: 50% 120px;
 }
 
+/* Small devices (tablets, 768px and up) */
+@media (max-width: 992px) {
+  .d-desktop {
+    display: none;
+  }
+  .header {
+    padding-top: 0;
+    overflow-x: visible;
+  }
+
+  .image {
+    float: left;
+    margin-top: 16px;
+    width: 100% !important;
+  }
+
+  .user_pic {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .w-mobile {
+    display: none;
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+}

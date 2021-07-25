@@ -1,6 +1,6 @@
 <div [formGroup]="editAccountForm">
   <div class="card-header row" style="display: flex; justify-content: space-between">
-    <div class="w-header" style="position: relative; left: 16%">
+    <div class="w-header">
       Редактирование счета
     </div>
     <div class="" style="max-width: 48px; ">
@@ -43,7 +43,7 @@
 
   </div>
   <div class="d-flex w-100 flex-column">
-    <div *ngIf="goal != null" class="mat-card" style="margin-top: 10px; background: aliceblue;">
+    <div *ngIf="goal != null" class="mat-card w-goal" style="margin-top: 10px; background: aliceblue;">
       <h4 style="margin-top: 5px">Ваша цель:</h4>
       <div class="row">
         <mat-form-field class="w-form-field col" style="width: 65%" appearance="fill">
@@ -80,7 +80,7 @@
               (click)="createGoal()" style="align-content: center">
         Добавить цель по счету
       </button>
-      <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'
+      <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3 mb-1'
               (click)="goal = null;_isGoalValid=true;" style="align-content: center">
         Удалить цель
       </button>
