@@ -134,7 +134,7 @@ registerLocaleData(localeRu, 'ru');
     {provide: APP_BASE_HREF, useValue: '/'},
     {
       provide: RECAPTCHA_SETTINGS,
-      useValue: {siteKey: '6Lfza0oaAAAAAAR71FoyOHNRUIoAJV3See7fR2rr'} as RecaptchaSettings,
+      useValue: {siteKey: '6Lej1r0bAAAAAGTnG7iokT6NaVgMS3Nj673xdcgt'} as RecaptchaSettings,
     },
   ],
   bootstrap: [AppComponent]

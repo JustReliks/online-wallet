@@ -1,0 +1,245 @@
+.text_about {
+  font-size: 25px;
+  width: 100%;
+  text-align: center;
+}
+
+.blocks {
+  width: 70%;
+  margin: 30px 15% 20px 15%;
+  display: flex;
+  justify-content: space-between;
+  //height: 100%;
+}
+
+.blocks .block:hover {
+  background: rgba(48, 117, 255, 1);
+  background: linear-gradient(
+      45deg, rgba(48, 117, 255, 1) 0%, rgba(82, 200, 255, 1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3075ff', endColorstr='#52c8ff', GradientType=1);
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0px 0px 22px -6px rgb(0 0 0 / 35%);
+}
+
+.blocks .block {
+  width: 25%;
+  box-shadow: 0px 0px 60px -6px rgb(0 0 0 / 5%);
+  padding: 2%;
+  cursor: pointer;
+  border-radius: 20px;
+  color: rgb(126, 126, 126);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.blocks .block .image {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  text-align: center;
+  margin: 0 auto 0 auto;
+  background: rgba(48, 117, 255, 1);
+  background: linear-gradient(
+      45deg, rgba(48, 117, 255, 1) 0%, rgba(82, 200, 255, 1) 100%);
+  box-shadow: 0px 10px 20px 5px rgb(82 200 255 / 20%);
+}
+
+.blocks .block h2 {
+  font-size: 19px;
+  color: rgb(59, 59, 59);
+}
+
+.blocks .block span {
+  font-size: 16px;
+}
+
+.functions {
+  width: 90%;
+  margin: 0 5% 0 5%;
+  margin-top: 50px;
+  display: inline-block;
+}
+
+.functions .mobile {
+  float: left;
+  width: 30%;
+  text-align: center;
+}
+
+.functions .left .desc {
+  float: right;
+  text-align: right;
+}
+
+.functions .desc {
+  max-width: 70%;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 50px;
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 0px 22px -6px rgb(0 0 0 / 35%);
+  font-size: 17px;
+  background: linear-gradient(
+      45deg, #EECFBA, #C5DDE8);
+  color: white;
+  transition: 0.3s;
+}
+
+.functions .color1 {
+  background: linear-gradient(
+      -45deg, #52E5E7, #360940);
+}
+
+.functions .desc .leftDesc {
+  float: left;
+  width: 75%;
+}
+
+.functions .desc .name {
+  width: 100%;
+  font-size: 25px;
+}
+
+.blocks .block .image img {
+  width: 70px;
+  padding-top: 18px;
+}
+
+.functions .desc .rightImage {
+  float: right;
+  width: 25%;
+}
+
+.functions .desc img {
+  filter: invert(1);
+  width: 80%;
+  text-align: right;
+  opacity: 0.7;
+  line-height: 50%;
+  transition: 0.3s;
+}
+
+.functions .color2 {
+  background: linear-gradient(
+      -45deg
+    , #FEC194, #FF0061);
+}
+
+.functions .color3 {
+  background: linear-gradient(
+      -45deg
+    , #E2B0FF, #9F44D3);
+}
+
+.functions .left {
+  float: left;
+  width: 35%;
+}
+
+.functions .mobile {
+  float: left;
+  width: 30%;
+  text-align: center;
+}
+
+.functions .mobile img {
+  width: 70%;
+  transition: 2s;
+}
+
+.functions .right {
+  float: left;
+  width: 35%;
+}
+
+.functions .right .desc {
+  float: left;
+}
+
+.functions .color4 {
+  background: linear-gradient(
+      45deg
+    , #43CBFF, #9708CC);
+}
+
+.functions .color5 {
+  background: linear-gradient(
+      45deg
+    , #FDD819, #E80505);
+}
+
+.functions .color6 {
+  background: linear-gradient(
+      45deg
+    , #F05F57, #360940);
+}
+
+.security {
+  width: 100%;
+  height: 500px;
+  display: inline-block;
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.security .image {
+  width: 40%;
+  padding-right: 50px;
+  float: left;
+}
+
+.security img {
+  height: 100%;
+  float: right;
+}
+
+.security .text {
+  width: 60%;
+  padding: 40px 0% 5px 3%;
+  float: left;
+  color: rgb(70, 75, 71);
+}
+
+.security .text h1 {
+  font-family: 'Exo2-Bold';
+  font-size: 40px;
+  color: #3D3C51;
+}
+
+.security .text .desc {
+  width: 70%;
+  margin-top: 30px;
+  display: inline-block;
+  line-height: 25px;
+}
+
+.security .text .desc .dot {
+  width: 30px;
+  font-size: 7px;
+  float: left;
+  position: absolute;
+}
+
+.security .text .desc .descText {
+  color: #9292A4;
+  float: left;
+  font-size: 25px;
+  padding-left: 30px;
+}
+
+.functions .desc .leftImage {
+  float: left;
+  width: 25%;
+}
+
+.functions .desc img {
+  filter: invert(1);
+  width: 80%;
+  text-align: right;
+  opacity: 0.7;
+  line-height: 50%;
+  transition: 0.3s;
+}
+

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {NavigationEnd, NavigationStart, Router} from "@angular/router";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-middle',
@@ -29,8 +31,16 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
   ])]
 })
 export class MiddleComponent implements OnInit {
+  public isMainPage: boolean;
 
-  constructor() { }
+  constructor(private router:Router) { router.events.pipe<NavigationStart>(filter<NavigationStart>(event => event instanceof NavigationEnd
+  )).subscribe(res => {
+    if (res.url === '/') {
+      this.isMainPage = true;
+    } else {
+      this.isMainPage = false;
+    }
+  });}
 
   ngOnInit(): void {
   }

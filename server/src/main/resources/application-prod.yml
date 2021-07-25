@@ -1,0 +1,42 @@
+spring:
+  server:
+    port: 8081
+  mail:
+    debug: true
+    host: mail.online-wallet.ru
+    port: 25
+    username: no-reply@online-wallet.ru
+    password: 123456789!!!
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: false
+  # first datasource [Oline-Wallet site]
+  datasource:
+    url: jdbc:postgresql://194.58.122.46:5432/online-wallet
+    username: o_wallet
+    password: 123456qwe
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-test-query: SELECT 1
+
+  # Jackson
+  jackson:
+    default-property-inclusion: non_null
+
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+      enabled: true
+
+  logging:
+    level:
+    ru.onlinewallet: debug
+    org.springframework.web: debug
+
+jwt:
+  secret: vcNwqkM76h45gpVhDbC8Zs6e8IGGp1W4
+  expiration: 43200  # minutes

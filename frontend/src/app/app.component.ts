@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {delay} from 'rxjs/operators';
+import {delay, filter} from 'rxjs/operators';
 import {LoadingService} from "./service/loading.service";
+import {NavigationEnd, NavigationStart, Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,11 @@ export class AppComponent implements OnInit {
   title = 'online-wallet';
 
   public loading = false;
+  public isMainPage: boolean;
 
   constructor(
-    private _loading: LoadingService
+    private _loading: LoadingService,
+    private router: Router
   ) {
   }
 

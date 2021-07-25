@@ -183,8 +183,12 @@ body {
 }
 
 mat-dialog-container {
-  max-height: calc(100vh - 210px) !important;
+  max-height: calc(100vh) !important;
   overflow-y: auto !important;
+}
+
+.mat-dialog-content{
+  overflow: visible!important;
 }
 
 @media (max-width: 992px) {
