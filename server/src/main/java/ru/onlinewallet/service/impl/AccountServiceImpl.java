@@ -129,7 +129,6 @@ public class AccountServiceImpl implements AccountService {
         return new ConvertedBalance(currency, sum);
     }
 
-    @Cacheable("currencies-rates")
     public void initCurrenciesRates() throws IOException {
         URL url = new URL(ECB_EUROFXREF);
         URLConnection conn = url.openConnection();
