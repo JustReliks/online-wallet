@@ -36,10 +36,10 @@
             />
           </mat-form-field>
           <mat-icon matTooltip="Будет записано в доходы" [matTooltipPosition]="'below'"
-                    *ngIf="isPlusState" (click)="isPlusState=!isPlusState;selectedCategoryId=null;" class="w-icon">add
+                    *ngIf="isPlusState" (click)="changePlusState()" class="w-icon">add
           </mat-icon>
           <mat-icon matTooltip="Будет записано в расходы" [matTooltipPosition]="'below'" *ngIf="!isPlusState"
-                    (click)="isPlusState=!isPlusState;selectedCategoryId=null;" class="w-icon">remove
+                    (click)="changePlusState()" class="w-icon">remove
           </mat-icon>
         </div>
         <div class="icons d-flex">

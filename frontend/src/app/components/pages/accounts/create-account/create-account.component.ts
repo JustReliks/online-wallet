@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Goal} from "../../../../entities/goal";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Account} from "../../../../entities/account";
@@ -33,8 +33,10 @@ export class CreateAccountComponent implements OnInit {
   minDate: Date;
   private _currencies: Array<Currency>;
   private _types: Array<Type>;
+  private _accountTypeInfo: boolean;
 
   constructor(
+    private dialog: MatDialog,
     private dialogRef: MatDialogRef<any>,
     private _accountService: AccountService,
     private _notificationService: NotificationService, @Inject(MAT_DIALOG_DATA) public data: { user: AuthUser },
@@ -86,6 +88,10 @@ export class CreateAccountComponent implements OnInit {
       this._selectedTypeId = null;
     } else {
       this._selectedTypeId = value;
+      if(value != 4 && value != 1) {
+        this.goal = null;
+      }
+
     }
   }
 
@@ -205,5 +211,14 @@ export class CreateAccountComponent implements OnInit {
 
   getTypeIcon(type: Type) {
     return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${type?.icon}`);
+  }
+
+
+  get accountTypeInfo(): boolean {
+    return this._accountTypeInfo;
+  }
+
+  changeAccountTypeInfo() {
+    this._accountTypeInfo = !this._accountTypeInfo;
   }
 }

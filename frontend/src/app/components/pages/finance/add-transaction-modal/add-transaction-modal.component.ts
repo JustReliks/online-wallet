@@ -39,8 +39,16 @@ export class AddTransactionModalComponent implements OnInit {
       account: new FormControl('', [Validators.required]),
       sum: new FormControl('', [Validators.required, Validators.min(1)]),
     })
-
     this._dictionaryService.getAllTransactionCategories().subscribe(res => this.categories = res);
+  }
+
+  changePlusState(): void {
+    let accountTypeId = this.selectedAccount.accountType.id;
+    if(accountTypeId != 4 && accountTypeId != 2)
+    {
+      this.isPlusState = !this.isPlusState;
+      this.selectedCategoryId=null;
+    }
   }
 
   get selectedAccount(): Account {

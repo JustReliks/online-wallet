@@ -1,0 +1,35 @@
+.w-header {
+  text-align: center;
+  font-size: 25px;
+  color: #6977fa;
+  font-weight: 700;
+  line-height: 48px;
+  text-transform: uppercase;
+}
+
+.w-account-name {
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.w-back {
+  display: flex;
+  margin-top: 15px;
+  justify-content: space-around;
+}
+
+.w-account-description {
+  font-size: 13px;
+  font-weight: 30;
+  width: 100%;
+  color: #4d5773;
+  word-break: break-word;
+}
+
+.w-avatar {
+  width: 100%;
+  height: 100%;
+  margin-left: 2px;
+  border-radius: 50%;
+  filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.38));
+}

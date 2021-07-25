@@ -1,4 +1,4 @@
-<div [formGroup]="createAccountForm">
+<div *ngIf="!accountTypeInfo" [formGroup]="createAccountForm">
   <div class="card-header w-header">
     Создание нового счета
   </div>
@@ -90,7 +90,12 @@
 
   </div>
   <div class="d-flex w-100 flex-column">
-    <p>Выберите тип счёта: </p>
+    <div class="row">
+      <p class="col-10">Выберите тип счёта: </p>
+      <mat-icon matTooltip="Информация о типах счёта" [matTooltipPosition]="'below'"
+                (click)="changeAccountTypeInfo()" class="w-info col">info
+      </mat-icon>
+    </div>
     <div class="icons d-flex">
       <div #tooltip [matTooltip]="type.name" [matTooltipPosition]="'above'" class="icon" *ngFor="let type of types"
            (click)="selectedTypeId = type.id"
@@ -130,14 +135,21 @@
   </div>
   <div mat-dialog-actions class="row d-flex">
     <div class="col d-flex justify-content-left">
-      <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'
-              (click)="createGoal()" style="align-content: center">
-        Добавить цель по счету
-      </button>
-      <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'
-              (click)="goal = null" style="align-content: center">
-        Удалить цель
-      </button>
+      <div *ngIf="selectedTypeId == 4 || selectedTypeId == 1" >
+        <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'
+                (click)="createGoal()" style="align-content: center">
+          Добавить цель по счету
+        </button>
+        <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'
+                (click)="goal = null" style="align-content: center">
+          Удалить цель
+        </button>
+      </div >
+      <div *ngIf="selectedTypeId != 4 && selectedTypeId != 1">
+        <button color="primary" [disabled]="true" mat-raised-button class='btn custom-btn mr-3' style="align-content: center">
+          Создание цели недоступно
+        </button>
+      </div>
     </div>
     <div class="col d-flex justify-content-right">
       <button color="warn" mat-raised-button class='btn custom-btn mr-3'
@@ -151,4 +163,8 @@
       </button>
     </div>
   </div>
+</div>
+
+<div *ngIf="accountTypeInfo">
+  <app-type-info [types]="types"></app-type-info>
 </div>

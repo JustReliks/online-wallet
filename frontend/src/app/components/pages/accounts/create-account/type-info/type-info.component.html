@@ -1,0 +1,26 @@
+<div class="card-header w-header">
+  Информация о типах счета
+</div>
+<div *ngFor="let type of types" class="mat-card" style="margin-top: 5px">
+  <div class="row">
+    <img [src]="getTypeIcon(type)" class="w-avatar col-3 align-self-center" style="width: 100%;height: 100%">
+    <div class="col">
+      <div class="w-account-name mb-2">
+        {{type.name}}
+      </div>
+      <div class="w-account-description">
+        <p *ngIf="type.code== 'SAVING'">Описание сберегательного счета</p>
+        <p *ngIf="type.code== 'CREDIT'">Описание кредитного счета</p>
+        <p *ngIf="type.code== 'SALARY'">Описание зарплатного счета</p>
+        <p *ngIf="type.code== 'CUMULATIVE'">Описание накопительного счета</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="w-back">
+  <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+          (click)="returnBack()" style="align-content: center;">
+    Вернуться к созданию счета
+  </button>
+</div>
+

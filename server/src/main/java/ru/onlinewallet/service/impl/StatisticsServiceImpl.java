@@ -28,8 +28,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private static final String INCOME = "INCOME";
     private static final String EXPENSES = "EXPENSES";
 
-    private static final LinkedList<String> DAY_CATEGORIES = getDayCategories();
-
+    private LinkedList<String> DAY_CATEGORIES;
     private final AccountRepository accountRepository;
     private final AccountService accountService;
     private final UserSettingsRepository userSettingsRepository;
@@ -37,6 +36,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public AccountStatistics getStatistics(Long accountId, Long days) throws IOException {
+        DAY_CATEGORIES = getDayCategories();
         Account account = accountRepository.getById(accountId);
         List<Transaction> transactions = transactionHistoryRepository.findAllByAccountId(accountId);
         String currency = userSettingsRepository.findByUserId(account.getUserId()).getCurrency();
@@ -81,9 +81,9 @@ public class StatisticsServiceImpl implements StatisticsService {
                 categories.addFirst((day < 10 ? "0" + day : day) + "." + (month < 10 ? "0" + month : month));
                 AccountStatistics tempStat = getAccountStatisticsForDay(date, transactions, currency);
                 mergeAccounts(statistics, tempStat);
-                 if (i > 0)
+                if (i > 0)
                     dataMoney.addFirst(calculateStartDayMoney(currency, transactions, dateMoney, dataMoney.getFirst()));
-                 dateMoney = dateMoney.minus(1, ChronoUnit.DAYS);
+                dateMoney = dateMoney.minus(1, ChronoUnit.DAYS);
             }
             chartMoney.setSeriesData(dataMoney);
             statistics.setMoneyLineChart(chartMoney);
@@ -172,7 +172,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             Calendar calendar1 = GregorianCalendar.getInstance();
             calendar1.setTime(Date.from(time));
             if (sameDay(calendar1, calendar)) {
-                int hour = calendar1.get(Calendar.HOUR);
+                int hour = calendar1.get(Calendar.HOUR_OF_DAY);
                 String category = transaction.getCategory().getType();
                 if (category.equals(INCOME)) {
                     double value = accountService.convertCurrencies(transaction.getQuantity(),
