@@ -34,6 +34,9 @@ public class Account {
     @Column(name = "last_transaction")
     private Instant lastTransaction;
 
+    @Column(name = "freeze_date")
+    private Instant freezeDate;
+
     @Column
     private byte[] icon;
 

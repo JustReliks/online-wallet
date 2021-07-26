@@ -16,11 +16,12 @@ public class AccountGoalDto {
     private Long accountId;
     private Double value;
     private String name;
+    private boolean completed;
     private Instant date;
 
     public static AccountGoalDto toDto(AccountGoal accountGoal) {
         return new AccountGoalDto(accountGoal.getId(), accountGoal.getAccountId(),
-                accountGoal.getValue(), accountGoal.getName(), accountGoal.getDate());
+                accountGoal.getValue(), accountGoal.getName(), accountGoal.isCompleted(), accountGoal.getDate());
 
     }
 
@@ -31,6 +32,7 @@ public class AccountGoalDto {
         accountGoal.setValue(accountGoalDto.getValue());
         accountGoal.setName(accountGoalDto.getName());
         accountGoal.setDate(accountGoalDto.getDate());
+        accountGoal.setCompleted(accountGoalDto.isCompleted());
 
         return accountGoal;
     }

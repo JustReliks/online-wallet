@@ -68,6 +68,7 @@ export class AccountsComponent implements OnInit {
   }
 
   getGoalProgressBarValue(account: Account) {
+    if(account.goal.completed) return 100;
     let percent = account.convertedBalance.balance * 100 / account.goal.value;
     return percent > 100 ? 100 : percent
   }

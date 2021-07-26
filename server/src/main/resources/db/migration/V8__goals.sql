@@ -18,4 +18,3 @@ create unique index w_goal_id_uindex
 alter table w_goal
     add constraint w_goal_pk
         primary key (id);
-

@@ -33,7 +33,7 @@ export class CreateAccountComponent implements OnInit {
   minDate: Date;
   private _currencies: Array<Currency>;
   private _types: Array<Type>;
-  private _accountTypeInfo: boolean;
+  private _accountTypeInfo: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -52,6 +52,7 @@ export class CreateAccountComponent implements OnInit {
       goalName: new FormControl('Моя первая цель', []),
       goalValue: new FormControl('10000', []),
       goalDate: new FormControl(new Date(), []),
+      freezeDate: new FormControl(new Date()),
     });
     this.minDate = new Date();
     // this.minDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() + 1);
@@ -64,6 +65,10 @@ export class CreateAccountComponent implements OnInit {
     this._icons.push(new Icon('assets/img/accounts/2.png'))
     this._icons.push(new Icon('assets/img/accounts/3.png'))
     this._icons.push(new Icon('assets/img/accounts/4.png'))
+
+    _accountService.updateTypeInfoObservable.subscribe(value => {
+      this._accountTypeInfo = false
+    });
 
   }
 
@@ -88,7 +93,7 @@ export class CreateAccountComponent implements OnInit {
       this._selectedTypeId = null;
     } else {
       this._selectedTypeId = value;
-      if(value != 4 && value != 1) {
+      if (value != 4 && value != 1) {
         this.goal = null;
       }
 
@@ -188,6 +193,11 @@ export class CreateAccountComponent implements OnInit {
     this._account.accountType = new AccountType({
       type: _.find(this.types, type => type.id == this.selectedTypeId)
     })
+
+    if (this.selectedTypeId == 1) {
+      this._account.freezeDate = this.controls.freezeDate?.value;
+    }
+
     console.log(this._account)
     this._accountService.createAccount(this.account).subscribe(res => {
       this._notificationService.showSuccess('Новый счет успешно создан', 'Финанасы')

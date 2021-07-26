@@ -21,6 +21,7 @@ public class AccountDto {
     private String description;
     private Instant createdAt;
     private Instant lastTransaction;
+    private Instant freezeDate;
     private byte[] icon;
     private List<AccountBillDto> accountBills;
     private ConvertedBalanceDto convertedBalance;
@@ -34,6 +35,7 @@ public class AccountDto {
         accountDto.setDescription(account.getDescription());
         accountDto.setCreatedAt(account.getCreatedAt());
         accountDto.setLastTransaction(account.getLastTransaction());
+        accountDto.setFreezeDate(account.getFreezeDate());
         accountDto.setIcon(account.getIcon());
         accountDto.setAccountBills(
                 account
@@ -63,6 +65,7 @@ public class AccountDto {
         account.setCreatedAt(Objects.isNull(dto.getCreatedAt()) ? Instant.now() : dto.getCreatedAt());
         account.setLastTransaction(Objects.isNull(dto.getLastTransaction()) ? Instant.now() : dto.getLastTransaction());
         account.setIcon(dto.getIcon());
+        account.setFreezeDate(dto.getFreezeDate());
         //        account.setAccountBills(
 //                dto
 //                        .getAccountBills()

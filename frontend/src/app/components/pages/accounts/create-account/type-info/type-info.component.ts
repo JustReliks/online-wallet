@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Type} from "../../../../../entities/type";
 import {DomSanitizer} from "@angular/platform-browser";
+import {AccountService} from "../../../../../service/account.service";
 
 @Component({
   selector: 'app-type-info',
@@ -11,7 +12,9 @@ export class TypeInfoComponent implements OnInit {
 
   @Input() public types: Array<Type>;
 
-  constructor(private _sanitizer: DomSanitizer) { }
+  constructor(private accountService: AccountService,
+              private _sanitizer: DomSanitizer) {
+  }
 
   ngOnInit(): void {
   }
@@ -21,6 +24,6 @@ export class TypeInfoComponent implements OnInit {
   }
 
   returnBack() {
-
+    this.accountService.changeTypeInfoSubject.next({});
   }
 }

@@ -85,13 +85,19 @@
                   cdkAutosizeMinRows="1"
                   cdkAutosizeMaxRows="5"></textarea>
       </mat-form-field>
-
     </div>
-
   </div>
   <div class="d-flex w-100 flex-column">
+    <div *ngIf="selectedTypeId == 1" style="display: flex; justify-content: center">
+      <mat-form-field appearance="fill">
+        <mat-label>Дата сбережения</mat-label>
+        <input matInput formControlName="freezeDate" [min]="minDate" [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
     <div class="row justify-content-between">
-      <p >Выберите тип счёта: </p>
+      <p>Выберите тип счёта: </p>
       <mat-icon matTooltip="Информация о типах счёта" [matTooltipPosition]="'below'"
                 (click)="changeAccountTypeInfo()" class="w-info">info
       </mat-icon>
@@ -135,7 +141,7 @@
   </div>
   <div mat-dialog-actions class="row d-flex">
     <div class="col d-flex justify-content-left mb-1">
-      <div *ngIf="selectedTypeId == 4 || selectedTypeId == 1" >
+      <div *ngIf="selectedTypeId == 4 || selectedTypeId == 1">
         <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'
                 (click)="createGoal()" style="align-content: center">
           Добавить цель по счету
@@ -144,9 +150,10 @@
                 (click)="goal = null" style="align-content: center">
           Удалить цель
         </button>
-      </div >
+      </div>
       <div *ngIf="selectedTypeId != 4 && selectedTypeId != 1">
-        <button color="primary" [disabled]="true" mat-raised-button class='btn custom-btn mr-3 mb-1' style="align-content: center">
+        <button color="primary" [disabled]="true" mat-raised-button class='btn custom-btn mr-3 mb-1'
+                style="align-content: center">
           Создание цели недоступно
         </button>
       </div>

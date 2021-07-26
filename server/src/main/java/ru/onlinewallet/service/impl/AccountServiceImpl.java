@@ -3,7 +3,6 @@ package ru.onlinewallet.service.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.onlinewallet.entity.ConvertedBalance;
@@ -67,20 +66,33 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value,
-                                      Long categoryId) {
+                                      Long categoryId) throws IOException {
+        Account account =
+                accountRepository.findById(accountBill.getAccountId()).orElseThrow(() -> new RuntimeException("Счет " +
+                        "не найден."));
+        Instant now = Instant.now();
+
+        if(!isPlus && account.getAccountType().getTypeId() == 1 && account.getFreezeDate().isAfter(now))
+        {
+            throw new RuntimeException("Данный счет заморожен для списаний!");
+        }
+
         Double currentBalance = accountBill.getBalance();
         double newValue = isPlus ? value : -value;
         double balance = currentBalance + newValue;
         if (balance < 0) {
             throw new RuntimeException("Данная операция приводит к отрицательному балансу. Действие отменено.");
         }
-        Account account =
-                accountRepository.findById(accountBill.getAccountId()).orElseThrow(() -> new RuntimeException("Счет " +
-                        "не найден."));
 
-        Instant now = Instant.now();
         account.setLastTransaction(now);
         accountBill.setBalance(balance);
+        AccountGoal goal = account.getGoal();
+        if (Objects.nonNull(goal) && !goal.isCompleted()) {
+            if (getConvertedBalance(account, account.getAccountBills().get(0).getCurrency().getShortName()).getValue() >= goal.getValue()) {
+                goal.setCompleted(true);
+                accountGoalRepository.save(goal);
+            }
+        }
         Account savedAccount = accountRepository.save(account);
         AccountBill savedAccountBill = accountBillRepository.save(accountBill);
         transactionHistoryService.addTransaction(savedAccountBill, userId, categoryId, newValue, now);
@@ -157,7 +169,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account updateAccount(Account account) {
+    public Account updateAccount(Account account) throws IOException {
         if (Objects.isNull(account.getId())) {
             throw new EntityNotFoundException();
         }
@@ -176,9 +188,11 @@ public class AccountServiceImpl implements AccountService {
             goal.setName(account.getGoal().getName());
             goal.setValue(account.getGoal().getValue());
             goal.setDate(account.getGoal().getDate());
+            goal.setCompleted(getConvertedBalance(byId, byId.getAccountBills().get(0).getCurrency().getShortName()).getValue() >= goal.getValue());
             byId.setGoal(goal);
 
             accountGoalRepository.save(goal);
+
         } else {
             accountGoalRepository.deleteById(byId.getGoal().getId());
             byId.setGoal(null);

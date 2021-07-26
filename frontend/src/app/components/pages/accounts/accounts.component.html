@@ -30,14 +30,20 @@
           <div *ngIf="account.goal != null" class="w-point mt-4 mb-4 col" style="width: 100%;">
             <div class="row">
               <p class="col m-0">Цель: <span
-                class="font-weight-bold">{{account.convertedBalance.balance + '/' + account.goal.value + ' ' + account.convertedBalance.currency}}
+                class="font-weight-bold"
+                *ngIf="!account.goal.completed && !isGoalExpired(account)">{{account.convertedBalance.balance + '/' + account.goal.value + ' ' + account.convertedBalance.currency}}
+            </span>
+                <span
+                  class="font-weight-bold"
+                  *ngIf="account.goal.completed || isGoalExpired(account)">{{account.goal.value + ' ' + account.convertedBalance.currency}}
             </span>
               </p>
               <div class="col m-0">
-                <p *ngIf="account.goal.value <= account.convertedBalance.balance" style="color: green">Цель
+                <p *ngIf="account.goal.completed" style="color: green">Цель
                   выполнена!</p>
-                <p *ngIf="isGoalExpired(account)" style="color: red">Вы не успели выполнить цель!</p>
-                <p *ngIf="account.goal.value > account.convertedBalance.balance && !isGoalExpired(account)"> Выполнить
+                <p *ngIf="!account.goal.completed && isGoalExpired(account)" style="color: red">Вы не успели выполнить
+                  цель!</p>
+                <p *ngIf="!account.goal.completed && !isGoalExpired(account)"> Выполнить
                   до: {{account.goal.date | date: 'medium'}}</p>
               </div>
             </div>

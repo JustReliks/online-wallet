@@ -17,7 +17,7 @@ public interface AccountService {
 
     List<Account> getAll(Long userId);
 
-    AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value, Long categoryId);
+    AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value, Long categoryId) throws IOException;
 
     Double convertCurrencies(double value, String from, String to) throws IOException;
 
@@ -27,7 +27,7 @@ public interface AccountService {
 
     AccountGoal saveGoal(AccountGoal goal);
 
-    Account updateAccount(Account account);
+    Account updateAccount(Account account) throws IOException;
 
     List<AccountType> getAllAccountTypes();
 

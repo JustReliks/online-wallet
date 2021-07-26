@@ -46,8 +46,11 @@ export class AddTransactionModalComponent implements OnInit {
     let accountTypeId = this.selectedAccount.accountType.id;
     if(accountTypeId != 4 && accountTypeId != 2)
     {
-      this.isPlusState = !this.isPlusState;
-      this.selectedCategoryId=null;
+      if(accountTypeId != 1 || Date.now() > Date.parse(this.selectedAccount.freezeDate))
+      {
+        this.isPlusState = !this.isPlusState;
+        this.selectedCategoryId=null;
+      }
     }
   }
 
@@ -97,6 +100,11 @@ export class AddTransactionModalComponent implements OnInit {
 
   getCategoryImg(category: TransactionCategory) {
     return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${category?.icon}`);
+  }
+
+  isSelectedAccountFrozen() {
+    return (this.selectedAccount.accountType.id == 1) && (Date.now() > Date.parse(this.selectedAccount.freezeDate));
+
   }
 }
 

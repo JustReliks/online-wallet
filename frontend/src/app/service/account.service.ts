@@ -14,6 +14,9 @@ export class AccountService {
   private updateAccountsSubject = new BehaviorSubject({
     accounts: [],
   });
+  changeTypeInfoSubject = new BehaviorSubject({});
+
+  updateTypeInfoObservable = this.changeTypeInfoSubject.asObservable();
   updateAccountsSubjectObservable = this.updateAccountsSubject.asObservable();
 
   constructor(private http: HttpClient) {

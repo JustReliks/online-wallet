@@ -15,6 +15,7 @@ import ru.onlinewallet.service.StatisticsService;
 
 import javax.websocket.server.PathParam;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -33,6 +34,14 @@ public class AccountController {
         if (Objects.isNull(account)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+        Instant now = Instant.now();
+        if(dto.getAccountType().getType().getId() == 1)
+        {
+            if(Objects.isNull(dto.getFreezeDate()) || dto.getFreezeDate().isBefore(now))
+            {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        }
         List<AccountBill> collect =
                 dto.getAccountBills().stream().map(AccountBillDto::fromDto).collect(Collectors.toList());
         List<AccountBill> list = accountService.createAccountBills(account.getId(), collect);
@@ -42,6 +51,10 @@ public class AccountController {
         accountDto.setAccountBills(billDto);
         AccountGoalDto goal1 = dto.getGoal();
         if (Objects.nonNull(goal1)) {
+            if(goal1.getDate().isBefore(now))
+            {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
             AccountGoal goal = AccountGoalDto.fromDto(dto.getGoal());
             goal.setAccountId(account.getId());
             AccountGoalDto accountGoalDto = AccountGoalDto.toDto(accountService.saveGoal(goal));
@@ -57,7 +70,7 @@ public class AccountController {
     }
 
     @PutMapping
-    private ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto dto) {
+    private ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto dto) throws IOException {
 
         Account account = AccountDto.fromDto(dto);
         if (Objects.nonNull(dto.getGoal()))
@@ -110,7 +123,7 @@ public class AccountController {
                                                           @RequestParam("userId") Long userId,
                                                           @RequestParam("plus") boolean isPlus,
                                                           @RequestParam("value") double value,
-                                                          @RequestParam("category") Long categoryId) {
+                                                          @RequestParam("category") Long categoryId) throws IOException {
         AccountBill accountBill = AccountBillDto.fromDto(dto);
         AccountBill bill = accountService.addTransaction(accountBill, userId, isPlus, value, categoryId);
         return ResponseEntity.ok(AccountBillDto.toDto(bill));

@@ -9,10 +9,36 @@
         {{type.name}}
       </div>
       <div class="w-account-description">
-        <p *ngIf="type.code== 'SAVING'">Описание сберегательного счета</p>
-        <p *ngIf="type.code== 'CREDIT'">Описание кредитного счета</p>
-        <p *ngIf="type.code== 'SALARY'">Описание зарплатного счета</p>
-        <p *ngIf="type.code== 'CUMULATIVE'">Описание накопительного счета</p>
+        <div *ngIf="type.code == 'CUMULATIVE'">
+          <p>Накопительный счет - это счет,
+            который предлагает не только хранения денежных средств, но и возможность
+            снятия в любой момент.</p>
+          <h3 class="font-weight-bold" style="font-size: 10px"> Начисление средств: <span style="color: green">разрешено</span></h3>
+          <h3 class="font-weight-bold" style="font-size: 10px"> Списание средств: <span style="color: green">разрешено</span></h3>
+          <h3 class="font-weight-bold" style="font-size: 10px">Создание цели: <span style="color: green">разрешено</span></h3>
+        </div>
+        <div *ngIf="type.code == 'CREDIT'">
+          <p>Кредитный счет -
+            это счет, который предназначается для учета кредитной задолженности перед банком по кредитному договору.
+          </p>
+          <h3 class="font-weight-bold" style="font-size: 10px"> Начисление средств: <span style="color: green">разрешено</span></h3>
+          <h3 class="font-weight-bold" style="font-size: 10px"> Списание средств: <span style="color: red">запрещено</span></h3>
+          <h3 class="font-weight-bold" style="font-size: 10px">Создание цели: <span style="color: red">запрещено</span></h3>
+        </div>
+        <div *ngIf="type.code == 'SALARY'">
+          <p>Зарплатный счет - это счет,
+            который позволяет распоряжаться денежными средствами, полученными в качестве заработной платы.</p>
+          <h3 class="font-weight-bold" style="font-size: 10px"> Начисление средств: <span style="color: green">разрешено</span></h3>
+          <h3 class="font-weight-bold" style="font-size: 10px"> Списание средств: <span style="color: green">разрешено</span></h3>
+          <h3 class="font-weight-bold" style="font-size: 10px">Создание цели: <span style="color: red">запрещено</span></h3>
+        </div>
+        <div *ngIf="type.code == 'SAVING'">
+          <p>Сберегательный счет - это счет,
+            который предполагает сбережение средств на определенную цель</p>
+          <h3 class="font-weight-bold" style="font-size: 10px"> Начисление средств: <span style="color: green">разрешено</span></h3>
+          <h3 class="font-weight-bold" style="font-size: 10px"> Списание средств: <span style="color: #d2d206">разрешено(после определенной даты)</span></h3>
+          <h3 class="font-weight-bold" style="font-size: 10px">Создание цели: <span style="color: green">разрешено</span></h3>
+        </div>
       </div>
     </div>
   </div>

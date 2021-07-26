@@ -29,6 +29,9 @@ public class AccountGoal {
     @Column
     private Instant date;
 
+    @Column
+    private boolean completed;
+
     @OneToOne(optional = false)
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account account;

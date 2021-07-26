@@ -50,6 +50,10 @@
           </div>
         </div>
       </div>
+      <div class="alert alert-danger" role="alert" *ngIf="selectedAccount != null && isSelectedAccountFrozen()">
+        Внимание! Данный счет заблокирован на снятие средств до <strong>{{selectedAccount.freezeDate | date: 'medium'}}</strong>
+      </div>
+
     </div>
   </div>
   <div mat-dialog-actions class="row d-flex">

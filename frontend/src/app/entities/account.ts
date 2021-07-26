@@ -16,6 +16,7 @@ export class Account {
   public accountBills: Array<AccountBill>;
   public convertedBalance: ConvertedBalance;
   public accountType: AccountType
+  public freezeDate: string;
 
   constructor(json: any) {
     this.id = json.id;
@@ -29,6 +30,7 @@ export class Account {
     this.accountBills = json?.accountBills?.map(bill => new AccountBill(bill));
     this.convertedBalance = json?.convertedBalance;//new ConvertedBalance(json?.convertedBalance.balance, json.convertedBalance.currency);
     this.accountType = json?.accountType;
+    this.freezeDate = json?.freezeDate;
   }
 
 
