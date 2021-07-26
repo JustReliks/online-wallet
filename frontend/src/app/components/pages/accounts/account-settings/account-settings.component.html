@@ -76,7 +76,7 @@
   </div>
   <div mat-dialog-actions class="row d-flex">
     <div class="col d-flex justify-content-left">
-      <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'
+      <button *ngIf="goal == null && (this.account.accountType.type.code == 'CUMULATIVE' || this.account.accountType.type.code == 'SAVING')" color="accent" mat-raised-button class='btn custom-btn mr-3'
               (click)="createGoal()" style="align-content: center">
         Добавить цель по счету
       </button>

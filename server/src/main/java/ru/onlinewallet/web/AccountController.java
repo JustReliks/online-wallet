@@ -6,10 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.onlinewallet.dto.account.*;
 import ru.onlinewallet.entity.ConvertedBalance;
-import ru.onlinewallet.entity.account.Account;
-import ru.onlinewallet.entity.account.AccountBill;
-import ru.onlinewallet.entity.account.AccountGoal;
-import ru.onlinewallet.entity.account.AccountType;
+import ru.onlinewallet.entity.account.*;
 import ru.onlinewallet.service.AccountService;
 import ru.onlinewallet.service.StatisticsService;
 
@@ -19,6 +16,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static ru.onlinewallet.enums.AccountType.CREDIT;
 
 @RestController
 @RequestMapping("/api/account")
@@ -35,24 +34,36 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         Instant now = Instant.now();
-        if(dto.getAccountType().getType().getId() == 1)
-        {
-            if(Objects.isNull(dto.getFreezeDate()) || dto.getFreezeDate().isBefore(now))
-            {
+        if (dto.getAccountType().getType().getId() == 1) {
+            if (Objects.isNull(dto.getFreezeDate()) || dto.getFreezeDate().isBefore(now)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
         }
+
+        AccountDto accountDto = AccountDto.toDto(account);
+        AccountTypeDto accountTypeDto = dto.getAccountType();
+        AccountType accountType = AccountTypeDto.fromDto(accountTypeDto);
+        accountType.setAccountId(account.getId());
+        AccountType aType = accountService.createAccountType(accountType);
+        accountDto.setAccountType(AccountTypeDto.toDto(aType));
+
         List<AccountBill> collect =
-                dto.getAccountBills().stream().map(AccountBillDto::fromDto).collect(Collectors.toList());
+                dto.getAccountBills().stream().map(bill -> {
+                    AccountBill accountBill = AccountBillDto.fromDto(bill);
+                    if (accountDto.getAccountType().getType().getCode().equals(CREDIT.getName())) {
+                        double balance = accountBill.getBalance() * -1;
+                        accountBill.setStartBalance(balance);
+                        accountBill.setBalance(balance);
+                    }
+                    return accountBill;
+                }).collect(Collectors.toList());
         List<AccountBill> list = accountService.createAccountBills(account.getId(), collect);
         List<AccountBillDto> billDto = list.stream().map(AccountBillDto::toDto).collect(Collectors.toList());
 
-        AccountDto accountDto = AccountDto.toDto(account);
         accountDto.setAccountBills(billDto);
         AccountGoalDto goal1 = dto.getGoal();
         if (Objects.nonNull(goal1)) {
-            if(goal1.getDate().isBefore(now))
-            {
+            if (goal1.getDate().isBefore(now)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
             AccountGoal goal = AccountGoalDto.fromDto(dto.getGoal());
@@ -60,11 +71,6 @@ public class AccountController {
             AccountGoalDto accountGoalDto = AccountGoalDto.toDto(accountService.saveGoal(goal));
             accountDto.setGoal(accountGoalDto);
         }
-        AccountTypeDto accountTypeDto = dto.getAccountType();
-        AccountType accountType = AccountTypeDto.fromDto(accountTypeDto);
-        accountType.setAccountId(account.getId());
-        AccountType aType = accountService.createAccountType(accountType);
-        accountDto.setAccountType(AccountTypeDto.toDto(aType));
 
         return ResponseEntity.ok(accountDto);
     }
@@ -88,13 +94,17 @@ public class AccountController {
 
 
     @GetMapping
-    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id) throws IOException {
+    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id) {
         return ResponseEntity.ok(
                 accountService
                         .getAll(id)
                         .stream()
                         .map(acc -> {
                             AccountDto accountDto = AccountDto.toDto(acc);
+                            if(acc.getAccountType().getType().getCode().equals(CREDIT.getName())){
+                                CreditInfo creditInfo = accountService.calculateCreditInfo(acc);
+                                accountDto.setCreditInfo(CreditInfoDto.toDto(creditInfo));
+                            }
                             try {
                                 if (acc.getAccountBills().size() > 0) {
                                     ConvertedBalanceDto balanceDto =
@@ -124,8 +134,13 @@ public class AccountController {
                                                           @RequestParam("plus") boolean isPlus,
                                                           @RequestParam("value") double value,
                                                           @RequestParam("category") Long categoryId) throws IOException {
-        AccountBill accountBill = AccountBillDto.fromDto(dto);
-        AccountBill bill = accountService.addTransaction(accountBill, userId, isPlus, value, categoryId);
+        AccountBill bill;
+        try {
+            AccountBill accountBill = AccountBillDto.fromDto(dto);
+            bill = accountService.addTransaction(accountBill, userId, isPlus, value, categoryId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         return ResponseEntity.ok(AccountBillDto.toDto(bill));
     }
 

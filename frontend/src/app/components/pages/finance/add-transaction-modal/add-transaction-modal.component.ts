@@ -43,13 +43,11 @@ export class AddTransactionModalComponent implements OnInit {
   }
 
   changePlusState(): void {
-    let accountTypeId = this.selectedAccount.accountType.id;
-    if(accountTypeId != 4 && accountTypeId != 2)
-    {
-      if(accountTypeId != 1 || Date.now() > Date.parse(this.selectedAccount.freezeDate))
-      {
+    let accountCode = this.selectedAccount.accountType.type.code;
+    if (accountCode != 'CREDIT') {
+      if (accountCode != 'SAVING' || Date.now() > Date.parse(this.selectedAccount.freezeDate)) {
         this.isPlusState = !this.isPlusState;
-        this.selectedCategoryId=null;
+        this.selectedCategoryId = null;
       }
     }
   }
@@ -81,7 +79,10 @@ export class AddTransactionModalComponent implements OnInit {
       this.dialogRef.close();
       console.log(res)
     }, error => {
-      this._notification.showError('Возникла ошибка при проведении операции: ' + error.error.message, 'Проведение операции по счету')
+      console.log(error)
+      if (error.status === 400) {
+        this._notification.showError('Возникла ошибка при проведении операции: Данная операция приводит к отрицательному балансу. Действие отменено.', 'Проведение операции по счету')
+      }
     });
   }
 
@@ -103,7 +104,7 @@ export class AddTransactionModalComponent implements OnInit {
   }
 
   isSelectedAccountFrozen() {
-    return (this.selectedAccount.accountType.id == 1) && (Date.now() > Date.parse(this.selectedAccount.freezeDate));
+    return (this.selectedAccount.accountType?.type?.code == 'SAVING') && (Date.now() > Date.parse(this.selectedAccount.freezeDate));
 
   }
 }

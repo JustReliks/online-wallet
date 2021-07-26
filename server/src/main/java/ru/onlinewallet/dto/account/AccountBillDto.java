@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.onlinewallet.entity.account.AccountBill;
 
+import java.time.Instant;
 import java.util.Objects;
 
 @Data
@@ -15,10 +16,14 @@ public class AccountBillDto {
     private Long accountId;
     private CurrencyDto currency;
     private Double balance;
+    private Double startBalance;
+    private Double rate;
+    private Instant maturityDate;
 
     public static AccountBillDto toDto(AccountBill accountBill) {
         return new AccountBillDto(accountBill.getId(), accountBill.getAccountId(),
-                CurrencyDto.toDto(accountBill.getCurrency()), accountBill.getBalance());
+                CurrencyDto.toDto(accountBill.getCurrency()), accountBill.getStartBalance(), accountBill.getBalance()
+                , accountBill.getRate(), accountBill.getMaturityDate());
     }
 
     public static AccountBill fromDto(AccountBillDto accountBillDto) {
@@ -26,7 +31,10 @@ public class AccountBillDto {
         accountBill.setId(accountBillDto.getId());
         accountBill.setAccountId(accountBillDto.getAccountId());
         accountBill.setCurrency(CurrencyDto.fromDto(accountBillDto.getCurrency()));
+        accountBill.setStartBalance(accountBillDto.getStartBalance());
         accountBill.setBalance(Objects.isNull(accountBillDto.getBalance()) ? 0 : accountBillDto.getBalance());
+        accountBill.setRate(accountBillDto.getRate());
+        accountBill.setMaturityDate(accountBillDto.getMaturityDate());
 
         return accountBill;
     }

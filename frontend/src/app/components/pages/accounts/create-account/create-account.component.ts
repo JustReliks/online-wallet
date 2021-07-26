@@ -34,6 +34,7 @@ export class CreateAccountComponent implements OnInit {
   private _currencies: Array<Currency>;
   private _types: Array<Type>;
   private _accountTypeInfo: boolean = false;
+  private typesMap: any;
 
   constructor(
     private dialog: MatDialog,
@@ -43,6 +44,9 @@ export class CreateAccountComponent implements OnInit {
     private _dictionaryService: DictionaryService,
     private _sanitizer: DomSanitizer) {
     this._user = data.user;
+    let date = new Date();
+    console.log(date.getDay())
+    console.log(date.getDate())
     this.createAccountForm = new FormGroup({
       accountName: new FormControl('', [Validators.required]),
       mainCurrency: new FormControl('', [Validators.required]),
@@ -51,14 +55,24 @@ export class CreateAccountComponent implements OnInit {
       file: new FormControl(undefined, []),
       goalName: new FormControl('Моя первая цель', []),
       goalValue: new FormControl('10000', []),
-      goalDate: new FormControl(new Date(), []),
+      goalDate: new FormControl(date.getDay(), []),
       freezeDate: new FormControl(new Date()),
+      creditAmount: new FormControl('', []),
+      creditRate: new FormControl('', []),
+      creditTo: new FormControl(new Date()),
     });
     this.minDate = new Date();
     // this.minDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() + 1);
 
     this._dictionaryService.getAllCurrencies().subscribe(res => this._currencies = res)
-    this._dictionaryService.getAllAccountTypes().subscribe(res => this.types = res);
+    this._dictionaryService.getAllAccountTypes().subscribe(res => {
+      this.types = res
+
+      this.typesMap = _.chain(res)
+        .keyBy('id')
+        .mapValues('code')
+        .value();
+    });
 
     this._icons = [];
     this._icons.push(new Icon('assets/img/accounts/1.png'))
@@ -93,7 +107,8 @@ export class CreateAccountComponent implements OnInit {
       this._selectedTypeId = null;
     } else {
       this._selectedTypeId = value;
-      if (value != 4 && value != 1) {
+      let typesMapElement = this.typesMap[value];
+      if (typesMapElement != 'CUMULATIVE' && typesMapElement != 'SAVING') {
         this.goal = null;
       }
 
@@ -173,9 +188,14 @@ export class CreateAccountComponent implements OnInit {
     console.log(this.controls)
     this._account.name = this.controls.accountName.value;
     this._account.description = this.controls.description.value;
+    let findType = _.find(this.types, type => type.id == this.selectedTypeId);
     let accountBills = new Array<AccountBill>();
+    let isCreditBill = findType.code == 'CREDIT';
     accountBills.push(new AccountBill({
-      currency: this.getCurrency(this.controls.mainCurrency.value)
+      currency: this.getCurrency(this.controls.mainCurrency.value),
+      rate: isCreditBill ? this.controls.creditRate.value : 0,
+      balance: isCreditBill ? this.controls.creditAmount.value : 0,
+      maturityDate: isCreditBill ? this.controls.creditTo.value : null
     }));
     if (this.controls.additionalCurrency.value) {
       accountBills.push(new AccountBill({
@@ -190,8 +210,9 @@ export class CreateAccountComponent implements OnInit {
       this.goal.date = this.controls.goalDate.value;
       this._account.goal = this.goal;
     }
+
     this._account.accountType = new AccountType({
-      type: _.find(this.types, type => type.id == this.selectedTypeId)
+      type: findType
     })
 
     if (this.selectedTypeId == 1) {
@@ -230,5 +251,11 @@ export class CreateAccountComponent implements OnInit {
 
   changeAccountTypeInfo() {
     this._accountTypeInfo = !this._accountTypeInfo;
+  }
+
+  getSelectedTypeCode(selectedTypeId: number) {
+    if (selectedTypeId) {
+      return this.typesMap[selectedTypeId]
+    }
   }
 }

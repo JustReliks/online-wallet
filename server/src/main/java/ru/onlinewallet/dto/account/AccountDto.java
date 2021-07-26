@@ -26,6 +26,7 @@ public class AccountDto {
     private List<AccountBillDto> accountBills;
     private ConvertedBalanceDto convertedBalance;
     private AccountTypeDto accountType;
+    private CreditInfoDto creditInfo;
 
     public static AccountDto toDto(Account account) {
         AccountDto accountDto = new AccountDto();

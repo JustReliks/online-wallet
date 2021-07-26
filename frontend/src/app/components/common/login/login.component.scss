@@ -109,6 +109,7 @@ html, body {
       background: #4b51a8;
     }
   }
+
   .overflow-inherit {
     overflow: inherit;
     margin-bottom: 17px
@@ -117,4 +118,19 @@ html, body {
 
 .register-icon {
   margin-right: 21px;
+}
+
+@media (max-width: 992px) {
+  .text-center {
+    .mat-dialog-title {
+      font-size: 25px !important;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+  button, a {
+    font-size: 11px;
+  }
 }

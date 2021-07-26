@@ -27,7 +27,7 @@
       <div *ngIf="selectedAccount && selectedBill"
            style="place-self: center">
         <div class="d-flex align-items-center w-place-center">
-          <mat-form-field class="w-100 mt-2" appearance="fill">
+          <mat-form-field class="w-100 mt-2" style="max-width: 185px;" appearance="fill">
             <mat-label>Сумма операции</mat-label>
             <input
               formControlName="sum"
@@ -42,8 +42,15 @@
                     (click)="changePlusState()" class="w-icon">remove
           </mat-icon>
         </div>
+      </div>
+      <div *ngIf="selectedAccount && selectedBill"
+           style="place-self: center;
+    display: flex;
+    width: 100%;
+    overflow-x: scroll;">
         <div class="icons d-flex">
-          <div #tooltip [matTooltip]="category.title" [matTooltipPosition]="'above'" class="icon" *ngFor="let category of getCategories()"
+          <div #tooltip [matTooltip]="category.title" [matTooltipPosition]="'above'" class="icon"
+               *ngFor="let category of getCategories(); index as i"
                (click)="selectedCategoryId = category.id"
                [ngStyle]=" (category.id == selectedCategoryId) ? {'background-color': '#007bff', 'border-radius': '24px'} : {'background-color': 'white'}">
             <img [src]="getCategoryImg(category)"/>
@@ -51,7 +58,8 @@
         </div>
       </div>
       <div class="alert alert-danger" role="alert" *ngIf="selectedAccount != null && isSelectedAccountFrozen()">
-        Внимание! Данный счет заблокирован на снятие средств до <strong>{{selectedAccount.freezeDate | date: 'medium'}}</strong>
+        Внимание! Данный счет заблокирован на снятие средств до
+        <strong>{{selectedAccount.freezeDate | date: 'medium'}}</strong>
       </div>
 
     </div>

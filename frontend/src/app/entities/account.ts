@@ -2,6 +2,7 @@ import {AccountBill} from "./account-bill";
 import {Goal} from "./goal";
 import {ConvertedBalance} from "./converted-balance";
 import {AccountType} from "./account-type";
+import {CreditInfo} from "./credit-info";
 
 export class Account {
 
@@ -17,6 +18,7 @@ export class Account {
   public convertedBalance: ConvertedBalance;
   public accountType: AccountType
   public freezeDate: string;
+  public creditInfo: CreditInfo
 
   constructor(json: any) {
     this.id = json.id;
@@ -31,6 +33,7 @@ export class Account {
     this.convertedBalance = json?.convertedBalance;//new ConvertedBalance(json?.convertedBalance.balance, json.convertedBalance.currency);
     this.accountType = json?.accountType;
     this.freezeDate = json?.freezeDate;
+    this.creditInfo = json?.creditInfo;
   }
 
 

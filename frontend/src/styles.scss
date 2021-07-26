@@ -207,3 +207,15 @@ mat-dialog-container {
     display: none;
   }
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(0 0 0 / 18%);
+}
+::-webkit-scrollbar-track {
+  background: rgb(0 0 0 / 15%);
+}

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Data
 @Entity
@@ -23,10 +24,20 @@ public class AccountBill {
     @JoinColumn(name = "currency_id")
     private Currency currency;
 
+    @Column(name = "start_balance")
+    private Double startBalance;
+
     @Column
     private Double balance;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account account;
+
+    @Column
+    private double rate;
+
+    @Column(name = "maturity_date")
+    private Instant maturityDate;
+
 }

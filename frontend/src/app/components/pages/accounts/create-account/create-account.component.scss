@@ -31,7 +31,7 @@
 }
 
 .w-info {
-  margin-left: 31px;
+  padding-right: 44px;
   cursor: pointer;
 }
 
@@ -59,4 +59,8 @@
       height: 100%;
     }
   }
+}
+
+.w-dialog-content{
+  padding: 3px;
 }

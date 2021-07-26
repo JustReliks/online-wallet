@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.onlinewallet.entity.ConvertedBalance;
-import ru.onlinewallet.entity.account.Account;
-import ru.onlinewallet.entity.account.AccountBill;
-import ru.onlinewallet.entity.account.AccountGoal;
-import ru.onlinewallet.entity.account.AccountType;
+import ru.onlinewallet.entity.account.*;
 import ru.onlinewallet.entity.user.UserSettings;
 import ru.onlinewallet.repo.account.*;
 import ru.onlinewallet.service.AccountService;
@@ -22,6 +19,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -72,8 +72,7 @@ public class AccountServiceImpl implements AccountService {
                         "не найден."));
         Instant now = Instant.now();
 
-        if(!isPlus && account.getAccountType().getTypeId() == 1 && account.getFreezeDate().isAfter(now))
-        {
+        if (!isPlus && account.getAccountType().getTypeId() == 1 && account.getFreezeDate().isAfter(now)) {
             throw new RuntimeException("Данный счет заморожен для списаний!");
         }
 
@@ -223,5 +222,34 @@ public class AccountServiceImpl implements AccountService {
                 -> transaction.getAccountId().equals(id)).
                 forEach(transactionHistoryRepository::delete);
         accountRepository.deleteById(account.getId());
+    }
+
+    @Override
+    public CreditInfo calculateCreditInfo(Account acc) {
+
+        List<AccountBill> bills = acc.getAccountBills();
+        if (bills.isEmpty()) {
+            return null;
+        }
+        AccountBill accountBill = bills.get(0);
+        LocalDate maturDate = LocalDate.ofInstant(accountBill.getMaturityDate(), ZoneId.systemDefault());
+        LocalDate now = LocalDate.now();
+        Double creditAmount = accountBill.getStartBalance();
+        double rate = accountBill.getRate();
+        long between = ChronoUnit.MONTHS.between(now, maturDate);
+
+        double v = -accountBill.getBalance();
+        double ratePercentage = rate/100;
+        double pow = Math.pow(1 + ratePercentage, between);
+        double v1 = ratePercentage / (pow - 1);
+        double v2 = ratePercentage + v1;
+        double monthlyPayment = v * v2;
+
+        CreditInfo creditInfo = new CreditInfo();
+        creditInfo.setMonthlyPayment(monthlyPayment);
+        creditInfo.setMaturityDate(accountBill.getMaturityDate());
+        creditInfo.setCreditAmount(creditAmount);
+        creditInfo.setCurrentCreditBalance(accountBill.getBalance());
+        return creditInfo;
     }
 }

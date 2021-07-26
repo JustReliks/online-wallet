@@ -1,10 +1,7 @@
 package ru.onlinewallet.service;
 
 import ru.onlinewallet.entity.ConvertedBalance;
-import ru.onlinewallet.entity.account.Account;
-import ru.onlinewallet.entity.account.AccountBill;
-import ru.onlinewallet.entity.account.AccountGoal;
-import ru.onlinewallet.entity.account.AccountType;
+import ru.onlinewallet.entity.account.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,4 +31,6 @@ public interface AccountService {
     AccountType createAccountType(AccountType accountType);
 
     void deleteAccount(Long id);
+
+    CreditInfo calculateCreditInfo(Account acc);
 }

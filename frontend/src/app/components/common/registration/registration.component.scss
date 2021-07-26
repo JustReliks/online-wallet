@@ -41,3 +41,18 @@
 .w-recaptcha {
   max-width: -webkit-fill-available;
 }
+
+@media (max-width: 992px) {
+  .text-center {
+    .mat-dialog-title {
+      font-size: 25px !important;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+  button, a {
+    font-size: 11px;
+  }
+}

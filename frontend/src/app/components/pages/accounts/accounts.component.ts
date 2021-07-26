@@ -98,4 +98,10 @@ export class AccountsComponent implements OnInit {
   getTypeIcon(type: Type) {
     return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${type?.icon}`);
   }
+
+  getCreditAmount(acc: Account) {
+    let creditInfo = acc.creditInfo;
+    let diff = (-1*creditInfo.creditAmount) + (creditInfo.currentCreditBalance);
+    return (-1*creditInfo.creditAmount)-diff;
+  }
 }

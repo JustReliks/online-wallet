@@ -2,173 +2,184 @@
   <div class="card-header w-header">
     Создание нового счета
   </div>
+
   <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
-    <div class="d-flex w-100 my-3">
-      <mat-icon class="w-icon mr-3">account_balance</mat-icon>
-      <div class="input-group">
-        <mat-form-field appearance="fill" class="w-100">
-          <mat-label>Наименование счета</mat-label>
-          <textarea formControlName="accountName" matInput
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"></textarea>
-          <mat-error *ngIf="hasControlsErrors('accountName', 'required')"
-          >Имя не может быть пустым
-          </mat-error
-          >
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="d-flex w-100">
-      <div class="col w-money">
-        <mat-icon class="w-currency-icon" style="margin-top: 20px; margin-left: -23px">star</mat-icon>
-        <mat-form-field appearance="fill">
-          <mat-label>Основная валюта</mat-label>
-          <mat-select formControlName="mainCurrency" class="w-select"
-                      (selectionChange)="changeMainCurrency()">
-            <mat-option *ngFor="let currency of this.currencies"
-                        value="{{currency.id}}">{{currency.shortName}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Начальная сумма</mat-label>
-          <textarea matInput
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"></textarea>
-        </mat-form-field>
-      </div>
-      <div *ngIf="!hasSecondBill" class="col-1" style="max-width: 48px; margin-left: -40px">
-        <button style="background: none; border: none; margin-top: 20px;" #tooltip="matTooltip"
-                matTooltip="Добавить валюту" [matTooltipPosition]="'above'" (click)="hasSecondBill = true">
-          <mat-icon>add_circle</mat-icon>
-        </button>
-      </div>
-      <div *ngIf="hasSecondBill" class="col-1" style="max-width: 48px; margin-left: -48px">
-        <button style="background: none; border: none; margin-top: 20px;" #tooltip="matTooltip"
-                matTooltip="Удалить валюту" [matTooltipPosition]="'above'" (click)="hasSecondBill = false">
-          <mat-icon>delete_forever</mat-icon>
-        </button>
-      </div>
-    </div>
-    <div *ngIf="hasSecondBill" class="d-flex w-100">
-      <div class="col w-money">
-        <mat-icon class="w-currency-icon" style="margin-top: 20px; margin-left: -23px">star_half</mat-icon>
-        <mat-form-field appearance="fill">
-          <mat-label>Дополнительная валюта</mat-label>
-          <mat-select formControlName="additionalCurrency" class="w-select" (selectionChange)="changeMainCurrency()">
-            <mat-option *ngFor="let currency of getCurrenciesWithoutMain()"
-                        value="{{currency.id}}">{{currency.shortName}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Начальная сумма</mat-label>
-          <textarea matInput
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"></textarea>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="col" style="width: 100%;">
-      <mat-form-field class="w-form-field"
-                      appearance="fill">
-        <mat-label>Описание</mat-label>
-        <textarea formControlName="description" matInput
-                  cdkTextareaAutosize
-                  #autosize="cdkTextareaAutosize"
-                  cdkAutosizeMinRows="1"
-                  cdkAutosizeMaxRows="5"></textarea>
+    <!--    <div class="col-1 d-flex align-items-center">-->
+    <!--      <label class="register-icon"> </label>-->
+    <!--    </div>-->
+    <div class="col">
+      <mat-form-field class="w-100">
+        <input formControlName="accountName" matInput placeholder="Наименование счета">
+        <mat-error *ngIf="hasControlsErrors('accountName', 'required')"
+        >Имя не может быть пустым
+        </mat-error
+        >
       </mat-form-field>
     </div>
   </div>
-  <div class="d-flex w-100 flex-column">
-    <div *ngIf="selectedTypeId == 1" style="display: flex; justify-content: center">
-      <mat-form-field appearance="fill">
+  <div mat-dialog-content
+       class="row d-flex pl-3 overflow-inherit">
+    <!--    <div class="col-1 d-flex align-items-center">-->
+    <!--      <label class="register-icon">-->
+    <!--      </label>-->
+    <!--    </div>-->
+    <div class="col">
+      <mat-form-field class="w-100">
+        <mat-label>Описание</mat-label>
+        <input formControlName="description" matInput>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+    <!--    <div class="col-1 d-flex align-items-center">-->
+    <!--      <label class="register-icon"> </label>-->
+    <!--    </div>-->
+    <div class="col-4">
+      <mat-form-field class="w-100">
+        <mat-label>Основная валюта</mat-label>
+        <mat-select formControlName="mainCurrency" class="w-select"
+                    (selectionChange)="changeMainCurrency()">
+          <mat-option *ngFor="let currency of this.currencies"
+                      value="{{currency.id}}">{{currency.shortName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div *ngIf="!hasSecondBill && getSelectedTypeCode(selectedTypeId)!='CREDIT'" class="w-add-del-curr-icon"
+         style="">
+      <button style="background: none; border: none; margin-top: 11px;" #tooltip="matTooltip"
+              matTooltip="Добавить валюту" [matTooltipPosition]="'above'" (click)="hasSecondBill = true">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="hasSecondBill && getSelectedTypeCode(selectedTypeId)!='CREDIT'" class=""
+         style="">
+      <button style="background: none; border: none; margin-top: 20px;" #tooltip="matTooltip"
+              matTooltip="Удалить валюту" [matTooltipPosition]="'above'" (click)="hasSecondBill = false">
+        <mat-icon>delete_forever</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="hasSecondBill&&getSelectedTypeCode(selectedTypeId)!='CREDIT'" mat-dialog-content
+       class="row d-flex pl-3 overflow-inherit">
+    <!--    <div class="col-1 d-flex align-items-center">-->
+    <!--      <label class="register-icon">-->
+    <!--        <i class="fa fa-usd" aria-hidden="true"></i>-->
+    <!--      </label>-->
+    <!--    </div>-->
+    <div class="col-5">
+      <mat-form-field class="w-100">
+        <mat-label>Дополнительная валюта</mat-label>
+        <mat-select formControlName="additionalCurrency" class="w-select" (selectionChange)="changeMainCurrency()">
+          <mat-option *ngFor="let currency of getCurrenciesWithoutMain()"
+                      value="{{currency.id}}">{{currency.shortName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div *ngIf="getSelectedTypeCode(selectedTypeId)=='CREDIT'" mat-dialog-content
+       class="row d-flex pl-3 overflow-inherit">
+    <!--    <div class="col-1 d-flex align-items-center">-->
+    <!--      <label class="register-icon"></label>-->
+    <!--    </div>-->
+    <div class="col">
+      <mat-form-field class="mr-2">
+        <mat-label>Размер кредита</mat-label>
+        <input formControlName="creditAmount" type="number" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Процентная ставка</mat-label>
+        <input formControlName="creditRate" type="number" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Выплатить до</mat-label>
+        <input matInput formControlName="creditTo" [min]="minDate" [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div *ngIf="getSelectedTypeCode(selectedTypeId) == 'SAVING'" mat-dialog-content
+       class="row d-flex pl-3 overflow-inherit">
+    <!--    <div class="col-1 d-flex align-items-center">-->
+    <!--      <label class="register-icon">-->
+    <!--      </label>-->
+    <!--    </div>-->
+    <div class="col">
+      <mat-form-field>
         <mat-label>Дата сбережения</mat-label>
         <input matInput formControlName="freezeDate" [min]="minDate" [matDatepicker]="picker">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
-    <div class="row justify-content-between">
-      <p>Выберите тип счёта: </p>
-      <mat-icon matTooltip="Информация о типах счёта" [matTooltipPosition]="'below'"
-                (click)="changeAccountTypeInfo()" class="w-info">info
-      </mat-icon>
-    </div>
-    <div class="icons d-flex">
-      <div #tooltip [matTooltip]="type.name" [matTooltipPosition]="'above'" class="icon" *ngFor="let type of types"
-           (click)="selectedTypeId = type.id"
-           [ngStyle]=" (type.id == selectedTypeId) ? {'background-color': '#007bff', 'border-radius': '24px'} : {'background-color': 'white'}">
-        <img [src]="getTypeIcon(type)"/>
-      </div>
-    </div>
-    <div *ngIf="goal != null" class="mat-card" style="margin-top: 10px; background: aliceblue;">
-      <h4 style="margin-top: 5px">Ваша цель:</h4>
-      <div class="row">
-        <mat-form-field class="w-form-field col" style="width: 65%" appearance="fill">
-          <mat-label>Название цели</mat-label>
-          <textarea matInput formControlName="goalName"
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"></textarea>
-        </mat-form-field>
-        <mat-form-field class="col w-form-field" style="width: 35%" appearance="fill">
-          <mat-label>Сумма для достижения цели(в осн. валюте)</mat-label>
-          <textarea formControlName="goalValue" matInput
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"></textarea>
-        </mat-form-field>
-      </div>
-      <div style="width: 100%; display: flex; justify-content: space-around">
-        <mat-form-field appearance="fill">
-          <mat-label>Конечная дата</mat-label>
-          <input matInput formControlName="goalDate" [min]="minDate" [matDatepicker]="picker">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-      </div>
+  </div>
+  <div class="row justify-content-between">
+    <p>Выберите тип счёта: </p>
+    <mat-icon matTooltip="Информация о типах счёта" [matTooltipPosition]="'below'"
+              (click)="changeAccountTypeInfo()" class="w-info">info
+    </mat-icon>
+  </div>
+  <div class="icons d-flex">
+    <div #tooltip [matTooltip]="type.name" [matTooltipPosition]="'above'" class="icon" *ngFor="let type of types"
+         (click)="selectedTypeId = type.id"
+         [ngStyle]=" (type.id == selectedTypeId) ? {'background-color': '#007bff', 'border-radius': '24px'} : {'background-color': 'white'}">
+      <img [src]="getTypeIcon(type)"/>
     </div>
   </div>
-  <div mat-dialog-actions class="row d-flex">
-    <div class="col d-flex justify-content-left mb-1">
-      <div *ngIf="selectedTypeId == 4 || selectedTypeId == 1">
-        <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'
-                (click)="createGoal()" style="align-content: center">
-          Добавить цель по счету
-        </button>
-        <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'
-                (click)="goal = null" style="align-content: center">
-          Удалить цель
-        </button>
-      </div>
-      <div *ngIf="selectedTypeId != 4 && selectedTypeId != 1">
-        <button color="primary" [disabled]="true" mat-raised-button class='btn custom-btn mr-3 mb-1'
-                style="align-content: center">
-          Создание цели недоступно
-        </button>
-      </div>
+  <div *ngIf="goal != null" class="mat-card" style="margin-top: 10px; background: aliceblue;">
+    <h4 style="margin-top: 5px">Ваша цель:</h4>
+    <div class="row">
+      <mat-form-field class="w-form-field col" style="width: 65%" appearance="fill">
+        <mat-label>Название цели</mat-label>
+        <input matInput formControlName="goalName"
+        >
+      </mat-form-field>
+      <mat-form-field class="col w-form-field" style="width: 35%" appearance="fill">
+        <mat-label>Сумма для достижения цели(в осн. валюте)</mat-label>
+        <input formControlName="goalValue" matInput>
+      </mat-form-field>
     </div>
-    <div class="col d-flex justify-content-right">
-      <button color="warn" mat-raised-button class='btn custom-btn mr-3'
-              (click)="close()" style="align-content: center">
-        Закрыть
+    <div style="width: 100%; display: flex; justify-content: space-around">
+      <mat-form-field appearance="fill">
+        <mat-label>Конечная дата</mat-label>
+        <input matInput formControlName="goalDate" [min]="minDate" [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions class="row d-flex">
+  <div class="col d-flex justify-content-left mb-1">
+    <div
+      *ngIf="getSelectedTypeCode(selectedTypeId) == 'CUMULATIVE' || getSelectedTypeCode(selectedTypeId) == 'SAVING'">
+      <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'
+              (click)="createGoal()" style="align-content: center">
+        Добавить цель по счету
       </button>
-      <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
-              [disabled]="!this.createAccountForm.valid || this.selectedTypeId == null "
-              (click)="create()" style="align-content: center">
-        Создать
+      <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'
+              (click)="goal = null" style="align-content: center">
+        Удалить цель
       </button>
     </div>
+    <div
+      *ngIf="getSelectedTypeCode(selectedTypeId) != 'CUMULATIVE' && getSelectedTypeCode(selectedTypeId) != 'SAVING'">
+      <button color="primary" [disabled]="true" mat-raised-button class='btn custom-btn mr-3 mb-1'
+              style="align-content: center">
+        Создание цели недоступно
+      </button>
+    </div>
+  </div>
+  <div class="col d-flex justify-content-right">
+    <button color="warn" mat-raised-button class='btn custom-btn mr-3'
+            (click)="close()" style="align-content: center">
+      Закрыть
+    </button>
+    <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+            [disabled]="!this.createAccountForm.valid || this.selectedTypeId == null "
+            (click)="create()" style="align-content: center">
+      Создать
+    </button>
   </div>
 </div>
 
