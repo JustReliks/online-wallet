@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static ru.onlinewallet.enums.AccountType.CREDIT;
+import static ru.onlinewallet.enums.AccountTypeEnum.CREDIT;
 
 @RestController
 @RequestMapping("/api/account")

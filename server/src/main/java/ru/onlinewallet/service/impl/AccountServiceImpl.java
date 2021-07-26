@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.onlinewallet.entity.ConvertedBalance;
 import ru.onlinewallet.entity.account.*;
 import ru.onlinewallet.entity.user.UserSettings;
+import ru.onlinewallet.enums.AccountTypeEnum;
 import ru.onlinewallet.repo.account.*;
 import ru.onlinewallet.service.AccountService;
 import ru.onlinewallet.service.TransactionHistoryService;
@@ -72,14 +73,14 @@ public class AccountServiceImpl implements AccountService {
                         "не найден."));
         Instant now = Instant.now();
 
-        if (!isPlus && account.getAccountType().getTypeId() == 1 && account.getFreezeDate().isAfter(now)) {
+        if (!isPlus && account.getAccountType().getType().getCode().equals(AccountTypeEnum.SAVING.getName()) && account.getFreezeDate().isAfter(now)) {
             throw new RuntimeException("Данный счет заморожен для списаний!");
         }
 
         Double currentBalance = accountBill.getBalance();
         double newValue = isPlus ? value : -value;
         double balance = currentBalance + newValue;
-        if (balance < 0) {
+        if (balance < 0 && !account.getAccountType().getType().getCode().equals(AccountTypeEnum.CREDIT.getName())) {
             throw new RuntimeException("Данная операция приводит к отрицательному балансу. Действие отменено.");
         }
 

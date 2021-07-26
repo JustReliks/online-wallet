@@ -104,7 +104,7 @@ export class AddTransactionModalComponent implements OnInit {
   }
 
   isSelectedAccountFrozen() {
-    return (this.selectedAccount.accountType?.type?.code == 'SAVING') && (Date.now() > Date.parse(this.selectedAccount.freezeDate));
+    return (this.selectedAccount.accountType?.type?.code == 'SAVING') && (Date.now() < Date.parse(this.selectedAccount.freezeDate));
 
   }
 }

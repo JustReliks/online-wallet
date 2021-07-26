@@ -27,7 +27,7 @@ public class AccountBill {
     @Column(name = "start_balance")
     private Double startBalance;
 
-    @Column
+    @Column(name = "balance")
     private Double balance;
 
     @ManyToOne(optional = false)

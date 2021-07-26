@@ -3,7 +3,7 @@ package ru.onlinewallet.enums;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum AccountType {
+public enum AccountTypeEnum {
     CREDIT("CREDIT"),
     SALARY("SALARY"),
     SAVING("SAVING"),

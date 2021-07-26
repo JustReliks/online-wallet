@@ -22,7 +22,7 @@ public class AccountBillDto {
 
     public static AccountBillDto toDto(AccountBill accountBill) {
         return new AccountBillDto(accountBill.getId(), accountBill.getAccountId(),
-                CurrencyDto.toDto(accountBill.getCurrency()), accountBill.getStartBalance(), accountBill.getBalance()
+                CurrencyDto.toDto(accountBill.getCurrency()),accountBill.getBalance(), accountBill.getStartBalance()
                 , accountBill.getRate(), accountBill.getMaturityDate());
     }
 
