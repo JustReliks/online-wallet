@@ -8,6 +8,9 @@ export class Statistics {
   public expenseLineChart: LineChart;
   public expenseCircleChart: CircleChart;
   public moneyLineChart: LineChart;
+  public allTransactions: number;
+  public incomes: [];
+  public expenses: [];
 
   constructor(json: any) {
     this.expenseCircleChart = json.expenseCircleChart;
@@ -15,6 +18,9 @@ export class Statistics {
     this.incomeCircleChart = json.incomeCircleChart;
     this.incomeLineChart = json.incomeLineChart;
     this.moneyLineChart = json.moneyLineChart;
+    this.allTransactions = json.allTransactions;
+    this.incomes = json.incomes;
+    this.expenses = json.expenses;
   }
 
 }

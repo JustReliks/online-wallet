@@ -24,6 +24,7 @@ export class AccountsStatisticComponent implements OnInit {
   height: number;
   width: number;
   private selectedDays: number=1;
+  private _statistics: Statistics;
 
   @Input('user') set user(user: AuthUser) {
     console.log(user)
@@ -40,6 +41,10 @@ export class AccountsStatisticComponent implements OnInit {
     return this._currentUser;
   }
 
+  get statistics(): Statistics {
+    return this._statistics;
+  }
+
   displayedColumns: string[] = ['id', 'date', 'value', 'currency', 'description']
   accountsExpanded: boolean = true;
 
@@ -53,7 +58,10 @@ export class AccountsStatisticComponent implements OnInit {
       console.log(this.selectedDays)
       console.log(this.selectedAccount)
       if (this.selectedAccount != null && this.selectedDays != null) {
-        this.statisticsService.getAccountStatistic(this.selectedAccount.id, this.selectedDays).subscribe(res => this.initCharts(res, this.selectedDays));
+        this.statisticsService.getAccountStatistic(this.selectedAccount.id, this.selectedDays).subscribe(res => {
+          this._statistics = res;
+          this.initCharts(res, this.selectedDays)
+        });
       }
     })
   }
@@ -103,13 +111,10 @@ export class AccountsStatisticComponent implements OnInit {
   showAccountStatistic(account: Account) {
     this.accountsExpanded = false;
     this.selectedAccount = account;
-    console.log(this.chartIncomeLine)
-    let accountStatistic = this.statisticsService.getAccountStatistic(account.id, 1).subscribe(res => {
-      console.log(res)
+    this.statisticsService.getAccountStatistic(account.id, 1).subscribe(res => {
+      this._statistics = res;
       this.initCharts(res);
-      console.log(this.chartIncomeLine)
     });
-    console.log(accountStatistic)
   }
 
   private initCharts(res: Statistics, days: number = 1) {
