@@ -22,7 +22,7 @@ public class AccountBillDto {
 
     public static AccountBillDto toDto(AccountBill accountBill) {
         return new AccountBillDto(accountBill.getId(), accountBill.getAccountId(),
-                CurrencyDto.toDto(accountBill.getCurrency()),accountBill.getBalance(), accountBill.getStartBalance()
+                CurrencyDto.toDto(accountBill.getCurrency()), accountBill.getBalance(), accountBill.getStartBalance()
                 , accountBill.getRate(), accountBill.getMaturityDate());
     }
 
@@ -33,7 +33,7 @@ public class AccountBillDto {
         accountBill.setCurrency(CurrencyDto.fromDto(accountBillDto.getCurrency()));
         accountBill.setStartBalance(accountBillDto.getStartBalance());
         accountBill.setBalance(Objects.isNull(accountBillDto.getBalance()) ? 0 : accountBillDto.getBalance());
-        accountBill.setRate(accountBillDto.getRate());
+        accountBill.setRate((Objects.isNull(accountBillDto.getRate()) ? 1 : accountBillDto.getRate()));
         accountBill.setMaturityDate(accountBillDto.getMaturityDate());
 
         return accountBill;

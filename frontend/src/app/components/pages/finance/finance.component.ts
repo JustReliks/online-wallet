@@ -20,7 +20,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class FinanceComponent implements OnInit {
   private _originalUser: AuthUser;
   private _currentUser: AuthUser;
-  private _accounts: Array<Account>;
+  private _accounts: Array<Account> = [];
   currencyToConvert: any = null;
   private _balance: any;
   private _currencies: Array<Currency>;
@@ -52,15 +52,14 @@ export class FinanceComponent implements OnInit {
     })
     this._authService.getCurrentLoggedUser().pipe(filter(res => res != null), take(1)).subscribe(res => {
       this.user = res;
+      this._accountService.getAccounts(this.user.id).subscribe(res => this.accounts = res);
       this._accountService.getBalance(this.user.id, this.currencyToConvert).subscribe(res => {
         this._balance = res;
         this.convertFromValue = _.find(this.currencies, curr => curr.shortName == this.balance.currency)?.id
         this.convertToValue = this.getCurrenciesWithoutMain()[0].id;
         this.currencyConverterForm.controls.convertTo.setValue(this.convertToValue);
       });
-      this._accountService.getAccounts(this.user.id).subscribe(res => this.accounts = res);
     });
-
     this._accountService.updateAccountsSubjectObservable.subscribe(res => this.accounts = res.accounts);
   }
 
