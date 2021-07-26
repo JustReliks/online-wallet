@@ -35,7 +35,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final TransactionHistoryRepository transactionHistoryRepository;
 
     @Override
-    public AccountStatistics getStatistics(Long accountId, Long days) throws IOException {
+    public AccountStatistics getStatistics(Long accountId, Long days) throws IOException, CloneNotSupportedException {
         DAY_CATEGORIES = getDayCategories();
         Account account = accountRepository.getById(accountId);
         List<Transaction> transactions = transactionHistoryRepository.findAllByAccountId(accountId);
@@ -43,52 +43,45 @@ public class StatisticsServiceImpl implements StatisticsService {
         Instant date = Instant.now();
         LinkedList<String> categories = new LinkedList<>();
         AccountStatistics statistics = getAccountStatisticsForDay(date, transactions, currency);
+
+        AccountStatistics mainInfo = calcMainStatistics(account, transactions, currency, date, categories,
+                statistics);
+
+        statistics.setAllTransactions(transactions.size());
+        double allIncome = 0;
+        double allExpense = 0;
+        for (Transaction transaction : transactions) {
+            Double quantity = accountService.convertCurrencies(transaction.getQuantity(),
+                    transaction.getAccountBill().getCurrency().getShortName(), currency);
+            if (quantity > 0) {
+                allIncome += quantity;
+            } else {
+                allExpense += allExpense;
+            }
+        }
+        LinkedList<Double> incomeSeriesData = (LinkedList<Double>) mainInfo.getIncomeLineChart().getSeriesData();
+        LinkedList<Double> expensesSeriesData = (LinkedList<Double>) mainInfo.getExpenseLineChart().getSeriesData();
+
+        Double monthIncome = incomeSeriesData.stream().reduce(0.0, Double::sum);
+        Double monthExpenses = expensesSeriesData.stream().reduce(0.0, Double::sum);
+
+        Double dayIncome = incomeSeriesData.getLast();
+        Double dayExpenses = expensesSeriesData.getLast();
+
+        Double weekIncome =
+                incomeSeriesData.subList(incomeSeriesData.size() - 7, incomeSeriesData.size()).stream().reduce(0.0,
+                        Double::sum);
+        Double weekExpenses =
+                expensesSeriesData.subList(expensesSeriesData.size() - 7, incomeSeriesData.size()).stream().reduce(0.0,
+                Double::sum);
+        statistics.setIncomes(Arrays.asList(allIncome, dayIncome, weekIncome, monthIncome));
+        statistics.setExpenses(Arrays.asList(allExpense, dayExpenses, weekExpenses, monthExpenses));
+
         calculateMoneyChartCurrentDay(statistics, account, currency);
         if (days == 1) {
             categories = DAY_CATEGORIES;
         } else {
-            Calendar calendar = GregorianCalendar.getInstance();
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1;
-            LineChart chartIncome = new LineChart();
-            LineChart chartExpense = new LineChart();
-            LineChart chartMoney = new LineChart();
-
-            LinkedList<Double> dataMoney = new LinkedList<>();
-            List<Double> dataIncome = new LinkedList<>();
-            List<Double> dataExpense = new LinkedList<>();
-
-            dataMoney.add(accountService.getConvertedBalance(account, currency).getValue());
-            dataMoney.addFirst(calculateStartDayMoney(currency, transactions, date, dataMoney.getFirst()));
-            dataExpense.add(getDaySum(statistics.getExpenseLineChart().getSeriesData()));
-            dataIncome.add(getDaySum(statistics.getIncomeLineChart().getSeriesData()));
-
-
-            categories.add((day < 10 ? "0" + day : day) + "." + (month < 10 ? "0" + month : month));
-
-            chartIncome.setSeriesData(dataIncome);
-            chartExpense.setSeriesData(dataExpense);
-
-            statistics.setExpenseLineChart(chartExpense);
-            statistics.setIncomeLineChart(chartIncome);
-            Instant dateMoney = Instant.now();
-            for (int i = 0; i < days - 1; i++) {
-                calendar.setTime(Date.from(date));
-                date = date.minus(1, ChronoUnit.DAYS);
-
-                day = calendar.get(Calendar.DAY_OF_MONTH);
-                month = calendar.get(Calendar.MONTH) + 1;
-                categories.addFirst((day < 10 ? "0" + day : day) + "." + (month < 10 ? "0" + month : month));
-                AccountStatistics tempStat = getAccountStatisticsForDay(date, transactions, currency);
-                mergeAccounts(statistics, tempStat);
-                if (i > 0)
-                    dataMoney.addFirst(calculateStartDayMoney(currency, transactions, dateMoney, dataMoney.getFirst()));
-                dateMoney = dateMoney.minus(1, ChronoUnit.DAYS);
-            }
-            chartMoney.setSeriesData(dataMoney);
-            statistics.setMoneyLineChart(chartMoney);
-            Collections.reverse(statistics.getExpenseLineChart().getSeriesData());
-            Collections.reverse(statistics.getIncomeLineChart().getSeriesData());
+            calcNDays(days, account, transactions, currency, date, categories, statistics);
         }
         createCircleData(statistics);
         statistics.getMoneyLineChart().setCategories(categories);
@@ -96,6 +89,61 @@ public class StatisticsServiceImpl implements StatisticsService {
         statistics.getExpenseLineChart().setCategories(categories);
 
         return statistics;
+    }
+
+    private AccountStatistics calcMainStatistics(Account account, List<Transaction> transactions, String currency,
+                                                 Instant date,
+                                                 LinkedList<String> categories, AccountStatistics statistics) throws CloneNotSupportedException, IOException {
+        AccountStatistics clone = (AccountStatistics) statistics.clone();
+        calcNDays(30L, account, transactions, currency, date, categories, clone);
+
+        return clone;
+    }
+
+    private void calcNDays(Long days, Account account, List<Transaction> transactions, String currency, Instant date,
+                           LinkedList<String> categories, AccountStatistics statistics) throws IOException {
+        Calendar calendar = GregorianCalendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        LineChart chartIncome = new LineChart();
+        LineChart chartExpense = new LineChart();
+        LineChart chartMoney = new LineChart();
+
+        LinkedList<Double> dataMoney = new LinkedList<>();
+        List<Double> dataIncome = new LinkedList<>();
+        List<Double> dataExpense = new LinkedList<>();
+
+        dataMoney.add(accountService.getConvertedBalance(account, currency).getValue());
+        dataMoney.addFirst(calculateStartDayMoney(currency, transactions, date, dataMoney.getFirst()));
+        dataExpense.add(getDaySum(statistics.getExpenseLineChart().getSeriesData()));
+        dataIncome.add(getDaySum(statistics.getIncomeLineChart().getSeriesData()));
+
+
+        categories.add((day < 10 ? "0" + day : day) + "." + (month < 10 ? "0" + month : month));
+
+        chartIncome.setSeriesData(dataIncome);
+        chartExpense.setSeriesData(dataExpense);
+
+        statistics.setExpenseLineChart(chartExpense);
+        statistics.setIncomeLineChart(chartIncome);
+        Instant dateMoney = Instant.now();
+        for (int i = 0; i < days - 1; i++) {
+            calendar.setTime(Date.from(date));
+            date = date.minus(1, ChronoUnit.DAYS);
+
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+            month = calendar.get(Calendar.MONTH) + 1;
+            categories.addFirst((day < 10 ? "0" + day : day) + "." + (month < 10 ? "0" + month : month));
+            AccountStatistics tempStat = getAccountStatisticsForDay(date, transactions, currency);
+            mergeAccounts(statistics, tempStat);
+            if (i > 0)
+                dataMoney.addFirst(calculateStartDayMoney(currency, transactions, dateMoney, dataMoney.getFirst()));
+            dateMoney = dateMoney.minus(1, ChronoUnit.DAYS);
+        }
+        chartMoney.setSeriesData(dataMoney);
+        statistics.setMoneyLineChart(chartMoney);
+        Collections.reverse(statistics.getExpenseLineChart().getSeriesData());
+        Collections.reverse(statistics.getIncomeLineChart().getSeriesData());
     }
 
 

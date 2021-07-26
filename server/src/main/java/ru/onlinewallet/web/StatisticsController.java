@@ -19,7 +19,7 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
 
     @GetMapping
-    private StatisticsDto getStatistics(@RequestParam("account") Long accountId, @RequestParam("days") Long days) throws IOException {
+    private StatisticsDto getStatistics(@RequestParam("account") Long accountId, @RequestParam("days") Long days) throws IOException, CloneNotSupportedException {
         AccountStatistics statistics =  statisticsService.getStatistics(accountId, days);
         return StatisticsDto.toDto(statistics);
     }
