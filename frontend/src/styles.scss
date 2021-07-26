@@ -188,6 +188,7 @@ mat-dialog-container {
 }
 
 .mat-dialog-content{
+  max-height: 100%!important;
   overflow: visible!important;
 }
 
