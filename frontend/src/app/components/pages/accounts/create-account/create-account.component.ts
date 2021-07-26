@@ -31,6 +31,7 @@ export class CreateAccountComponent implements OnInit {
   _icons: Icon[] = [];
   private _selectedTypeId: number;
   minDate: Date;
+  minDateCredit: Date;
   private _currencies: Array<Currency>;
   private _types: Array<Type>;
   private _accountTypeInfo: boolean = false;
@@ -45,6 +46,10 @@ export class CreateAccountComponent implements OnInit {
     private _sanitizer: DomSanitizer) {
     this._user = data.user;
     let date = new Date();
+    this.minDate = new Date();
+    this.minDate.setDate  (this.minDate.getDate() + 1);
+    this.minDateCredit = new Date();
+    this.minDateCredit.setDate(this.minDateCredit.getDate() + 90);
     console.log(date.getDay())
     console.log(date.getDate())
     this.createAccountForm = new FormGroup({
@@ -52,17 +57,15 @@ export class CreateAccountComponent implements OnInit {
       mainCurrency: new FormControl('', [Validators.required]),
       additionalCurrency: new FormControl('', []),
       description: new FormControl('', [Validators.required]),
-      file: new FormControl(undefined, []),
       goalName: new FormControl('Моя первая цель', []),
       goalValue: new FormControl('10000', []),
-      goalDate: new FormControl(date.getDay(), []),
-      freezeDate: new FormControl(new Date()),
-      creditAmount: new FormControl('', []),
+      goalDate: new FormControl(this.minDate, []),
+      freezeDate: new FormControl(this.minDate),
+      creditAmount: new FormControl('', []),      file: new FormControl(undefined, []),
+
       creditRate: new FormControl('', []),
-      creditTo: new FormControl(new Date()),
+      creditTo: new FormControl(this.minDateCredit),
     });
-    this.minDate = new Date();
-    // this.minDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay() + 1);
 
     this._dictionaryService.getAllCurrencies().subscribe(res => this._currencies = res)
     this._dictionaryService.getAllAccountTypes().subscribe(res => {

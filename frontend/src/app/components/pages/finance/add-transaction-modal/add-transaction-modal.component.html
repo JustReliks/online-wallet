@@ -57,11 +57,20 @@
           </div>
         </div>
       </div>
-      <div class="alert alert-danger" role="alert" *ngIf="selectedAccount != null && isSelectedAccountFrozen()">
-        Внимание! Данный счет заблокирован на снятие средств до
-        <strong>{{selectedAccount.freezeDate | date: 'medium'}}</strong>
+      <div *ngIf="selectedAccount != null">
+        <div class="alert alert-danger" role="alert" *ngIf="isSelectedAccountFrozen()">
+          Внимание! Данный счет заблокирован на снятие средств до
+          <strong>{{selectedAccount.freezeDate | date: 'medium'}}</strong>
+        </div>
+        <div *ngIf="selectedAccount.accountType?.type?.code == 'CREDIT'">
+          <div class="alert alert-danger" role="alert" *ngIf=" selectedAccount.accountBills[0].balance < 0">
+            Внимание! <strong>Кредитный</strong> счет заблокирован на снятие средств
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf=" selectedAccount.accountBills[0].balance >= 0">
+            Внимание! Кредит <strong>погашен</strong> и счет <strong>заблокирован</strong>!
+          </div>
+        </div>
       </div>
-
     </div>
   </div>
   <div mat-dialog-actions class="row d-flex">
@@ -71,7 +80,8 @@
         Закрыть
       </button>
       <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
-              [disabled]="!this.addTransactionForm.valid || !selectedCategoryId"
+              [disabled]="!this.addTransactionForm.valid || !selectedCategoryId || (this.selectedAccount.accountType?.type?.code == 'CREDIT' &&
+              this.selectedAccount.accountBills[0].balance >= 0)"
               (click)="add()" style="align-content: center">
         Внести операцию
       </button>

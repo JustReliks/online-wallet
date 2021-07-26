@@ -63,7 +63,7 @@
       </ul>
       <ul *ngIf="isAuthenticated; else notAuthBlock" class="d-lg-block profile">
         <li><a class="link" routerLink="cabinet">
-          <div class="user_pic"><img [src]="profileImageSrc">
+          <div class="user_pic"><img style="margin-bottom: 9px" [src]="profileImageSrc">
           </div>
           {{userName}}
         </a></li>

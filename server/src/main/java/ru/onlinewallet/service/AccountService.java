@@ -33,4 +33,6 @@ public interface AccountService {
     void deleteAccount(Long id);
 
     CreditInfo calculateCreditInfo(Account acc);
+
+    Double calculateGoalDailyPayment(Account acc) throws IOException;
 }

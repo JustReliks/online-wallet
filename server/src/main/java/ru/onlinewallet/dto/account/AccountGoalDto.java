@@ -18,10 +18,11 @@ public class AccountGoalDto {
     private String name;
     private boolean completed;
     private Instant date;
+    private Double dailyPayment;
 
     public static AccountGoalDto toDto(AccountGoal accountGoal) {
         return new AccountGoalDto(accountGoal.getId(), accountGoal.getAccountId(),
-                accountGoal.getValue(), accountGoal.getName(), accountGoal.isCompleted(), accountGoal.getDate());
+                accountGoal.getValue(), accountGoal.getName(), accountGoal.isCompleted(), accountGoal.getDate(), 0d);
 
     }
 

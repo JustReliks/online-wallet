@@ -8,7 +8,7 @@
 <div class="col">
   <div class="alert alert-success" role="alert">
     <h4 class="alert-heading">Информация</h4>
-    <p>В этом разделе вы можете создавать, удалять и редактировать ваши счета.</p>
+    <p>В этом разделе вы можете создавать новые счета или изменять и удалять уже существующие.</p>
     <hr>
     <p class="mb-0">©Online-wallet</p>
   </div>
@@ -33,19 +33,26 @@
                 class="font-weight-bold">{{-account.creditInfo?.creditAmount}} {{account.accountBills[0].currency.shortName}}
             </span>
             </div>
-            <div class="row">
-              <p class="col m-0">Остаток по выплатам: <span
-                class="font-weight-bold">{{getCreditAmount(account)}}</span>
+            <div *ngIf="account.accountBills[0].balance >= 0">
+              <div class="row">
+                <p class="col m-0 font-weight-bold" style="color: green; font-family: 'Arial Black'">Поздравляем! Кредит погашен, теперь вы можете удалить счет.
+              </div>
             </div>
-            <div class="row">
-              <p class="col m-0">Выплатить до: <span
-                class="font-weight-bold">{{account.creditInfo.maturityDate|date:'medium'}}
+            <div *ngIf= "account.accountBills[0].balance < 0">
+              <div class="row">
+                <p class="col m-0">Остаток по выплатам: <span
+                  class="font-weight-bold">{{getCreditAmount(account)}}</span>
+              </div>
+              <div class="row">
+                <p class="col m-0">Выплатить до: <span
+                  class="font-weight-bold">{{account.creditInfo.maturityDate|date:'medium'}}
             </span>
-            </div>
-            <div class="row">
-              <p class="col m-0">Ежемесячный платеж: <span
-                class="font-weight-bold">{{account.creditInfo.monthlyPayment|number}}
+              </div>
+              <div class="row">
+                <p class="col m-0">Ежемесячный платеж: <span
+                  class="font-weight-bold">{{account.creditInfo.monthlyPayment|number}}
             </span>
+              </div>
             </div>
           </div>
           <div *ngIf="account.goal != null" class="w-point mt-4 mb-4 col" style="width: 100%;">

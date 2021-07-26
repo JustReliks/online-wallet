@@ -100,22 +100,27 @@ public class AccountController {
                         .getAll(id)
                         .stream()
                         .map(acc -> {
-                            AccountDto accountDto = AccountDto.toDto(acc);
-                            if(acc.getAccountType().getType().getCode().equals(CREDIT.getName())){
-                                CreditInfo creditInfo = accountService.calculateCreditInfo(acc);
-                                accountDto.setCreditInfo(CreditInfoDto.toDto(creditInfo));
-                            }
                             try {
+                                AccountDto accountDto = AccountDto.toDto(acc);
+                                if (acc.getAccountType().getType().getCode().equals(CREDIT.getName())) {
+                                    CreditInfo creditInfo = accountService.calculateCreditInfo(acc);
+                                    accountDto.setCreditInfo(CreditInfoDto.toDto(creditInfo));
+                                }
+
+                                if (Objects.nonNull(accountDto.getGoal())) {
+                                    accountDto.getGoal().setDailyPayment(accountService.calculateGoalDailyPayment(acc));
+                                }
+
                                 if (acc.getAccountBills().size() > 0) {
                                     ConvertedBalanceDto balanceDto =
                                             ConvertedBalanceDto.toDto(accountService.getConvertedBalance(acc,
                                                     acc.getAccountBills().get(0).getCurrency().getShortName()));
                                     accountDto.setConvertedBalance(balanceDto);
                                 }
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                                return accountDto;
+                            } catch (Exception e) {
+                                return null;
                             }
-                            return accountDto;
                         })
                         .collect(Collectors.toList())
         );

@@ -19,10 +19,6 @@
   </div>
   <div mat-dialog-content
        class="row d-flex pl-3 overflow-inherit">
-    <!--    <div class="col-1 d-flex align-items-center">-->
-    <!--      <label class="register-icon">-->
-    <!--      </label>-->
-    <!--    </div>-->
     <div class="col">
       <mat-form-field class="w-100">
         <mat-label>Описание</mat-label>
@@ -31,9 +27,6 @@
     </div>
   </div>
   <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
-    <!--    <div class="col-1 d-flex align-items-center">-->
-    <!--      <label class="register-icon"> </label>-->
-    <!--    </div>-->
     <div class="col-4">
       <mat-form-field class="w-100">
         <mat-label>Основная валюта</mat-label>
@@ -61,11 +54,6 @@
   </div>
   <div *ngIf="hasSecondBill&&getSelectedTypeCode(selectedTypeId)!='CREDIT'" mat-dialog-content
        class="row d-flex pl-3 overflow-inherit">
-    <!--    <div class="col-1 d-flex align-items-center">-->
-    <!--      <label class="register-icon">-->
-    <!--        <i class="fa fa-usd" aria-hidden="true"></i>-->
-    <!--      </label>-->
-    <!--    </div>-->
     <div class="col-5">
       <mat-form-field class="w-100">
         <mat-label>Дополнительная валюта</mat-label>
@@ -78,9 +66,6 @@
   </div>
   <div *ngIf="getSelectedTypeCode(selectedTypeId)=='CREDIT'" mat-dialog-content
        class="row d-flex pl-3 overflow-inherit">
-    <!--    <div class="col-1 d-flex align-items-center">-->
-    <!--      <label class="register-icon"></label>-->
-    <!--    </div>-->
     <div class="col">
       <mat-form-field class="mr-2">
         <mat-label>Размер кредита</mat-label>
@@ -92,7 +77,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Выплатить до</mat-label>
-        <input matInput formControlName="creditTo" [min]="minDate" [matDatepicker]="picker">
+        <input matInput formControlName="creditTo" [min]="minDateCredit" [matDatepicker]="picker">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
@@ -100,10 +85,6 @@
   </div>
   <div *ngIf="getSelectedTypeCode(selectedTypeId) == 'SAVING'" mat-dialog-content
        class="row d-flex pl-3 overflow-inherit">
-    <!--    <div class="col-1 d-flex align-items-center">-->
-    <!--      <label class="register-icon">-->
-    <!--      </label>-->
-    <!--    </div>-->
     <div class="col">
       <mat-form-field>
         <mat-label>Дата сбережения</mat-label>
@@ -148,41 +129,40 @@
       </mat-form-field>
     </div>
   </div>
-</div>
-<div mat-dialog-actions class="row d-flex">
-  <div class="col d-flex justify-content-left mb-1">
-    <div
-      *ngIf="getSelectedTypeCode(selectedTypeId) == 'CUMULATIVE' || getSelectedTypeCode(selectedTypeId) == 'SAVING'">
-      <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'
-              (click)="createGoal()" style="align-content: center">
-        Добавить цель по счету
-      </button>
-      <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'
-              (click)="goal = null" style="align-content: center">
-        Удалить цель
-      </button>
+  <div mat-dialog-actions class="row d-flex">
+    <div class="col d-flex justify-content-left mb-1">
+      <div
+        *ngIf="getSelectedTypeCode(selectedTypeId) == 'CUMULATIVE' || getSelectedTypeCode(selectedTypeId) == 'SAVING'">
+        <button *ngIf="goal == null" color="accent" mat-raised-button class='btn custom-btn mr-3'
+                (click)="createGoal()" style="align-content: center">
+          Добавить цель по счету
+        </button>
+        <button *ngIf="goal != null" color="warn" mat-raised-button class='btn custom-btn mr-3'
+                (click)="goal = null" style="align-content: center">
+          Удалить цель
+        </button>
+      </div>
+      <div
+        *ngIf="getSelectedTypeCode(selectedTypeId) != 'CUMULATIVE' && getSelectedTypeCode(selectedTypeId) != 'SAVING'">
+        <button color="primary" [disabled]="true" mat-raised-button class='btn custom-btn mr-3 mb-1'
+                style="align-content: center">
+          Создание цели недоступно
+        </button>
+      </div>
     </div>
-    <div
-      *ngIf="getSelectedTypeCode(selectedTypeId) != 'CUMULATIVE' && getSelectedTypeCode(selectedTypeId) != 'SAVING'">
-      <button color="primary" [disabled]="true" mat-raised-button class='btn custom-btn mr-3 mb-1'
-              style="align-content: center">
-        Создание цели недоступно
+    <div class="col d-flex justify-content-right">
+      <button color="warn" mat-raised-button class='btn custom-btn mr-3'
+              (click)="close()" style="align-content: center">
+        Закрыть
+      </button>
+      <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
+              [disabled]="!this.createAccountForm.valid || this.selectedTypeId == null "
+              (click)="create()" style="align-content: center">
+        Создать
       </button>
     </div>
   </div>
-  <div class="col d-flex justify-content-right">
-    <button color="warn" mat-raised-button class='btn custom-btn mr-3'
-            (click)="close()" style="align-content: center">
-      Закрыть
-    </button>
-    <button color="primary" mat-raised-button class='btn custom-btn custom-btn-blue-gradient'
-            [disabled]="!this.createAccountForm.valid || this.selectedTypeId == null "
-            (click)="create()" style="align-content: center">
-      Создать
-    </button>
-  </div>
 </div>
-
 <div *ngIf="accountTypeInfo">
   <app-type-info [types]="types"></app-type-info>
 </div>

@@ -233,11 +233,11 @@ public class AccountServiceImpl implements AccountService {
             return null;
         }
         AccountBill accountBill = bills.get(0);
-        LocalDate maturDate = LocalDate.ofInstant(accountBill.getMaturityDate(), ZoneId.systemDefault());
+        LocalDate matureDate = LocalDate.ofInstant(accountBill.getMaturityDate(), ZoneId.systemDefault());
         LocalDate now = LocalDate.now();
         Double creditAmount = accountBill.getStartBalance();
         double rate = accountBill.getRate();
-        long between = ChronoUnit.MONTHS.between(now, maturDate);
+        long between = ChronoUnit.MONTHS.between(now, matureDate);
 
         double v = -accountBill.getBalance();
         double ratePercentage = rate/100;
@@ -252,5 +252,21 @@ public class AccountServiceImpl implements AccountService {
         creditInfo.setCreditAmount(creditAmount);
         creditInfo.setCurrentCreditBalance(accountBill.getBalance());
         return creditInfo;
+    }
+
+    @Override
+    public Double calculateGoalDailyPayment(Account acc) throws IOException {
+        AccountGoal goal = acc.getGoal();
+        Double converted = getConvertedBalance(acc, acc.getAccountBills().get(0).getCurrency().getShortName()).getValue();
+        Double goalValue = goal.getValue();
+
+        if(goalValue <= converted) return 0d;
+        LocalDate matureDate = LocalDate.ofInstant(goal.getDate(), ZoneId.systemDefault());
+        LocalDate now = LocalDate.now();
+
+        long distance = ChronoUnit.DAYS.between(now, matureDate);
+        if(distance == 0) return goalValue - converted;
+
+        return (goalValue - converted)/distance;
     }
 }
