@@ -86,15 +86,19 @@ public class AccountServiceImpl implements AccountService {
 
         account.setLastTransaction(now);
         accountBill.setBalance(balance);
+
+        AccountBill savedAccountBill = accountBillRepository.save(accountBill);
+        Account savedAccount = accountRepository.save(account);
+
         AccountGoal goal = account.getGoal();
         if (Objects.nonNull(goal) && !goal.isCompleted()) {
-            if (getConvertedBalance(account, account.getAccountBills().get(0).getCurrency().getShortName()).getValue() >= goal.getValue()) {
+            ConvertedBalance convertedBalance = getConvertedBalance(savedAccount,
+                    account.getAccountBills().get(0).getCurrency().getShortName());
+            if (convertedBalance.getValue() >= goal.getValue()) {
                 goal.setCompleted(true);
                 accountGoalRepository.save(goal);
             }
         }
-        Account savedAccount = accountRepository.save(account);
-        AccountBill savedAccountBill = accountBillRepository.save(accountBill);
         transactionHistoryService.addTransaction(savedAccountBill, userId, categoryId, newValue, now);
         return savedAccountBill;
     }
@@ -240,7 +244,7 @@ public class AccountServiceImpl implements AccountService {
         long between = ChronoUnit.MONTHS.between(now, matureDate);
 
         double v = -accountBill.getBalance();
-        double ratePercentage = rate/100;
+        double ratePercentage = rate / 100;
         double pow = Math.pow(1 + ratePercentage, between);
         double v1 = ratePercentage / (pow - 1);
         double v2 = ratePercentage + v1;
@@ -257,16 +261,17 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Double calculateGoalDailyPayment(Account acc) throws IOException {
         AccountGoal goal = acc.getGoal();
-        Double converted = getConvertedBalance(acc, acc.getAccountBills().get(0).getCurrency().getShortName()).getValue();
+        Double converted =
+                getConvertedBalance(acc, acc.getAccountBills().get(0).getCurrency().getShortName()).getValue();
         Double goalValue = goal.getValue();
 
-        if(goalValue <= converted) return 0d;
+        if (goalValue <= converted) return 0d;
         LocalDate matureDate = LocalDate.ofInstant(goal.getDate(), ZoneId.systemDefault());
         LocalDate now = LocalDate.now();
 
         long distance = ChronoUnit.DAYS.between(now, matureDate);
-        if(distance == 0) return goalValue - converted;
+        if (distance == 0) return goalValue - converted;
 
-        return (goalValue - converted)/distance;
+        return (goalValue - converted) / distance;
     }
 }

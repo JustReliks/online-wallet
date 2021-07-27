@@ -105,7 +105,7 @@ export class AccountsStatisticComponent implements OnInit {
   }
 
   getAccountImg(account: Account) {
-    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${account.accountType.type?.icon}`);
+    return this._sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${account?.accountType?.type?.icon}`);
   }
 
   showAccountStatistic(account: Account) {

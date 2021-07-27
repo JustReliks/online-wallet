@@ -10,6 +10,8 @@ import {SettingsState} from "../settings.component";
 import {FileService} from "../../../../service/file.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Base64img} from "../../../../util/base64img";
+import {DictionaryService} from "../../../../service/dictionary.service";
+import {Currency} from "../../../../entities/currency";
 
 @Component({
   selector: 'app-profile-settings',
@@ -25,13 +27,18 @@ export class ProfileSettingsComponent implements OnInit {
   private reader: FileReader;
   private _currentUser: AuthUser;
   private _userSettings: UserSettings;
+  private _currencies: Array<Currency>;
 
   constructor(private _fb: FormBuilder,
               private _userService: UserService,
               private _notificationService: NotificationService,
               private _fileService: FileService,
-              private _sanitizer: DomSanitizer
+              private _sanitizer: DomSanitizer,
+              private _dictionaryService:DictionaryService
   ) {
+
+    this._dictionaryService.getAllCurrencies().subscribe(res=>this._currencies= res);
+
     this.profileFormGroup = new FormGroup({
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
@@ -51,6 +58,10 @@ export class ProfileSettingsComponent implements OnInit {
         this.profileImageSrc = this.getProfileImg();
       }
     })
+  }
+
+  get currencies(): Array<Currency> {
+    return this._currencies;
   }
 
   get user() {

@@ -35,7 +35,7 @@
                               max-height: 50px;
                               position: absolute;
                               right: 53px;">
-                    <img class="w-100 h-100" [src]="getAccountIcon(account.accountType?.type?.icon)"/></div>
+                    <img class="w-100 h-100" [src]="getAccountIcon(account?.accountType?.type?.icon)"/></div>
                   <div class="row m-0"><p class="w-acc-title">{{account.name}}</p></div>
                   <div class="row m-0">
                     <div class="mr-2 mb-2" *ngFor="let bill of account.accountBills">
@@ -43,7 +43,7 @@
                             class="badge badge-pill badge-primary">{{bill.balance | number}} {{bill.currency.shortName}}</span>
                     </div>
                   </div>
-                  <p class="m-0 mt-3 w-acc-type">{{account.accountType?.type?.name }} счёт</p>
+                  <p class="m-0 mt-3 w-acc-type">{{account?.accountType?.type?.name }} счёт</p>
                 </div>
                 <hr align="center" width="90%" size="50" color="#dddddd"/>
               </div>

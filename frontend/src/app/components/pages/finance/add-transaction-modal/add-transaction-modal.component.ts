@@ -43,7 +43,7 @@ export class AddTransactionModalComponent implements OnInit {
   }
 
   changePlusState(): void {
-    let accountCode = this.selectedAccount.accountType.type.code;
+    let accountCode = this.selectedAccount?.accountType?.type.code;
     if (accountCode != 'CREDIT') {
       if (accountCode != 'SAVING' || Date.now() > Date.parse(this.selectedAccount.freezeDate)) {
         this.isPlusState = !this.isPlusState;
@@ -104,7 +104,7 @@ export class AddTransactionModalComponent implements OnInit {
   }
 
   isSelectedAccountFrozen() {
-    return (this.selectedAccount.accountType?.type?.code == 'SAVING') && (Date.now() < Date.parse(this.selectedAccount.freezeDate));
+    return (this.selectedAccount?.accountType?.type?.code == 'SAVING') && (Date.now() < Date.parse(this.selectedAccount.freezeDate));
 
   }
 }
