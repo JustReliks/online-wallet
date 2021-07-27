@@ -70,4 +70,8 @@ export class AccountService {
   convertCurrencies(convertFromValue: any, convertToValue: any, value: any) {
     return this.http.get<Array<any>>(this.api + `/account/convert?from=${convertFromValue}&to=${convertToValue}&value=${value}`);
   }
+
+  getAccountsCount(id: number): Observable<number> {
+    return this.http.get<number>(this.api + `/account/count?userId=${id}`);
+  }
 }
