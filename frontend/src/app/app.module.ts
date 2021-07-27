@@ -56,6 +56,7 @@ import {ChartModule} from "angular-highcharts";
 import {RestoreAccessComponent} from "./components/pages/restore-access/restore-access.component";
 import {MatStepperModule} from "@angular/material/stepper";
 import {TypeInfoComponent} from "./components/pages/accounts/create-account/type-info/type-info.component";
+import {UserProfileModalComponent} from "./components/pages/user-profile-modal/user-profile-modal.component";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -84,7 +85,8 @@ registerLocaleData(localeRu, 'ru');
     AccountSettingsComponent,
     AccountsStatisticComponent,
     RestoreAccessComponent,
-    TypeInfoComponent
+    TypeInfoComponent,
+    UserProfileModalComponent
   ],
   imports: [
     BrowserModule,

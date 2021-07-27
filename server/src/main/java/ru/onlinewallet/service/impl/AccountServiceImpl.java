@@ -274,4 +274,9 @@ public class AccountServiceImpl implements AccountService {
 
         return (goalValue - converted) / distance;
     }
+
+    @Override
+    public int getCountAllAccounts(Long userId) {
+        return accountRepository.countAccountsByUserId(userId);
+    }
 }

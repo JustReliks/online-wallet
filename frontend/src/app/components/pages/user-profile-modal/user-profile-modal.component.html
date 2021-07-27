@@ -1,0 +1,72 @@
+<mat-card *ngIf="positionRelativeToElement==null;else mainContent">
+  <ng-container *ngTemplateOutlet="mainContent"></ng-container>
+</mat-card>
+
+<ng-template #mainContent>
+  <div class="login-modal">
+    <div class="col-xs-1 text-center">
+      <h1 mat-dialog-title>Карточка пользователя</h1>
+    </div>
+    <div *ngIf="this.user==null"
+         class="col content d-flex justify-content-center w-100 mb-3 mt-3">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="this.user!=null">
+      <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+        <div class="col" style="text-align: -webkit-center;">
+          <div class="circular_image">
+            <img [src]="getProfileImage()">
+          </div>
+        </div>
+      </div>
+      <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+        <div class="col mb-3 mt-3 font-weight-bold" style="text-align: -webkit-center; font-size: 16px">
+          {{this.userSettings.lastName + ' ' + this.userSettings.firstName + ' ' + this.userSettings.middleName }}
+        </div>
+      </div>
+      <div class="w-info">
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col">
+            <p class="m-0"><span
+              class="font-weight-bold">Дата регистрации:</span> {{this.user.createdAt | date:'medium'}}
+            </p>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col">
+            <p class="m-0"><span class="font-weight-bold"> Страна: </span>{{this.userSettings.country || 'не указана' }}
+            </p>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col">
+            <p class="m-0"><span
+              class="font-weight-bold"> Номер телефона: </span>{{this.userSettings.phone || 'не указан'}}
+            </p>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col">
+            <p class="m-0"><span class="font-weight-bold"> Валюта по-умолчанию: </span>{{this.userSettings.currency}}
+            </p>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col">
+            <p class="m-0"><span
+              class="font-weight-bold"> Общий баланс: </span>{{this.convertedBalance.balance + ' ' + this.convertedBalance.currency}}
+            </p>
+          </div>
+        </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit">
+          <div class="col">
+            <p class="m-0"><span class="font-weight-bold"> Количество счетов: </span>{{this.accountsCount}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+

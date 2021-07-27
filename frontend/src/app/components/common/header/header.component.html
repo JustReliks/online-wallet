@@ -9,7 +9,7 @@
   <div class="collapse navbar-collapse" [ngClass]="mobileExpanded?'show':''" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <div *ngIf="isAuthenticated">
-        <li><a class="link d-flex" routerLink="cabinet">
+        <li><a class="link d-flex" (click)="showUserProfileModal(true)" #mobileUserProfileLink>
           <div class="user_pic"><img [src]="profileImageSrc">
           </div>
           {{userName}}
@@ -61,8 +61,8 @@
                         href="https://vk.com/im?media=&sel=-205793926">Помощь</a> <!----> <!---->
         </li>
       </ul>
-      <ul *ngIf="isAuthenticated; else notAuthBlock" class="d-lg-block profile">
-        <li><a class="link" routerLink="cabinet">
+      <ul *ngIf="isAuthenticated; else notAuthBlock" class="d-lg-block profile" >
+        <li><a class="link" (click)="showUserProfileModal()" #userProfileLink>
           <div class="user_pic"><img style="margin-bottom: 9px" [src]="profileImageSrc">
           </div>
           {{userName}}

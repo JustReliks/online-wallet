@@ -13,98 +13,105 @@
     <p class="mb-0">©Online-wallet</p>
   </div>
   <div>
-    <div *ngFor="let account of this.accounts" class="mat-card w-account-card d-flex mb-4">
-      <div class="col-md-2 align-self-center">
-        <div class="w-avatar ">
-          <img [src]="getTypeIcon(account?.accountType?.type)" style="width: 100%;height: 100%">
-        </div>
-      </div>
-      <div class="col">
-        <div class="w-account-name mb-2">
-          {{account.name}} <span style="opacity: .6">[{{account?.accountType?.type?.name}} счёт]</span>
-        </div>
-        <div class="w-account-description">
-          {{account.description}}
-        </div>
-        <div class="row">
-          <div *ngIf="account.creditInfo != null" class="w-point mt-4 mb-4 col" style="width: 100%;">
-            <div class="row">
-              <p class="col m-0">Сумма кредита: <span
-                class="font-weight-bold">{{-account.creditInfo?.creditAmount}} {{account.accountBills[0].currency.shortName}}
-            </span>
-            </div>
-            <div *ngIf="account.accountBills[0].balance >= 0">
-              <div class="row">
-                <p class="col m-0 font-weight-bold" style="color: green; font-family: 'Arial Black'">Поздравляем! Кредит
-                  погашен, теперь вы можете удалить счет.
-              </div>
-            </div>
-            <div *ngIf="account.accountBills[0].balance < 0">
-              <div class="row">
-                <p class="col m-0">Остаток по выплатам: <span
-                  class="font-weight-bold">{{getCreditAmount(account)}} {{account.accountBills[0].currency.shortName}}</span>
-              </div>
-              <div class="row">
-                <p class="col m-0">Выплатить до: <span
-                  class="font-weight-bold">{{account.creditInfo.maturityDate|date:'medium'}}
-            </span>
-              </div>
-              <div class="row">
-                <p class="col m-0">Ежемесячный платеж: <span
-                  class="font-weight-bold">{{account.creditInfo.monthlyPayment|number}} {{account.accountBills[0].currency.shortName}}
-            </span>
-              </div>
-            </div>
+    <div *ngIf="this.accounts?.length>0; else elseAccountsBlock">
+      <div *ngFor="let account of this.accounts" class="mat-card w-account-card d-flex mb-4">
+        <div class="col-md-2 align-self-center">
+          <div class="w-avatar ">
+            <img [src]="getTypeIcon(account?.accountType?.type)" style="width: 100%;height: 100%">
           </div>
-          <div *ngIf="account.goal != null" class="w-point mt-4 mb-4 col" style="width: 100%;">
-            <div class="row">
-              <p class="col m-0">Цель: <span
-                class="font-weight-bold"
-                *ngIf="!account.goal.completed && !isGoalExpired(account)">{{account.convertedBalance.balance + '/' + account.goal.value + ' ' + account.convertedBalance.currency}}
+        </div>
+        <div class="col">
+          <div class="w-account-name mb-2">
+            {{account.name}} <span style="opacity: .6">[{{account?.accountType?.type?.name}} счёт]</span>
+          </div>
+          <div class="w-account-description">
+            {{account.description}}
+          </div>
+          <div class="row">
+            <div *ngIf="account.creditInfo != null" class="w-point mt-4 mb-4 col" style="width: 100%;">
+              <div class="row">
+                <p class="col m-0">Сумма кредита: <span
+                  class="font-weight-bold">{{-account.creditInfo?.creditAmount}} {{account.accountBills[0].currency.shortName}}
             </span>
-                <span
+              </div>
+              <div *ngIf="account.accountBills[0].balance >= 0">
+                <div class="row">
+                  <p class="col m-0 font-weight-bold" style="color: green; font-family: 'Arial Black'">Поздравляем!
+                    Кредит
+                    погашен, теперь вы можете удалить счет.
+                </div>
+              </div>
+              <div *ngIf="account.accountBills[0].balance < 0">
+                <div class="row">
+                  <p class="col m-0">Остаток по выплатам: <span
+                    class="font-weight-bold">{{getCreditAmount(account)}} {{account.accountBills[0].currency.shortName}}</span>
+                </div>
+                <div class="row">
+                  <p class="col m-0">Выплатить до: <span
+                    class="font-weight-bold">{{account.creditInfo.maturityDate|date:'medium'}}
+            </span>
+                </div>
+                <div class="row">
+                  <p class="col m-0">Ежемесячный платеж: <span
+                    class="font-weight-bold">{{account.creditInfo.monthlyPayment|number}} {{account.accountBills[0].currency.shortName}}
+            </span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="account.goal != null" class="w-point mt-4 mb-4 col" style="width: 100%;">
+              <div class="row">
+                <p class="col m-0">Цель: <span
                   class="font-weight-bold"
-                  *ngIf="account.goal.completed || isGoalExpired(account)">{{account.goal.value + ' ' + account.convertedBalance.currency}}
+                  *ngIf="!account.goal.completed && !isGoalExpired(account)">{{account.convertedBalance.balance + '/' + account.goal.value + ' ' + account.convertedBalance.currency}}
             </span>
-              </p>
-              <div class="col m-0">
-                <p *ngIf="account.goal.completed" style="color: green">Цель
-                  выполнена!</p>
-                <p *ngIf="!account.goal.completed && isGoalExpired(account)" style="color: red">Вы не успели выполнить
-                  цель!</p>
-                <p *ngIf="!account.goal.completed && !isGoalExpired(account)"> Выполнить
-                  до: {{account.goal.date | date: 'medium'}}</p>
+                  <span
+                    class="font-weight-bold"
+                    *ngIf="account.goal.completed || isGoalExpired(account)">{{account.goal.value + ' ' + account.convertedBalance.currency}}
+            </span>
+                </p>
+                <div class="col m-0">
+                  <p *ngIf="account.goal.completed" style="color: green">Цель
+                    выполнена!</p>
+                  <p *ngIf="!account.goal.completed && isGoalExpired(account)" style="color: red">Вы не успели выполнить
+                    цель!</p>
+                  <p *ngIf="!account.goal.completed && !isGoalExpired(account)"> Выполнить
+                    до: {{account.goal.date | date: 'medium'}}</p>
+                </div>
               </div>
+              <div class="row" *ngIf="!account.goal.completed && !isGoalExpired(account)">
+                <p class="col m-0">Для достижения цели Вам необходимо пополнять счет не менее чем <span
+                  class="font-weight-bold">{{account.goal.dailyPayment | number:'1.0-2'}} {{account.convertedBalance.currency}}</span>
+                  ежедневно
+                </p>
+              </div>
+              <angular-gradient-progressbar [type]="2" lowTextColor="red"
+                                            [secondValue]="getGoalProgressBarValue(account)"></angular-gradient-progressbar>
             </div>
-            <div class="row" *ngIf="!account.goal.completed && !isGoalExpired(account)">
-              <p class="col m-0">Для достижения цели Вам необходимо пополнять счет не менее чем <span
-                class="font-weight-bold">{{account.goal.dailyPayment | number:'1.0-2'}} {{account.convertedBalance.currency}}</span>
-                ежедневно
-              </p>
+          </div>
+          <div class="w-account-body ">
+            <div class="col-2"></div>
+            <div class="col-5">
+              <div *ngFor="let bill of account.accountBills"
+                   class="badge badge-pill badge-primary w-money mr-3">{{bill.balance}} <span
+                class="w-currency">{{bill.currency.shortName}}</span></div>
             </div>
-            <angular-gradient-progressbar [type]="2" lowTextColor="red"
-                                          [secondValue]="getGoalProgressBarValue(account)"></angular-gradient-progressbar>
+            <div class="col w-date-create justify-items-right">
+              Создан: {{account.createdAt | date:'medium'}}<br>
+              Последняя транзакция: {{account.lastTransaction | date:'medium'}}
+            </div>
           </div>
         </div>
-        <div class="w-account-body ">
-          <div class="col-2"></div>
-          <div class="col-5">
-            <div *ngFor="let bill of account.accountBills"
-                 class="badge badge-pill badge-primary w-money mr-3">{{bill.balance}} <span
-              class="w-currency">{{bill.currency.shortName}}</span></div>
-          </div>
-          <div class="col w-date-create justify-items-right">
-            Создан: {{account.createdAt | date:'medium'}}<br>
-            Последняя транзакция: {{account.lastTransaction | date:'medium'}}
-          </div>
+        <div class="col-1 w-settings-btn" style="max-width: 48px">
+          <button class="w-settings" #tooltip="matTooltip" matTooltip="Настройки" [matTooltipPosition]="'above'"
+                  (click)="openSettings(account)">
+            <mat-icon>settings</mat-icon>
+          </button>
         </div>
-      </div>
-      <div class="col-1 w-settings-btn" style="max-width: 48px">
-        <button class="w-settings" #tooltip="matTooltip" matTooltip="Настройки" [matTooltipPosition]="'above'"
-                (click)="openSettings(account)">
-          <mat-icon>settings</mat-icon>
-        </button>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #elseAccountsBlock>
+  <p class="font-weight-bold" style="font-size: 21px;">На данный момент к аккаунту не привязан ни один счёт. Вы можете создать его в этом разделе.</p>
+</ng-template>

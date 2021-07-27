@@ -156,5 +156,8 @@ public class AccountController {
         return this.accountService.convertCurrencies(value, from, to);
     }
 
-
+    @GetMapping("/count")
+    private int getCountAllAccounts(@RequestParam("userId") Long userId) {
+        return this.accountService.getCountAllAccounts(userId);
+    }
 }

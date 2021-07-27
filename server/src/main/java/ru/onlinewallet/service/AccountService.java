@@ -35,4 +35,6 @@ public interface AccountService {
     CreditInfo calculateCreditInfo(Account acc);
 
     Double calculateGoalDailyPayment(Account acc) throws IOException;
+
+    int getCountAllAccounts(Long userId);
 }

@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {filter} from 'rxjs/operators';
 import {environment} from '../../../../environments/environment';
 import {AuthService} from "../../../service/auth.service";
@@ -12,6 +12,7 @@ import {RegistrationComponent} from "../registration/registration.component";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {FileService} from "../../../service/file.service";
 import {Base64img} from "../../../util/base64img";
+import {UserProfileModalComponent} from "../../pages/user-profile-modal/user-profile-modal.component";
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,8 @@ export class HeaderComponent implements OnInit {
   isAuthenticated = false;
   userName = '';
   @ViewChild('vkGroupsElem') vkGroupsElem: ElementRef;
+  @ViewChild('mobileUserProfileLink', {static: false}) public mobileUserProfile: ElementRef
+  @ViewChild('userProfileLink', {static: false}) public desktopUserProfile: ElementRef
   private siteDomain = environment.siteDomain;
   private linkPicture;
   private timeStamp: any;
@@ -146,5 +149,33 @@ export class HeaderComponent implements OnInit {
   changeActiveTab(activeTab: string) {
     this.mobileExpanded = false;
     this.activeTab = activeTab;
+  }
+
+  showUserProfileModal(isMobile?: boolean) {
+    this.mobileExpanded = false;
+    if (isMobile) {
+      this.router.navigate(["profile"]);
+    } else {
+      const dialogRef = this.openDialog({
+        positionRelativeToElement: this.desktopUserProfile,
+        hasBackdrop: true
+      });
+    }
+  }
+
+  public openDialog({
+                      positionRelativeToElement,
+                      hasBackdrop = false,
+                      height = '470px',
+                      width = '350px'
+                    }): MatDialogRef<UserProfileModalComponent> {
+    const dialogRef: MatDialogRef<UserProfileModalComponent> =
+      this.dialog.open(UserProfileModalComponent, {
+        hasBackdrop: hasBackdrop,
+        height: height,
+        width: width,
+        data: {positionRelativeToElement: positionRelativeToElement, user: this.user}
+      })
+    return dialogRef
   }
 }

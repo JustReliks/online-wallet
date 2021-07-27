@@ -1,0 +1,22 @@
+.circular_image {
+  width: 122px;
+  height: 122px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.circular_image img {
+  width: 100%;
+}
+
+.w-info {
+  padding: 9px;
+  background: #5a8aaf40;
+  border-radius: 8px;
+  font-size: 15px;
+  box-shadow: 0px 1px 14px 3px #0000004a;
+}
+
+::ng-deep mat-dialog-container{
+  border-radius: 10px!important;
+}
