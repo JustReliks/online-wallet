@@ -19,6 +19,7 @@ export class Account {
   public accountType: AccountType
   public freezeDate: string;
   public creditInfo: CreditInfo
+  public maxBalance: number;
 
   constructor(json: any) {
     this.id = json.id;
@@ -34,6 +35,7 @@ export class Account {
     this.accountType = json?.accountType;
     this.freezeDate = json?.freezeDate;
     this.creditInfo = json?.creditInfo;
+    this.maxBalance = json.maxBalance;
   }
 
 

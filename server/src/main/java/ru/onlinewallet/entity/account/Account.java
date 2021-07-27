@@ -48,4 +48,7 @@ public class Account {
 
     @OneToOne(mappedBy = "account",cascade = {CascadeType.ALL})
     private AccountType accountType;
+
+    @Column(name = "max_balance")
+    private double maxBalance;
 }

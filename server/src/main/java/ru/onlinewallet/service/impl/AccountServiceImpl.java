@@ -88,6 +88,10 @@ public class AccountServiceImpl implements AccountService {
         accountBill.setBalance(balance);
 
         AccountBill savedAccountBill = accountBillRepository.save(accountBill);
+        if (isPlus) {
+            account.setMaxBalance(Math.max(account.getMaxBalance(),
+                    getConvertedBalance(account, userService.getUserProfile(account.getUserId()).getCurrency()).getValue()));
+        }
         Account savedAccount = accountRepository.save(account);
 
         AccountGoal goal = account.getGoal();
@@ -100,6 +104,7 @@ public class AccountServiceImpl implements AccountService {
             }
         }
         transactionHistoryService.addTransaction(savedAccountBill, userId, categoryId, newValue, now);
+
         return savedAccountBill;
     }
 

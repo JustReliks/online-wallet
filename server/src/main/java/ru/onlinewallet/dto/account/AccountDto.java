@@ -27,6 +27,7 @@ public class AccountDto {
     private ConvertedBalanceDto convertedBalance;
     private AccountTypeDto accountType;
     private CreditInfoDto creditInfo;
+    private double maxBalance;
 
     public static AccountDto toDto(Account account) {
         AccountDto accountDto = new AccountDto();
@@ -35,6 +36,7 @@ public class AccountDto {
         accountDto.setName(account.getName());
         accountDto.setDescription(account.getDescription());
         accountDto.setCreatedAt(account.getCreatedAt());
+        accountDto.setMaxBalance(account.getMaxBalance());
         accountDto.setLastTransaction(account.getLastTransaction());
         accountDto.setFreezeDate(account.getFreezeDate());
         accountDto.setIcon(account.getIcon());
@@ -66,6 +68,7 @@ public class AccountDto {
         account.setCreatedAt(Objects.isNull(dto.getCreatedAt()) ? Instant.now() : dto.getCreatedAt());
         account.setLastTransaction(Objects.isNull(dto.getLastTransaction()) ? Instant.now() : dto.getLastTransaction());
         account.setIcon(dto.getIcon());
+        account.setMaxBalance(dto.getMaxBalance());
         account.setFreezeDate(dto.getFreezeDate());
         //        account.setAccountBills(
 //                dto
