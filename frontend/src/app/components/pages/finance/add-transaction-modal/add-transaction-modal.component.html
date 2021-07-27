@@ -47,7 +47,7 @@
            style="place-self: center;
     display: flex;
     width: 100%;
-    overflow-x: scroll;">
+    overflow-x: scroll;-webkit-overflow-scrolling: touch;">
         <div class="icons d-flex">
           <div #tooltip [matTooltip]="category.title" [matTooltipPosition]="'above'" class="icon"
                *ngFor="let category of getCategories(); index as i"

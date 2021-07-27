@@ -28,7 +28,7 @@
                                                                                                 (click)="changeCurrency()">{{this.balance?.currency}}</span>
               </p>
             </div>
-            <div *ngIf="this.accounts" class="w-balance-table">
+            <div *ngIf="this.accounts?.length>0;else elseAccountBlock" class="w-balance-table">
               <div *ngFor="let account of accounts">
                 <div class="row w-100  flex-column pl-3 pr-3">
                   <div style="max-width: 50px;
@@ -111,3 +111,10 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #elseAccountBlock>
+  <p style="font-size: 15px">
+    Создайте свой первый счет в разделе <strong>"Мои счета"</strong>.
+  </p>
+</ng-template>

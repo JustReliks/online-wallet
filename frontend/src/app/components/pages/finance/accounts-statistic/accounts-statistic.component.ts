@@ -174,7 +174,6 @@ export class AccountsStatisticComponent implements OnInit {
       },
       series: [{
         type: 'pie',
-        name: '',
         data: res.expenseCircleChart.data as any
       }]
     })
@@ -250,7 +249,7 @@ export class AccountsStatisticComponent implements OnInit {
     },
     series: [{
       type: 'pie',
-      name: 'Browser share',
+      name: 'Доля',
       data: []
     }]
   });
@@ -272,7 +271,7 @@ export class AccountsStatisticComponent implements OnInit {
         cursor: 'pointer',
         dataLabels: {
           enabled: true,
-          format: '<b>{point.name}%</b>: {point.percentage:.1f} %',
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %',
           style: {
             color:
               'black'
@@ -282,7 +281,7 @@ export class AccountsStatisticComponent implements OnInit {
     },
     series: [{
       type: 'pie',
-      name: 'Browser share',
+      name: 'Доля',
       data: []
     }]
   });
