@@ -9,6 +9,7 @@ import ru.onlinewallet.dto.ResponseMessage;
 import ru.onlinewallet.dto.UserRegistrationDto;
 import ru.onlinewallet.entity.user.User;
 import ru.onlinewallet.entity.user.UserSettings;
+import ru.onlinewallet.service.DemoService;
 import ru.onlinewallet.service.RegistrationService;
 import ru.onlinewallet.service.UserService;
 
@@ -22,6 +23,7 @@ public class RegistrationController {
 
     private final RegistrationService registrationService;
     private final UserService userService;
+    private final DemoService demoService;
 
     @PostMapping
     public ResponseEntity<ResponseMessage> create(@RequestParam("generate-demo") boolean isGenerateDemo,
@@ -39,6 +41,10 @@ public class RegistrationController {
             if (Objects.nonNull(userId)) {
                 UserSettings userSettings = getUserSettings(dto, userId);
                 userService.saveUserSettings(userSettings);
+                
+                if (isGenerateDemo) {
+                    demoService.generateAccounts(userId);
+                }
             }
             message = "New user created successfully, id: " + userId;
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
