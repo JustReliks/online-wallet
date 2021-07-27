@@ -30,7 +30,7 @@ public class AccountBill {
     @Column(name = "balance")
     private Double balance;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account account;
 

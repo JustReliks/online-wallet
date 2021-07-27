@@ -57,7 +57,7 @@ export class AccountsStatisticComponent implements OnInit {
       console.log(res);
       console.log(this.selectedDays)
       console.log(this.selectedAccount)
-      if (this.selectedAccount != null && this.selectedDays != null) {
+      if (this.selectedAccount != null && this.selectedDays != null && res.updateStatistics) {
         this.statisticsService.getAccountStatistic(this.selectedAccount.id, this.selectedDays).subscribe(res => {
           this._statistics = res;
           this.initCharts(res, this.selectedDays)

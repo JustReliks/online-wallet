@@ -26,15 +26,17 @@
 <mat-expansion-panel *ngIf="this.accounts.length!=0" [expanded]="accountsExpanded">
   <div class="row w-100 mt-2">
     <div class="col-md-3 mb-3" *ngFor="let account of accounts" (click)="showAccountStatistic(account)">
-      <div class="w-account mat-form-field-flex justify-content-center">
-        <div class=" w-account-header">
+      <div class="w-account">
+        <div class=" w-account-header row">
           <div class="w-money">{{account.accountBills[0].balance | number:'1.0-2'}} <span
             class="w-currency">{{account.accountBills[0].currency.shortName}}</span></div>
-          <div class="w-money" style="position: relative; left: 17%">{{account.accountBills[1]?.balance | number:'1.0-2'}} <span
+          <div class="w-money d-flex justify-content-end">{{account.accountBills[1]?.balance}} <span
             class="w-currency">{{account.accountBills[1]?.currency.shortName}}</span></div>
         </div>
         <hr class="w-line"/>
-        <img [src]="getAccountImg(account)" class="w-img">
+        <div class="w-img-bound">
+          <img [src]="getAccountImg(account)" class="w-img">
+        </div>
         <div class="w-account-title">{{account.name}}</div>
         <hr class="w-line"/>
         <div class="w-account-description">{{account.description}}</div>

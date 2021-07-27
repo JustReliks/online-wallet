@@ -13,6 +13,7 @@ export class AccountService {
   api = environment.apiUrl;
   private updateAccountsSubject = new BehaviorSubject({
     accounts: [],
+    updateStatistics: false
   });
   changeTypeInfoSubject = new BehaviorSubject({});
 

@@ -7,7 +7,6 @@ import {UserService} from "../../../service/user.service";
 import {NotificationService} from "../../../service/notification.service";
 import {DictionaryService} from "../../../service/dictionary.service";
 import {Currency} from "../../../entities/currency";
-import _ from "lodash";
 
 export function ConfirmedValidator(
   controlName: string,
@@ -36,6 +35,7 @@ export class RegistrationComponent implements OnInit {
   personalInfo: FormGroup;
   registerForm: FormGroup;
   private _currencies: Array<Currency>;
+  isGenerateDemoAccounts: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -97,7 +97,7 @@ export class RegistrationComponent implements OnInit {
           Validators.maxLength(17)
         ]),
         mainCurrency: new FormControl('', [Validators.required]),
-        recaptchaReactive: new FormControl(null, Validators.required),
+        recaptchaReactive: new FormControl(null, ),
       },
     );
     console.log("after init")
@@ -150,7 +150,7 @@ export class RegistrationComponent implements OnInit {
 
   register() {
     const obj = this.getUserFromForm();
-    this.userService.register(obj).subscribe(
+    this.userService.register(obj,this.isGenerateDemoAccounts).subscribe(
       res => {
         this.notificationService.showSuccess('Вы успешно зарегистрировались на Online-wallet.ru', 'Регистрация')
         this.authService.login(obj.username, obj.password).subscribe(result => {
@@ -173,5 +173,9 @@ export class RegistrationComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
+  }
+
+  changeToggle() {
+    this.isGenerateDemoAccounts = !this.isGenerateDemoAccounts;
   }
 }

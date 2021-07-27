@@ -50,7 +50,7 @@
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  /* white-space: pre; */
+  word-break: break-word;
   min-height: 67px;
 }
 
@@ -79,7 +79,6 @@
 
 .w-img {
   width: 50%;
-  height: 50%;
   margin-top: 8px;
   margin-bottom: 8px;
 }
@@ -93,15 +92,29 @@
 }
 
 .w-account-title {
+  //font-size: 17px;
+  //font-weight: bolder;
+  //width: 100%;
+  //overflow: hidden;
+  //text-overflow: ellipsis;
+  //white-space: pre;
+  //min-height: 8%;
+  //text-align: center;
+  //color: white;
   font-size: 17px;
   font-weight: bolder;
   width: 100%;
-  overflow: hidden;
   text-overflow: ellipsis;
-  white-space: pre;
-  min-height: 8%;
+  white-space: inherit;
+  word-break: break-word;
   text-align: center;
   color: white;
+}
+
+.w-img-bound {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .w-text-align-last-center {

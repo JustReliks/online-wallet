@@ -17,8 +17,8 @@ export class UserService {
   }
 
 
-  public register(userRegister: any): Observable<number> {
-    return this.http.post<number>(this.api + '/registration', userRegister, {
+  public register(userRegister: any, isGenerateDemoAccounts: boolean): Observable<number> {
+    return this.http.post<number>(this.api + `/registration?generate-demo=${isGenerateDemoAccounts}`, userRegister, {
       headers: {
         'Content-Type': 'application/json'
       }

@@ -60,7 +60,14 @@ export class FinanceComponent implements OnInit {
         this.currencyConverterForm.controls.convertTo.setValue(this.convertToValue);
       });
     });
-    this._accountService.updateAccountsSubjectObservable.subscribe(res => this.accounts = res.accounts);
+    this._accountService.updateAccountsSubjectObservable.subscribe(res => {
+      this.accounts = res.accounts
+      if (this.user != null) {
+        this._accountService.getBalance(this.user?.id, this.currencyToConvert).subscribe(res => {
+          this._balance = res;
+        });
+      }
+    });
   }
 
   get currencies(): Array<Currency> {
@@ -109,7 +116,8 @@ export class FinanceComponent implements OnInit {
       this._accountService.getAccounts(this.user?.id).subscribe(res => {
         this._accounts = res
         this._accountService.updateAccountsEvent({
-          accounts: this.accounts
+          accounts: this.accounts,
+          updateStatistics: true,
         })
       });
       this._accountService.getBalance(this.user.id, this.balance.currency).subscribe(res => this._balance = res);

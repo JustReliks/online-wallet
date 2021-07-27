@@ -21,7 +21,7 @@
             </div>
             <div *ngIf="this.balance" class="w-available-balance">
               <p class="text-black-50 mb-0">Доступно: </p>
-              <p class="w-summa d-inline-flex">{{this.balance?.balance | number:'1.0-3'}} <span class="w-currency"
+              <p class="w-summa d-flex"><span style="word-break: break-all">{{this.balance?.balance | number:'1.0-3'}}</span> <span class="w-currency"
                                                                                                 #tooltip="matTooltip"
                                                                                                 matTooltip="Конвертировать в другую валюту"
                                                                                                 [matTooltipPosition]="'above'"
@@ -36,7 +36,7 @@
                               position: absolute;
                               right: 53px;">
                     <img class="w-100 h-100" [src]="getAccountIcon(account?.accountType?.type?.icon)"/></div>
-                  <div class="row m-0"><p class="w-acc-title">{{account.name}}</p></div>
+                  <div class="row m-0"><p class="pr-2 w-acc-title">{{account.name}}</p></div>
                   <div class="row m-0">
                     <div class="mr-2 mb-2" *ngFor="let bill of account.accountBills">
                       <span style="font-size: 17px"

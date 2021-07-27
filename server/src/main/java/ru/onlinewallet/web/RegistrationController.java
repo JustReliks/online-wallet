@@ -24,7 +24,8 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<ResponseMessage> create(@RequestBody UserRegistrationDto dto) {
+    public ResponseEntity<ResponseMessage> create(@RequestParam("generate-demo") boolean isGenerateDemo,
+                                                  @RequestBody UserRegistrationDto dto) {
         String message;
         if (registrationService.checkUserExistByUserName(dto.getUsername())
                 || registrationService.checkUserExistByUserEmail(dto.getEmail())) {
@@ -49,8 +50,7 @@ public class RegistrationController {
 
     @GetMapping("/exist")
     public ResponseEntity<Boolean> checkExist(@RequestParam(value = "username", required = false) String username,
-                                              @RequestParam(
-                                                      value = "email", required = false) String email) {
+                                              @RequestParam(value = "email", required = false) String email) {
         return Objects.nonNull(username)
                 ? ResponseEntity.ok(registrationService.checkUserExistByUserName(username))
                 : ResponseEntity.ok(registrationService.checkUserExistByUserEmail(email));

@@ -17,7 +17,7 @@
 
 .w-available-balance {
   .w-summa {
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 600;
     color: #2e7103;
     width: 100%;
@@ -89,6 +89,7 @@
   font-size: 19px;
   font-weight: bold;
   max-width: 90%;
+  word-break: break-word;
 }
 
 .w-acc-type {

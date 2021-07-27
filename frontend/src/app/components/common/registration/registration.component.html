@@ -82,6 +82,14 @@
             </mat-form-field>
           </div>
         </div>
+        <div mat-dialog-content class="row d-flex pl-3 overflow-inherit mb-0 mt-3">
+          <div class="col-1 d-flex align-items-center">
+            <label class="register-icon"><i class="fa fa-question" aria-hidden="true"></i> </label>
+          </div>
+          <div class="col">
+            <mat-slide-toggle color="primary" [labelPosition]="'before'" [checked]="isGenerateDemoAccounts" (toggleChange)="changeToggle()">Сгенерировать демо счета?</mat-slide-toggle>
+          </div>
+        </div>
         <div *ngIf="form.hasError('authorizedError')" style="color: red">
           <mat-error>Ошибка авторизации!</mat-error>
         </div>

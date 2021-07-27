@@ -32,7 +32,7 @@ public class AccountGoal {
     @Column
     private boolean completed;
 
-    @OneToOne(optional = false)
+    @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account account;
 

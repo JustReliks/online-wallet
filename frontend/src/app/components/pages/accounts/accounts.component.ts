@@ -68,7 +68,7 @@ export class AccountsComponent implements OnInit {
   }
 
   getGoalProgressBarValue(account: Account) {
-    if(account.goal.completed) return 100;
+    if (account.goal.completed) return 100;
     let percent = account.convertedBalance.balance * 100 / account.goal.value;
     return percent > 100 ? 100 : percent
   }
@@ -89,7 +89,8 @@ export class AccountsComponent implements OnInit {
       if (res) {
         this.accounts = _.remove(this._accounts, acc => acc.id != res)
         this._accountService.updateAccountsEvent({
-          accounts: this.accounts
+          accounts: this.accounts,
+          updateStatistics: false,
         });
       }
     })
@@ -101,7 +102,7 @@ export class AccountsComponent implements OnInit {
 
   getCreditAmount(acc: Account) {
     let creditInfo = acc.creditInfo;
-    let diff = (-1*creditInfo.creditAmount) + (creditInfo.currentCreditBalance);
-    return (-1*creditInfo.creditAmount)-diff;
+    let diff = (-1 * creditInfo.creditAmount) + (creditInfo.currentCreditBalance);
+    return (-1 * creditInfo.creditAmount) - diff;
   }
 }

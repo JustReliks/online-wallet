@@ -22,11 +22,11 @@ public class AccountType {
     @Column(name = "type_id")
     private Long typeId;
 
-    @OneToOne(optional = false)
+    @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Account account;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "type_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Type type;
 }
