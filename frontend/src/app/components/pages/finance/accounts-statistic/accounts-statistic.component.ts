@@ -27,7 +27,6 @@ export class AccountsStatisticComponent implements OnInit {
   private _statistics: Statistics;
 
   @Input('user') set user(user: AuthUser) {
-    console.log(user)
     this._originalUser = user;
     this.cloneOriginalUser();
   }
@@ -54,9 +53,6 @@ export class AccountsStatisticComponent implements OnInit {
               private accountService: AccountService) {
     this._accounts = new Array<Account>();
     this.accountService.updateAccountsSubjectObservable.subscribe(res => {
-      console.log(res);
-      console.log(this.selectedDays)
-      console.log(this.selectedAccount)
       if (this.selectedAccount != null && this.selectedDays != null && res.updateStatistics) {
         this.statisticsService.getAccountStatistic(this.selectedAccount.id, this.selectedDays).subscribe(res => {
           this._statistics = res;
@@ -97,7 +93,6 @@ export class AccountsStatisticComponent implements OnInit {
 
   selectAccount($event: any) {
     this._selectedAccount = $event;
-    console.log(this._selectedAccount.name);
   }
 
   cloneOriginalUser() {

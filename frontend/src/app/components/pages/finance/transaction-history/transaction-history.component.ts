@@ -17,7 +17,6 @@ export class TransactionHistoryComponent implements OnInit {
   private hot: Handsontable;
 
   @Input('user') set user(user: AuthUser) {
-    console.log(user)
     this._originalUser = user;
     this.cloneOriginalUser();
   }

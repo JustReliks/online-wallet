@@ -25,6 +25,5 @@ export class UserSettings {
     this.language = json.language;
     this.currency = json.currency;
     this.profileImage=json.profileImage
-    console.log(json)
   }
 }

@@ -202,7 +202,7 @@ public class AccountServiceImpl implements AccountService {
                 goal.setAccountId(byId.getId());
                 goal.setAccount(byId);
             } else {
-                goal = accountGoalRepository.getById(account.getGoal().getId());
+                goal = accountGoalRepository.getById(byId.getGoal().getId());
             }
             goal.setName(account.getGoal().getName());
             goal.setValue(account.getGoal().getValue());
@@ -213,8 +213,11 @@ public class AccountServiceImpl implements AccountService {
             accountGoalRepository.save(goal);
 
         } else {
-            accountGoalRepository.deleteById(byId.getGoal().getId());
-            byId.setGoal(null);
+            AccountGoal g = byId.getGoal();
+            if (Objects.nonNull(g)) {
+                accountGoalRepository.deleteById(byId.getGoal().getId());
+                byId.setGoal(null);
+            }
         }
         accountRepository.save(byId);
 

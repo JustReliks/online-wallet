@@ -50,8 +50,6 @@ export class CreateAccountComponent implements OnInit {
     this.minDate.setDate(this.minDate.getDate() + 2);
     this.minDateCredit = new Date();
     this.minDateCredit.setDate(this.minDateCredit.getDate() + 90);
-    console.log(date.getDay())
-    console.log(date.getDate())
     this.createAccountForm = new FormGroup({
       accountName: new FormControl('', [Validators.required]),
       mainCurrency: new FormControl('', [Validators.required]),
@@ -188,7 +186,6 @@ export class CreateAccountComponent implements OnInit {
 
   create() {
     this._account = new Account({});
-    console.log(this.controls)
     this._account.name = this.controls.accountName.value;
     this._account.description = this.controls.description.value;
     let findType = _.find(this.types, type => type.id == this.selectedTypeId);
@@ -229,7 +226,6 @@ export class CreateAccountComponent implements OnInit {
       this._account.freezeDate = this.controls.freezeDate?.value;
     }
 
-    console.log(this._account)
     this._accountService.createAccount(this.account).subscribe(res => {
       this._notificationService.showSuccess('Новый счет успешно создан', 'Финанасы')
       this.dialogRef.close();

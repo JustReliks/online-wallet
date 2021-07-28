@@ -48,7 +48,6 @@ export class AccountsComponent implements OnInit {
   }
 
   createAccount() {
-    console.log('create')
     const dialogRef = this.dialog.open(CreateAccountComponent, {
       width: '550px',
       data: {user: this.user}

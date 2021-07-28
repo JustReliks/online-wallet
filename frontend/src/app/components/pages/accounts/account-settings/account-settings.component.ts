@@ -3,7 +3,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Account} from "../../../../entities/account";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DictionaryService} from "../../../../service/dictionary.service";
-import {Currency} from "../../../../entities/currency";
 import {Icon} from "../../../../entities/icon";
 import {Goal} from "../../../../entities/goal";
 import {AccountBill} from "../../../../entities/account-bill";
@@ -47,7 +46,6 @@ export class AccountSettingsComponent implements OnInit {
     this.minDate = new Date();
     this.minDate.setDate(this.minDate.getDate() + 2);
     this.goal = this.account.goal;
-    console.log(this.editAccountForm)
   }
 
 
@@ -91,7 +89,7 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._isGoalValid=true;
+    this._isGoalValid = true;
   }
 
   hasControlsErrors(controlName: string, errorName: string) {
@@ -115,6 +113,7 @@ export class AccountSettingsComponent implements OnInit {
     }
     this.account.goal = this.goal;
     this.accountService.updateAccount(this.account).subscribe(res => {
+      this._account = res;
       this.notificationService.showSuccess("Информация по счёту успешно обновлена.", "Редактирование счёта");
       this.dialogRef.close();
     }, error => {
@@ -123,8 +122,7 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   changeGoalValue(withoutDate?: any) {
-    console.log(this.editAccountForm)
-    this._isGoalValid = this.controls.goalName.value?.length!=0 && this.controls.goalValue.value?.length!=0 && this.controls.goalDate.value != null;
+    this._isGoalValid = this.controls.goalName.value?.length != 0 && this.controls.goalValue.value?.length != 0 && this.controls.goalDate.value != null;
   }
 
   delete() {

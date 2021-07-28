@@ -9,7 +9,6 @@ import ru.onlinewallet.entity.ConvertedBalance;
 import ru.onlinewallet.entity.account.*;
 import ru.onlinewallet.service.AccountService;
 import ru.onlinewallet.service.DemoService;
-import ru.onlinewallet.service.StatisticsService;
 
 import javax.websocket.server.PathParam;
 import java.io.IOException;
@@ -82,7 +81,15 @@ public class AccountController {
         if (Objects.nonNull(dto.getGoal()))
             account.setGoal(AccountGoalDto.fromDto(dto.getGoal()));
         Account updateAccount = accountService.updateAccount(account);
+        Double dailyPayment = 0.0D;
+        if (Objects.nonNull(updateAccount.getGoal())) {
+            dailyPayment = accountService.calculateGoalDailyPayment(updateAccount);
+        }
         AccountDto accountDto = AccountDto.toDto(updateAccount);
+        AccountGoalDto goal = accountDto.getGoal();
+        if (Objects.nonNull(goal)) {
+            goal.setDailyPayment(dailyPayment);
+        }
         return ResponseEntity.ok(accountDto);
     }
 
