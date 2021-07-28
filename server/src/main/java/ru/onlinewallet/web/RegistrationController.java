@@ -41,7 +41,7 @@ public class RegistrationController {
             if (Objects.nonNull(userId)) {
                 UserSettings userSettings = getUserSettings(dto, userId);
                 userService.saveUserSettings(userSettings);
-                
+
                 if (isGenerateDemo) {
                     demoService.generateAccounts(userId);
                 }

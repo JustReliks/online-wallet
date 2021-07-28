@@ -47,7 +47,7 @@ export class CreateAccountComponent implements OnInit {
     this._user = data.user;
     let date = new Date();
     this.minDate = new Date();
-    this.minDate.setDate  (this.minDate.getDate() + 1);
+    this.minDate.setDate(this.minDate.getDate() + 1);
     this.minDateCredit = new Date();
     this.minDateCredit.setDate(this.minDateCredit.getDate() + 90);
     console.log(date.getDay())
@@ -61,7 +61,7 @@ export class CreateAccountComponent implements OnInit {
       goalValue: new FormControl('10000', []),
       goalDate: new FormControl(this.minDate, []),
       freezeDate: new FormControl(this.minDate),
-      creditAmount: new FormControl('', []),      file: new FormControl(undefined, []),
+      creditAmount: new FormControl('', []), file: new FormControl(undefined, []),
 
       creditRate: new FormControl('', []),
       creditTo: new FormControl(this.minDateCredit),
@@ -194,9 +194,16 @@ export class CreateAccountComponent implements OnInit {
     let findType = _.find(this.types, type => type.id == this.selectedTypeId);
     let accountBills = new Array<AccountBill>();
     let isCreditBill = findType.code == 'CREDIT';
+    if (isCreditBill) {
+      let value = this.controls.creditRate.value;
+      if (value < 0) {
+        this._notificationService.showError('Процент по кредиту не может быть меньше 0.', 'Финанасы')
+        return;
+      }
+    }
     accountBills.push(new AccountBill({
       currency: this.getCurrency(this.controls.mainCurrency.value),
-      rate: isCreditBill ? this.controls.creditRate.value : 0,
+      rate: isCreditBill ? this.controls.creditRate.value : 1,
       balance: isCreditBill ? this.controls.creditAmount.value : 0,
       maturityDate: isCreditBill ? this.controls.creditTo.value : null
     }));

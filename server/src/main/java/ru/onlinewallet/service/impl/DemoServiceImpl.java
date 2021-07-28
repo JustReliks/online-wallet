@@ -34,10 +34,14 @@ public class DemoServiceImpl implements DemoService {
     private AccountRepository accountRepository;
 
     private final Map<String, String> demoAccountsDescriptions = Map.ofEntries(
-            Map.entry(AccountTypeEnum.SAVING.getName(), "Счет, который предполагает сбережение средств на определенную цель"),
-            Map.entry(AccountTypeEnum.CREDIT.getName(), "Счет, который предназначается для учета кредитной задолженности перед банком по кредитному договору"),
-            Map.entry(AccountTypeEnum.SALARY.getName(), "Счет, который позволяет распоряжаться денежными средствами, полученными в качестве заработной платы."),
-            Map.entry(AccountTypeEnum.CUMULATIVE.getName(), "Счет, который предлагает не только хранения денежных средств, но и возможность снятия в любой момент."));
+            Map.entry(AccountTypeEnum.SAVING.getName(), "Счет, который предполагает сбережение средств на " +
+                    "определенную цель"),
+            Map.entry(AccountTypeEnum.CREDIT.getName(), "Счет, который предназначается для учета кредитной " +
+                    "задолженности перед банком по кредитному договору"),
+            Map.entry(AccountTypeEnum.SALARY.getName(), "Счет, который позволяет распоряжаться денежными средствами, " +
+                    "полученными в качестве заработной платы."),
+            Map.entry(AccountTypeEnum.CUMULATIVE.getName(), "Счет, который предлагает не только хранения денежных " +
+                    "средств, но и возможность снятия в любой момент."));
 
 
     @Override
@@ -79,6 +83,11 @@ public class DemoServiceImpl implements DemoService {
                 double startBalance = -NumberUtil.round(150000 + random.nextDouble() * 1000000);
                 mainBill.setStartBalance(startBalance);
                 mainBill.setBalance(startBalance);
+                double rate = random.nextDouble() * 10;
+                if (rate == 0.0d) {
+                    rate = random.nextDouble() * 10;
+                }
+                mainBill.setRate(rate);
                 LocalDate plus = LocalDate.now().plus(6 + random.nextInt(14), ChronoUnit.MONTHS);
                 mainBill.setMaturityDate(plus.atStartOfDay().toInstant(ZoneOffset.UTC));
             }
@@ -113,7 +122,8 @@ public class DemoServiceImpl implements DemoService {
             List<TransactionCategory> categoriesIncome = transactionCategoryRepository.findAllByType("INCOME");
             for (AccountBill accountBill : bills) {
                 // accountBillRepository.save(accountBill);
-                double sum = NumberUtil.round(!isCredit ? 1000 + random.nextDouble() * 350000 : mainBill.getStartBalance());
+                double sum = NumberUtil.round(!isCredit ? 1000 + random.nextDouble() * 350000 :
+                        mainBill.getStartBalance());
                 if (!isCredit) accountService.addTransaction(accountBill, userID, true, sum,
                         categoriesIncome.get(random.nextInt(categoriesIncome.size())).getId(), saved.getCreatedAt());
                 for (int i = 0; i < random.nextInt(16) + 8; i++) {
@@ -121,7 +131,7 @@ public class DemoServiceImpl implements DemoService {
                         int hour = LocalDateTime.now().get(ChronoField.HOUR_OF_DAY);
                         boolean currentDay = hour > 10 && random.nextInt(4) == 0;
                         Instant transactionDate;
-                        if(!currentDay) transactionDate = getRandomDate(43, random);
+                        if (!currentDay) transactionDate = getRandomDate(43, random);
                         else {
                             transactionDate = Instant.now();
                             transactionDate = transactionDate.minus(random.nextInt(hour), ChronoUnit.HOURS);
@@ -136,9 +146,11 @@ public class DemoServiceImpl implements DemoService {
                             value = 2500 + random.nextDouble() * 7500;
                             sum -= value;
                         }
-                        long transactionId = plus ? categoriesIncome.get(random.nextInt(categoriesIncome.size())).getId() :
+                        long transactionId = plus ?
+                                categoriesIncome.get(random.nextInt(categoriesIncome.size())).getId() :
                                 categoriesExpense.get(random.nextInt(categoriesIncome.size())).getId();
-                        accountService.addTransaction(accountBill, userID, plus, NumberUtil.round(value), transactionId, transactionDate        );
+                        accountService.addTransaction(accountBill, userID, plus, NumberUtil.round(value),
+                                transactionId, transactionDate);
                     }
                 }
             }

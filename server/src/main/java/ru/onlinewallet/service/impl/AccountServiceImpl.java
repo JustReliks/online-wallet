@@ -255,7 +255,8 @@ public class AccountServiceImpl implements AccountService {
         LocalDate matureDate = LocalDate.ofInstant(accountBill.getMaturityDate(), ZoneId.systemDefault());
         LocalDate now = LocalDate.now();
         Double creditAmount = accountBill.getStartBalance();
-        double rate = accountBill.getRate();
+        double accountRate = accountBill.getRate();
+        double rate = accountRate == 0.0 ? 1 : accountRate;
         long between = ChronoUnit.MONTHS.between(now, matureDate);
 
         double v = -accountBill.getBalance();

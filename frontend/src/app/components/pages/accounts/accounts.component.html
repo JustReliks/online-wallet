@@ -37,14 +37,17 @@
               <div *ngIf="account.accountBills[0].balance >= 0">
                 <div class="row">
                   <p class="col m-0 font-weight-bold" style="color: green; font-family: 'Arial Black'">Поздравляем!
-                    Кредит
-                    погашен, теперь вы можете удалить счет.
+                    Кредит погашен, теперь вы можете удалить счет.
                 </div>
               </div>
               <div *ngIf="account.accountBills[0].balance < 0">
                 <div class="row">
                   <p class="col m-0">Остаток по выплатам: <span
-                    class="font-weight-bold">{{getCreditAmount(account)}} {{account.accountBills[0].currency.shortName}}</span>
+                    class="font-weight-bold">{{getCreditAmount(account)|number:'1.0-2'}} {{account.accountBills[0].currency.shortName}}</span>
+                </div>
+                <div class="row">
+                  <p class="col m-0">Процентая ставка: <span
+                    class="font-weight-bold">{{account.accountBills[0].rate|number:'1.0-2'}}%</span>
                 </div>
                 <div class="row">
                   <p class="col m-0">Выплатить до: <span
@@ -62,7 +65,8 @@
               <div class="row">
                 <p class="col m-0">Цель: <span
                   class="font-weight-bold"
-                  *ngIf="!account.goal.completed && !isGoalExpired(account)">{{account.convertedBalance.balance | number:'1.0-2'}}  /  {{account.goal.value | number:'1.0-2'}} {{account.convertedBalance.currency}}
+                  *ngIf="!account.goal.completed && !isGoalExpired(account)">{{account.convertedBalance.balance | number:'1.0-2'}}
+                  /  {{account.goal.value | number:'1.0-2'}} {{account.convertedBalance.currency}}
             </span>
                   <span
                     class="font-weight-bold"
@@ -113,5 +117,6 @@
 </div>
 
 <ng-template #elseAccountsBlock>
-  <p class="font-weight-bold" style="font-size: 21px;">На данный момент к аккаунту не привязан ни один счёт. Вы можете создать его в этом разделе.</p>
+  <p class="font-weight-bold" style="font-size: 21px;">На данный момент к аккаунту не привязан ни один счёт. Вы можете
+    создать его в этом разделе.</p>
 </ng-template>
