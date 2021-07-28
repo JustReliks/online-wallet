@@ -255,17 +255,20 @@ public class AccountServiceImpl implements AccountService {
         LocalDate matureDate = LocalDate.ofInstant(accountBill.getMaturityDate(), ZoneId.systemDefault());
         LocalDate now = LocalDate.now();
         Double creditAmount = accountBill.getStartBalance();
-        double accountRate = accountBill.getRate();
-        double rate = accountRate == 0.0 ? 1 : accountRate;
+        double rate = accountBill.getRate();
         long between = ChronoUnit.MONTHS.between(now, matureDate);
 
         double v = -accountBill.getBalance();
-        double ratePercentage = rate / 100;
-        double pow = Math.pow(1 + ratePercentage, between);
-        double v1 = ratePercentage / (pow - 1);
-        double v2 = ratePercentage + v1;
-        double monthlyPayment = v * v2;
-
+        double monthlyPayment;
+        if (rate <= 0) {
+            monthlyPayment = v / between;
+        } else {
+            double ratePercentage = rate / 100;
+            double pow = Math.pow(1 + ratePercentage, between);
+            double v1 = ratePercentage / (pow - 1);
+            double v2 = ratePercentage + v1;
+            monthlyPayment = v * v2;
+        }
         CreditInfo creditInfo = new CreditInfo();
         creditInfo.setMonthlyPayment(monthlyPayment);
         creditInfo.setMaturityDate(accountBill.getMaturityDate());

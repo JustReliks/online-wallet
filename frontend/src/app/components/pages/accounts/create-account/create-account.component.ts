@@ -203,7 +203,7 @@ export class CreateAccountComponent implements OnInit {
     }
     accountBills.push(new AccountBill({
       currency: this.getCurrency(this.controls.mainCurrency.value),
-      rate: isCreditBill ? this.controls.creditRate.value : 1,
+      rate: isCreditBill ? this.controls.creditRate.value : 0,
       balance: isCreditBill ? this.controls.creditAmount.value : 0,
       maturityDate: isCreditBill ? this.controls.creditTo.value : null
     }));
