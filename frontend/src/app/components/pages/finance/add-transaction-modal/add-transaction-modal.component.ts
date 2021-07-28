@@ -77,9 +77,7 @@ export class AddTransactionModalComponent implements OnInit {
       this.selectedBill = res;
       this._notification.showSuccess('Операция успешно проведена.', 'Проведение операции по счету')
       this.dialogRef.close();
-      console.log(res)
     }, error => {
-      console.log(error)
       if (error.status === 400) {
         this._notification.showError('Возникла ошибка при проведении операции: Данная операция приводит к отрицательному балансу. Действие отменено.', 'Проведение операции по счету')
       }
@@ -91,7 +89,6 @@ export class AddTransactionModalComponent implements OnInit {
   }
 
   selectBill(accountBill: AccountBill) {
-    console.log(accountBill);
     this.selectedBill = accountBill;
   }
 

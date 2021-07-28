@@ -74,7 +74,6 @@ export class HeaderComponent implements OnInit {
 
     this._fileService.changeProfileImageSubjectObservable.subscribe(res => {
       if (res.state != 'new') {
-        console.log(res)
         this.profileImageSrc = this.getProfileImage(res.source);
       }
     })
@@ -95,7 +94,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     if (this.vkGroupsElem?.nativeElement) {
-      // console.log("FQWFQWFWQ")
       this.initVkWidget()
     }
   }

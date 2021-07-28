@@ -43,7 +43,6 @@ export class UserProfileModalComponent implements OnInit {
   ngOnInit() {
     const matDialogConfig = new MatDialogConfig()
     const rect: DOMRect = this.positionRelativeToElement.nativeElement.getBoundingClientRect()
-    console.log(this.positionRelativeToElement.nativeElement)
 
     matDialogConfig.position = {right: `${rect.right - 1130}px`, top: `${rect.bottom + 15}px`}
     this.dialogRef.updatePosition(matDialogConfig.position)

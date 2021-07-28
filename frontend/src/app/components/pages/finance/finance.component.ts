@@ -96,7 +96,6 @@ export class FinanceComponent implements OnInit {
 
   set user(user: AuthUser) {
     this._originalUser = user;
-    console.log(this._originalUser)
     this.cloneOriginalUser();
   }
 

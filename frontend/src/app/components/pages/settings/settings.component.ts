@@ -47,7 +47,6 @@ export class SettingsComponent implements OnInit {
   }
 
   changeMenuState(state: string) {
-    console.log(state, ' ', SettingsState[state]);
     this.settingsState = SettingsState[state];
   }
 

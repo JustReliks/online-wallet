@@ -63,11 +63,9 @@ export class IncomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Loaded');
   }
 
   selectAccount($event: any) {
     this._selectedAccount = $event;
-    console.log(this._selectedAccount.name);
   }
 }

@@ -105,7 +105,6 @@ export class ProfileSettingsComponent implements OnInit {
     this.controls.language.setValue(userSettings.language);
     this.controls.currency.setValue(userSettings.currency);
     this.profileImageSrc = this.getProfileImg(userSettings);
-    console.log(this.profileImageSrc)
     this.currency = userSettings.currency;
     this.reader.readAsDataURL(new Blob([userSettings.profileImage]));
   }

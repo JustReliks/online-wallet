@@ -33,7 +33,6 @@ export class CardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(MenuState.MENU.toString())
   }
 
   get accounts(): Array<Account> {
@@ -41,7 +40,6 @@ export class CardComponent implements OnInit {
   }
 
   changeMenuState($event: any) {
-    console.log($event)
     this.menuState = $event;
   }
 

@@ -112,7 +112,6 @@ export class SecuritySettingsComponent implements OnInit {
 
   onToggleChange($event: MatSlideToggleChange) {
     this.twoFactorToggleState = $event.checked;
-    console.log($event)
   }
 
   checkCode(value: any) {
