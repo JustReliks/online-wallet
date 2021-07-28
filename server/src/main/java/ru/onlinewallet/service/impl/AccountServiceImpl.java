@@ -126,7 +126,6 @@ public class AccountServiceImpl implements AccountService {
             double toCurr = CURRENCIES_RATES_CACHE.getOrDefault(to, 1.0);
             return NumberUtil.round((value / fromCurr) * toCurr);
         } catch (Exception e) {
-            System.out.println(to + " | " + from);
             return 0.0d;
         }
     }
@@ -263,14 +262,15 @@ public class AccountServiceImpl implements AccountService {
 
         double v = -accountBill.getBalance();
         double monthlyPayment;
-        if (rate <= 0) {
-            monthlyPayment = v / between;
+        if (between != 0) {
+            if (rate <= 0) {
+                monthlyPayment = v / between;
+            } else {
+                monthlyPayment = (((rate / 1200 * (Math.pow((1 + rate / 1200), between))) //Формула аннуитета
+                        / (Math.pow((1 + rate / 1200), between) - 1)) * v);
+            }
         } else {
-            double ratePercentage = rate / 100;
-            double pow = Math.pow(1 + ratePercentage, between);
-            double v1 = ratePercentage / (pow - 1);
-            double v2 = ratePercentage + v1;
-            monthlyPayment = v * v2;
+            monthlyPayment = v;
         }
         CreditInfo creditInfo = new CreditInfo();
         creditInfo.setMonthlyPayment(monthlyPayment);

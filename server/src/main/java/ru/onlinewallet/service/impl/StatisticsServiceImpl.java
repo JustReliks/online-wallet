@@ -120,7 +120,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         dataExpense.add(daySumExpense);
         Double daySumIncome = getDaySum(statistics.getIncomeLineChart().getSeriesData());
         dataIncome.add(daySumIncome);
-        //dataMoney.addFirst(calculateStartDayMoney(currency, transactions, date, dataMoney.getFirst()));
 
         chartIncome.setSeriesData(dataIncome);
         chartExpense.setSeriesData(dataExpense);
@@ -131,7 +130,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         for (int i = 0; i < days - 1; i++) {
             calendar.setTime(Date.from(date));
             date = date.minus(1, ChronoUnit.DAYS);
-            //if (i > 0)
                 dataMoney.addFirst(calculateStartDayMoney(currency, transactions, dateMoney, dataMoney.getFirst()));
 
             AccountStatistics tempStat = getAccountStatisticsForDay(date, transactions, currency);
@@ -238,12 +236,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         chartExpense.setCategories(DAY_CATEGORIES);
         LinkedList<Double> seriesData = new LinkedList<>(Arrays.asList(dataExpense));
-        //Collections.reverse(seriesData);
         chartExpense.setSeriesData(seriesData);
 
         chartIncome.setCategories(DAY_CATEGORIES);
         LinkedList<Double> seriesData1 = new LinkedList<>(Arrays.asList(dataIncome));
-       //  Collections.reverse(seriesData1);
         chartIncome.setSeriesData(seriesData1);
 
         statistics.setExpenseCircleChart(circleChartExpense);
@@ -319,256 +315,3 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
 }
-//    @Override
-//    public AccountStatistics getStatistics(Long accountId, Long days) throws IOException, CloneNotSupportedException {
-//        AccountStatistics statistics;
-//        Account account = accountRepository.getById(accountId);
-//        String currency = userSettingsRepository.findByUserId(account.getUserId()).getCurrency();
-//        List<Transaction> transactions = transactionHistoryRepository.findAllByAccountId(accountId);
-//
-//        if (days == 1) {
-//            DAY_CATEGORIES = getDayCategories();
-//            statistics = fillStatisticForCurrentDay(account, currency, transactions);
-//        } else {
-//            DAY_CATEGORIES = getNDaysCategories(days.intValue());
-//            statistics = fillStatisticForSomeDays(account, currency, transactions, Math.toIntExact(days));
-//        }
-//
-//        statistics.setAllTransactions(transactions.size());
-//        statistics.getIncomeLineChart().setCategories(DAY_CATEGORIES);
-//        statistics.getExpenseLineChart().setCategories(DAY_CATEGORIES);
-//        statistics.getMoneyLineChart().setCategories(DAY_CATEGORIES);
-//
-//        return statistics;
-//    }
-//
-//    private AccountStatistics fillStatisticForSomeDays(Account account, String currency, List<Transaction> transactions, int days) throws IOException {
-//        AccountStatistics statistics = getEmptyStatistic();
-//        Double[] dataIncome = new Double[days];
-//        Double[] dataExpenses = new Double[days];
-//        Double[] dataMoney = new Double[days];
-//
-//        Arrays.fill(dataExpenses, 0.0);
-//        Arrays.fill(dataIncome, 0.0);
-//        Arrays.fill(dataMoney, 0.0);
-//
-//        HashMap<TransactionCategory, Double> rawDataIncome = new HashMap<>();
-//        HashMap<TransactionCategory, Double> rawDataExpense = new HashMap<>();
-//
-//        Instant date = Instant.now();
-//        Instant now = Instant.now();
-//        AccountStatistics prevDayStatistic = fillStatisticForCurrentDay(account, currency, transactions);
-//        dataIncome[days - 1] = calculateAll(prevDayStatistic.getIncomeLineChart().getSeriesData());
-//        dataExpenses[days - 1] = calculateAll(prevDayStatistic.getExpenseLineChart().getSeriesData());
-//
-//        for (int i = days - 2; i >= 0; i--) {
-//            date = date.minus(1, ChronoUnit.DAYS);
-//            double finalBalance;
-//            if (i == days - 2) {
-//                finalBalance = prevDayStatistic.getMoneyLineChart().getSeriesData().get(23 - getCalendar(now).get(Calendar.HOUR_OF_DAY));
-//            } else finalBalance = prevDayStatistic.getMoneyLineChart().getSeriesData().get(0);
-//
-//            prevDayStatistic = fillFullDayStatistic(account, currency, transactions, date, finalBalance);
-//            dataIncome[i] = calculateAll(prevDayStatistic.getIncomeLineChart().getSeriesData());
-//            dataExpenses[i] = calculateAll(prevDayStatistic.getExpenseLineChart().getSeriesData());
-//
-//            mergeMaps(rawDataExpense, prevDayStatistic.getExpenseCircleChart().getRawData());
-//            mergeMaps(rawDataIncome, prevDayStatistic.getIncomeCircleChart().getRawData());
-//        }
-//
-//        dataMoney[days - 1] = accountService.getConvertedBalance(account, currency).getValue();
-//        for (int i = days - 2; i >= 0; i--) {
-//            dataMoney[i] = dataMoney[i + 1] - dataIncome[i + 1] + dataExpenses[i + 1];
-//        }
-//
-//        statistics.getMoneyLineChart().setSeriesData(asLinkedList(dataMoney));
-//        statistics.getIncomeLineChart().setSeriesData(asLinkedList(dataIncome));
-//        statistics.getExpenseLineChart().setSeriesData(asLinkedList(dataExpenses));
-//
-//        return statistics;
-//    }
-//
-//
-//    private Map<TransactionCategory, Double> mergeMaps(Map<TransactionCategory, Double> map1, Map<TransactionCategory, Double> map2) {
-//        for (Map.Entry<TransactionCategory, Double> entry : map2.entrySet()) {
-//            map1.merge(entry.getKey(), entry.getValue(), Double::sum);
-//        }
-//        return map1;
-//    }
-//
-//    private Calendar getCalendar(Instant instant)
-//    {
-//        Calendar calendar = GregorianCalendar.getInstance();
-//        calendar.setTime(Date.from(instant));
-//        return calendar;
-//    }
-//
-//
-//    private AccountStatistics fillFullDayStatistic(Account account, String currency, List<Transaction> transactions, Instant date, Double finalBalance) throws IOException {
-//        AccountStatistics statistics = getEmptyStatistic();
-//        Double[] dataIncome = new Double[24];
-//        Double[] dataExpenses = new Double[24];
-//        Double[] dataMoney = new Double[24];
-//
-//        HashMap<TransactionCategory, Double> rawDataIncome = new HashMap<>();
-//        HashMap<TransactionCategory, Double> rawDataExpense = new HashMap<>();
-//
-//
-//        Arrays.fill(dataExpenses, 0.0);
-//        Arrays.fill(dataIncome, 0.0);
-//        Arrays.fill(dataMoney, 0.0);
-//
-//        for (int i = 23; i >= 0; i--) {
-//            for (Transaction transaction : transactions) {
-//                if (sameDay(date, transaction.getDateTime()) &&
-//                        i == getCalendar(transaction.getDateTime()).get(Calendar.HOUR_OF_DAY)) {
-//                    String category = transaction.getCategory().getType();
-//                    double value = accountService.convertCurrencies(transaction.getQuantity(),
-//                            transaction.getAccountBill().getCurrency().getShortName(), currency);
-//
-//                    if (category.equals(INCOME)) {
-//                        dataIncome[i] += value;
-//                        rawDataIncome.merge(transaction.getCategory(), value, Double::sum);
-//                    }
-//                    if (category.equals(EXPENSES)) {
-//                        dataExpenses[i] -= value;
-//                        rawDataExpense.merge(transaction.getCategory(), value, Double::sum);
-//                    }
-//                }
-//            }
-//        }
-//        dataMoney[23] = finalBalance;
-//        for (int i = 22; i >= 0; i--) {
-//            dataMoney[i] = dataMoney[i + 1] - dataIncome[i + 1] + dataExpenses[i + 1];
-//        }
-//
-//        statistics.getMoneyLineChart().setSeriesData(asLinkedList(dataMoney));
-//        statistics.getExpenseLineChart().setSeriesData(asLinkedList(dataExpenses));
-//        statistics.getIncomeLineChart().setSeriesData(asLinkedList(dataIncome));
-//        statistics.getExpenseCircleChart().setRawData(rawDataExpense);
-//        statistics.getIncomeCircleChart().setRawData(rawDataIncome);
-//
-//        return statistics;
-//    }
-//
-//    private List<Double> asLinkedList(Double... values) {
-//        LinkedList<Double> list = new LinkedList<>();
-//        for (Double val : values) {
-//            list.addFirst(val);
-//        }
-//        Collections.reverse(list);
-//        return list;
-//    }
-//
-//    private AccountStatistics getEmptyStatistic() {
-//        AccountStatistics statistics = new AccountStatistics();
-//        LineChart chartIncome = new LineChart();
-//        LineChart chartExpenses = new LineChart();
-//        LineChart chartMoney = new LineChart();
-//
-//        CircleChart circleChartIncome = new CircleChart();
-//        CircleChart circleChartExpenses = new CircleChart();
-//
-//        statistics.setMoneyLineChart(chartMoney);
-//        statistics.setExpenseLineChart(chartExpenses);
-//        statistics.setIncomeLineChart(chartIncome);
-//
-//        statistics.setIncomeCircleChart(circleChartIncome);
-//        statistics.setExpenseCircleChart(circleChartExpenses);
-//
-//        return statistics;
-//    }
-//
-//    private AccountStatistics fillStatisticForCurrentDay(Account account, String currency, List<Transaction> transactions) throws IOException {
-//        AccountStatistics statistics = getEmptyStatistic();
-//        Instant date = Instant.now();
-//        Calendar calendar = GregorianCalendar.getInstance();
-//        calendar.setTime(Date.from(date));
-//        Double[] dataIncome = new Double[24];
-//        Double[] dataExpenses = new Double[24];
-//        Double[] dataMoney = new Double[24];
-//
-//        HashMap<TransactionCategory, Double> rawDataIncome = new HashMap<>();
-//        HashMap<TransactionCategory, Double> rawDataExpense = new HashMap<>();
-//
-//
-//        Arrays.fill(dataExpenses, 0.0);
-//        Arrays.fill(dataIncome, 0.0);
-//        Arrays.fill(dataMoney, 0.0);
-//
-//        for (int i = 23; i >= 0; i--) {
-//            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-//            for (Transaction transaction : transactions) {
-//                Calendar calendar1 = GregorianCalendar.getInstance();
-//                calendar1.setTime(Date.from(transaction.getDateTime()));
-//                if (sameDay(calendar1, calendar) &&
-//                        calendar.get(Calendar.HOUR_OF_DAY) == calendar1.get(Calendar.HOUR_OF_DAY)) {
-//                    String category = transaction.getCategory().getType();
-//                    double value = accountService.convertCurrencies(transaction.getQuantity(),
-//                            transaction.getAccountBill().getCurrency().getShortName(), currency);
-//
-//                    if (category.equals(INCOME)) {
-//                        dataIncome[hour] += value;
-//                        rawDataIncome.merge(transaction.getCategory(), value, Double::sum);
-//                    }
-//                    if (category.equals(EXPENSES)) {
-//                        dataExpenses[hour] -= value;
-//                        rawDataExpense.merge(transaction.getCategory(), value, Double::sum);
-//                    }
-//                }
-//            }
-//            date = date.minus(1, ChronoUnit.HOURS);
-//        }
-//        dataMoney[23] = accountService.getConvertedBalance(account, currency).getValue();
-//        for (int i = 22; i >= 0; i--) {
-//            dataMoney[i] = dataMoney[i + 1] - dataIncome[i + 1] + dataExpenses[i + 1];
-//        }
-//
-//        statistics.getMoneyLineChart().setSeriesData(asLinkedList(dataMoney));
-//        statistics.getExpenseLineChart().setSeriesData(asLinkedList(dataExpenses));
-//        statistics.getIncomeLineChart().setSeriesData(asLinkedList(dataIncome));
-//        statistics.getExpenseCircleChart().setRawData(rawDataExpense);
-//        statistics.getIncomeCircleChart().setRawData(rawDataIncome);
-//        formCircleCharts(statistics);
-//
-//        return statistics;
-//    }
-//
-//    private void formCircleCharts(AccountStatistics statistics) {
-//        HashMap<TransactionCategory, Double> rawDataIncome = statistics.getIncomeCircleChart().getRawData();
-//        HashMap<TransactionCategory, Double> rawDataExpense = statistics.getExpenseCircleChart().getRawData();
-//
-//        double fullValueIncome = 0;
-//        for (Double val : rawDataIncome.values()) {
-//            fullValueIncome += val;
-//        }
-//
-//        double fullValueExpenses = 0;
-//        for (Double val : rawDataExpense.values()) {
-//            fullValueExpenses += val;
-//        }
-//
-//        List<List<Object>> dataIncome = new ArrayList<>();
-//
-//        for (Map.Entry<TransactionCategory, Double> entry : rawDataIncome.entrySet()) {
-//            dataIncome.add(List.of(entry.getKey().getCode(), 100 * fullValueIncome / entry.getValue()));
-//        }
-//
-//        List<List<Object>> dataExpense = new ArrayList<>();
-//        for (Map.Entry<TransactionCategory, Double> entry : rawDataExpense.entrySet()) {
-//            dataExpense.add(List.of(entry.getKey().getCode(), 100 * fullValueExpenses / entry.getValue()));
-//        }
-//        statistics.getExpenseCircleChart().setData(dataExpense);
-//        statistics.getIncomeCircleChart().setData(dataIncome);
-//
-//    }
-//
-//
-//    private Double calculateAll(List<Double> list) {
-//        Double value = 0d;
-//
-//        for (Double val : list) {
-//            value += val;
-//        }
-//        return value;
-//    }
