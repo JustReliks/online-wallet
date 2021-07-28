@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,6 @@ public class AccountServiceImpl implements AccountService {
 
     public static final String ECB_EUROFXREF = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
     public static final String EUR = "EUR";
-    private static final Map<String, Double> CURRENCIES_RATES_CACHE = new HashMap<>();
 
     private final AccountRepository accountRepository;
     private final AccountBillRepository accountBillRepository;
@@ -42,6 +42,9 @@ public class AccountServiceImpl implements AccountService {
     private final UserService userService;
     private final TransactionHistoryService transactionHistoryService;
     private final TransactionHistoryRepository transactionHistoryRepository;
+
+    private static Map<String, Double> CURRENCIES_RATES_CACHE;
+    private final ReentrantLock reentrantLock = new ReentrantLock();
 
     @Override
     public Account createAccount(Account account) {
@@ -67,24 +70,25 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value,
-                                      Long categoryId) throws IOException {
-        Account account =
-                accountRepository.findById(accountBill.getAccountId()).orElseThrow(() -> new RuntimeException("Счет " +
-                        "не найден."));
-        Instant now = Instant.now();
+                                      Long categoryId, Instant transactionDate) throws IOException {
+        Account account;
+        account = accountRepository.getById(accountBill.getAccountId());
 
-        if (!isPlus && account.getAccountType().getType().getCode().equals(AccountTypeEnum.SAVING.getName()) && account.getFreezeDate().isAfter(now)) {
+        if (!isPlus && account.getAccountType().getType().getCode().equals(AccountTypeEnum.SAVING.getName()) && account.getFreezeDate().isAfter(transactionDate)) {
             throw new RuntimeException("Данный счет заморожен для списаний!");
         }
 
         Double currentBalance = accountBill.getBalance();
         double newValue = isPlus ? value : -value;
         double balance = currentBalance + newValue;
+
         if (balance < 0 && !account.getAccountType().getType().getCode().equals(AccountTypeEnum.CREDIT.getName())) {
             throw new RuntimeException("Данная операция приводит к отрицательному балансу. Действие отменено.");
         }
 
-        account.setLastTransaction(now);
+        if (account.getLastTransaction().isBefore(transactionDate)) {
+            account.setLastTransaction(transactionDate);
+        }
         accountBill.setBalance(balance);
 
         AccountBill savedAccountBill = accountBillRepository.save(accountBill);
@@ -103,22 +107,28 @@ public class AccountServiceImpl implements AccountService {
                 accountGoalRepository.save(goal);
             }
         }
-        transactionHistoryService.addTransaction(savedAccountBill, userId, categoryId, newValue, now);
+        transactionHistoryService.addTransaction(savedAccountBill, userId, categoryId, newValue, transactionDate);
 
         return savedAccountBill;
     }
 
     @Override
     public Double convertCurrencies(double value, String from, String to) throws IOException {
-        if (CURRENCIES_RATES_CACHE.isEmpty()) {
+        if (Objects.isNull(CURRENCIES_RATES_CACHE) || CURRENCIES_RATES_CACHE.isEmpty()) {
+            CURRENCIES_RATES_CACHE = new HashMap<>();
             initCurrenciesRates();
         }
         if (from.equals(to)) {
             return value;
         }
-        double fromCurr = from.equals(EUR) ? 1 : CURRENCIES_RATES_CACHE.get(from);
-        double toCurr = CURRENCIES_RATES_CACHE.getOrDefault(to, 1.0);
-        return NumberUtil.round((value / fromCurr) * toCurr);
+        try {
+            double fromCurr = from.equals(EUR) ? 1 : CURRENCIES_RATES_CACHE.get(from);
+            double toCurr = CURRENCIES_RATES_CACHE.getOrDefault(to, 1.0);
+            return NumberUtil.round((value / fromCurr) * toCurr);
+        } catch (Exception e) {
+            System.out.println(to + " | " + from);
+            return 0.0d;
+        }
     }
 
     @Override
@@ -284,4 +294,5 @@ public class AccountServiceImpl implements AccountService {
     public int getCountAllAccounts(Long userId) {
         return accountRepository.countAccountsByUserId(userId);
     }
+
 }

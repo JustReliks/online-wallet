@@ -4,6 +4,7 @@ import ru.onlinewallet.entity.ConvertedBalance;
 import ru.onlinewallet.entity.account.*;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 
 public interface AccountService {
@@ -14,7 +15,7 @@ public interface AccountService {
 
     List<Account> getAll(Long userId);
 
-    AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value, Long categoryId) throws IOException;
+    AccountBill addTransaction(AccountBill accountBill, Long userId, boolean isPlus, double value, Long categoryId, Instant transactionDate) throws IOException;
 
     Double convertCurrencies(double value, String from, String to) throws IOException;
 
@@ -37,4 +38,5 @@ public interface AccountService {
     Double calculateGoalDailyPayment(Account acc) throws IOException;
 
     int getCountAllAccounts(Long userId);
+
 }

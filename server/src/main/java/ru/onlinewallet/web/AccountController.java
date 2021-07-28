@@ -8,6 +8,7 @@ import ru.onlinewallet.dto.account.*;
 import ru.onlinewallet.entity.ConvertedBalance;
 import ru.onlinewallet.entity.account.*;
 import ru.onlinewallet.service.AccountService;
+import ru.onlinewallet.service.DemoService;
 import ru.onlinewallet.service.StatisticsService;
 
 import javax.websocket.server.PathParam;
@@ -25,7 +26,7 @@ import static ru.onlinewallet.enums.AccountTypeEnum.CREDIT;
 public class AccountController {
 
     private final AccountService accountService;
-    private final StatisticsService statisticsService;
+    private final DemoService demoService;
 
     @PostMapping
     private ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto dto) {
@@ -77,7 +78,6 @@ public class AccountController {
 
     @PutMapping
     private ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto dto) throws IOException {
-
         Account account = AccountDto.fromDto(dto);
         if (Objects.nonNull(dto.getGoal()))
             account.setGoal(AccountGoalDto.fromDto(dto.getGoal()));
@@ -94,7 +94,8 @@ public class AccountController {
 
 
     @GetMapping
-    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id) {
+    private ResponseEntity<List<AccountDto>> getAll(@RequestParam("id") Long id) throws IOException {
+//        demoService.generateAccounts(id);
         return ResponseEntity.ok(
                 accountService
                         .getAll(id)
@@ -142,7 +143,7 @@ public class AccountController {
         AccountBill bill;
         try {
             AccountBill accountBill = AccountBillDto.fromDto(dto);
-            bill = accountService.addTransaction(accountBill, userId, isPlus, value, categoryId);
+            bill = accountService.addTransaction(accountBill, userId, isPlus, value, categoryId, Instant.now());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

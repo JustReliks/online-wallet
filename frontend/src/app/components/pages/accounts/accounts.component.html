@@ -31,7 +31,7 @@
             <div *ngIf="account.creditInfo != null" class="w-point mt-4 mb-4 col" style="width: 100%;">
               <div class="row">
                 <p class="col m-0">Сумма кредита: <span
-                  class="font-weight-bold">{{-account.creditInfo?.creditAmount}} {{account.accountBills[0].currency.shortName}}
+                  class="font-weight-bold">{{-account.creditInfo?.creditAmount | number:'1.0-2'}} {{account.accountBills[0].currency.shortName}}
             </span>
               </div>
               <div *ngIf="account.accountBills[0].balance >= 0">
@@ -53,7 +53,7 @@
                 </div>
                 <div class="row">
                   <p class="col m-0">Ежемесячный платеж: <span
-                    class="font-weight-bold">{{account.creditInfo.monthlyPayment|number}} {{account.accountBills[0].currency.shortName}}
+                    class="font-weight-bold">{{account.creditInfo.monthlyPayment | number:'1.0-2'}} {{account.accountBills[0].currency.shortName}}
             </span>
                 </div>
               </div>
@@ -62,11 +62,11 @@
               <div class="row">
                 <p class="col m-0">Цель: <span
                   class="font-weight-bold"
-                  *ngIf="!account.goal.completed && !isGoalExpired(account)">{{account.convertedBalance.balance + '/' + account.goal.value + ' ' + account.convertedBalance.currency}}
+                  *ngIf="!account.goal.completed && !isGoalExpired(account)">{{account.convertedBalance.balance | number:'1.0-2'}}  /  {{account.goal.value | number:'1.0-2'}} {{account.convertedBalance.currency}}
             </span>
                   <span
                     class="font-weight-bold"
-                    *ngIf="account.goal.completed || isGoalExpired(account)">{{account.goal.value + ' ' + account.convertedBalance.currency}}
+                    *ngIf="account.goal.completed || isGoalExpired(account)">{{account.goal.value | number:'1.0-2'}}  {{account.convertedBalance.currency }}
             </span>
                 </p>
                 <div class="col m-0">
@@ -92,7 +92,7 @@
             <div class="col-2"></div>
             <div class="col-5">
               <div *ngFor="let bill of account.accountBills"
-                   class="badge badge-pill badge-primary w-money mr-3 mb-2">{{bill.balance}} <span
+                   class="badge badge-pill badge-primary w-money mr-3 mb-2">{{bill.balance | number:'1.0-2'}} <span
                 class="w-currency">{{bill.currency.shortName}}</span></div>
             </div>
             <div class="col w-date-create justify-items-right">

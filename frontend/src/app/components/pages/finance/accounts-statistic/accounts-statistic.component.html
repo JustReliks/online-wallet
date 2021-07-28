@@ -28,9 +28,9 @@
     <div class="col-md-3 mb-3" *ngFor="let account of accounts" (click)="showAccountStatistic(account)">
       <div class="w-account mat-form-field-flex justify-content-center">
         <div class=" w-account-header">
-          <div class="w-money">{{account.accountBills[0].balance}} <span
+          <div class="w-money">{{account.accountBills[0].balance | number:'1.0-2'}} <span
             class="w-currency">{{account.accountBills[0].currency.shortName}}</span></div>
-          <div class="w-money" style="position: relative; left: 17%">{{account.accountBills[1]?.balance}} <span
+          <div class="w-money" style="position: relative; left: 17%">{{account.accountBills[1]?.balance | number:'1.0-2'}} <span
             class="w-currency">{{account.accountBills[1]?.currency.shortName}}</span></div>
         </div>
         <hr class="w-line"/>
