@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  serverUrl: 'http://localhost:8080',
-  authUrl:'http://localhost:8080/auth', siteDomain: undefined,
-  apiUrl: 'http://localhost:8080/api'
+  serverUrl: 'https://localhost:8080',
+  authUrl:'https://localhost:8080/auth', siteDomain: undefined,
+  apiUrl: 'https://localhost:8080/api'
 
 };
 

@@ -57,6 +57,8 @@ import {RestoreAccessComponent} from "./components/pages/restore-access/restore-
 import {MatStepperModule} from "@angular/material/stepper";
 import {TypeInfoComponent} from "./components/pages/accounts/create-account/type-info/type-info.component";
 import {UserProfileModalComponent} from "./components/pages/user-profile-modal/user-profile-modal.component";
+import {environment} from "../environments/environment";
+import {ServiceWorkerModule} from "@angular/service-worker";
 
 registerLocaleData(localeRu, 'ru');
 
@@ -95,12 +97,12 @@ registerLocaleData(localeRu, 'ru');
     ReactiveFormsModule,
     HttpClientModule,
     MatNativeDateModule,
-    // ServiceWorkerModule.register('ngsw-worker.js', {
-    //   enabled: environment.production,
-    //   // Register the ServiceWorker as soon as the app is stable
-    //   // or after 30 seconds (whichever comes first).
-    //   registrationStrategy: 'registerWhenStable:30000'
-    // }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
     }),

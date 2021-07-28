@@ -1,3 +1,12 @@
+## The format used for the keystore. It could be set to JKS in case it is a JKS file
+#server:
+#  ssl:
+#    key-store: classpath:keystore/owallet.p12
+#    key-alias: owallet
+#    key-store-password: owallet
+#    key-store-type: PKCS12
+#    enabled: true
+
 spring:
   mail:
     debug: true
