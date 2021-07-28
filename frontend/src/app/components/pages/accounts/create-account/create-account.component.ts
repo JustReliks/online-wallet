@@ -47,7 +47,7 @@ export class CreateAccountComponent implements OnInit {
     this._user = data.user;
     let date = new Date();
     this.minDate = new Date();
-    this.minDate.setDate(this.minDate.getDate() + 1);
+    this.minDate.setDate(this.minDate.getDate() + 2);
     this.minDateCredit = new Date();
     this.minDateCredit.setDate(this.minDateCredit.getDate() + 90);
     console.log(date.getDay())

@@ -45,6 +45,7 @@ export class AccountSettingsComponent implements OnInit {
     if (this.hasSecondBill) this.secondBill = this.account.accountBills[1];
 
     this.minDate = new Date();
+    this.minDate.setDate(this.minDate.getDate() + 2);
     this.goal = this.account.goal;
     console.log(this.editAccountForm)
   }
