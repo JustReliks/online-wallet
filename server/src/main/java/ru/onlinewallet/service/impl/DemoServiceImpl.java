@@ -15,9 +15,7 @@ import ru.onlinewallet.util.NumberUtil;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -123,41 +121,50 @@ public class DemoServiceImpl implements DemoService {
             List<TransactionCategory> categoriesExpense = transactionCategoryRepository.findAllByType("EXPENSES");
             List<TransactionCategory> categoriesIncome = transactionCategoryRepository.findAllByType("INCOME");
             for (AccountBill accountBill : bills) {
-                // accountBillRepository.save(accountBill);
                 double sum = NumberUtil.round(!isCredit ? 1000 + random.nextDouble() * 350000 :
                         mainBill.getStartBalance());
                 if (!isCredit) accountService.addTransaction(accountBill, userID, true, sum,
                         categoriesIncome.get(random.nextInt(categoriesIncome.size())).getId(), saved.getCreatedAt());
-                for (int i = 0; i < random.nextInt(16) + 8; i++) {
+                Instant transactionDate = account.getCreatedAt();
+                Instant now = Instant.now();
+                Calendar nowCal = getCalendar(now);
+                while (transactionDate.isBefore(now)) {
                     if (!(isCredit && sum >= 0)) {
-                        int hour = LocalDateTime.now().get(ChronoField.HOUR_OF_DAY);
-                        boolean currentDay = hour > 10 && random.nextInt(4) == 0;
-                        Instant transactionDate;
-                        if (!currentDay) transactionDate = getRandomDate(43, random);
-                        else {
-                            transactionDate = Instant.now();
-                            transactionDate = transactionDate.minus(random.nextInt(hour), ChronoUnit.HOURS);
+                        boolean completed = false;
+                        Calendar dateTime = getCalendar(transactionDate);
+                        dateTime.set(Calendar.HOUR_OF_DAY, 0);
+                        while (!completed) {
+                            int addHour = random.nextInt(9);
+                            int dateHour = dateTime.get(Calendar.HOUR_OF_DAY);
+                            if(sameDay(transactionDate, now)) {
+                                int nowHour = nowCal.get(Calendar.HOUR_OF_DAY);
+                                completed = dateHour + addHour >= nowHour;
+                            } else
+                            completed = dateTime.get(Calendar.HOUR_OF_DAY) + addHour >= 24;
+                            if (!completed) {
+                               dateTime.add(Calendar.HOUR_OF_DAY, addHour);
+                                boolean plus = (sum <= 10000) || random.nextBoolean() || isSaving;
+                                double value;
+                                if (plus) {
+                                    value = 500 + random.nextDouble() * 10000;
+                                    value *= isCredit ? 1.5 : 1;
+                                    sum += value;
+                                } else {
+                                    value = 2500 + random.nextDouble() * 6500;
+                                    sum -= value;
+                                }
+                                long transactionId = plus ?
+                                        categoriesIncome.get(random.nextInt(categoriesIncome.size())).getId() :
+                                        categoriesExpense.get(random.nextInt(categoriesIncome.size())).getId();
+                                if (accountService.getConvertedBalance(saved, mainCurrency).getValue() < 0 && !isCredit) {
+                                    throw new RuntimeException("Баланс счета не может быть меньше 0!");
+                                }
+                                accountService.addTransaction(accountBill, userID, plus, NumberUtil.round(value),
+                                        transactionId, Instant.from(dateTime.toInstant()));
+                            }
                         }
-                        boolean plus = (sum <= 10000) || random.nextBoolean() || isSaving;
-                        double value;
-                        if (plus) {
-                            value = 500 + random.nextDouble() * 10000;
-                            value *= isCredit ? 1.5 : 1;
-                            sum += value;
-                        } else {
-                            value = 2500 + random.nextDouble() * 6500;
-                            sum -= value;
-                        }
-                        long transactionId = plus ?
-                                categoriesIncome.get(random.nextInt(categoriesIncome.size())).getId() :
-                                categoriesExpense.get(random.nextInt(categoriesIncome.size())).getId();
-                        if(accountService.getConvertedBalance(saved, mainCurrency).getValue() < 0 && !isCredit)
-                        {
-                            throw new RuntimeException("Баланс счета не может быть меньше 0!");
-                        }
-                        accountService.addTransaction(accountBill, userID, plus, NumberUtil.round(value),
-                                transactionId, transactionDate);
                     }
+                    transactionDate = transactionDate.plus(1, ChronoUnit.DAYS);
                 }
             }
             accounts.add(saved);
@@ -165,8 +172,22 @@ public class DemoServiceImpl implements DemoService {
         return accounts;
     }
 
-    private Instant getRandomDate(int maxDaysBeforeNow, Random random) {
-        return Instant.now().minus(random.nextInt(maxDaysBeforeNow), ChronoUnit.DAYS);
+    private Calendar getCalendar(Instant instant) {
+        Calendar calendar1 = GregorianCalendar.getInstance();
+        calendar1.setTime(Date.from(instant));
+
+        return calendar1;
+
+    }
+
+    private boolean sameDay(Instant instant1, Instant instant2) {
+        return sameDay(getCalendar(instant1), getCalendar(instant2));
+    }
+
+    private boolean sameDay(Calendar calendar1, Calendar calendar2) {
+        return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
+                calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) &&
+                calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
     }
 
 }

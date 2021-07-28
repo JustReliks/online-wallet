@@ -115,11 +115,12 @@ public class StatisticsServiceImpl implements StatisticsService {
         LinkedList<Double> dataMoney = new LinkedList<>();
         List<Double> dataIncome = new LinkedList<>();
         List<Double> dataExpense = new LinkedList<>();
-
         dataMoney.add(accountService.getConvertedBalance(account, currency).getValue());
-        dataMoney.addFirst(calculateStartDayMoney(currency, transactions, date, dataMoney.getFirst()));
-        dataExpense.add(getDaySum(statistics.getExpenseLineChart().getSeriesData()));
-        dataIncome.add(getDaySum(statistics.getIncomeLineChart().getSeriesData()));
+        Double daySumExpense = getDaySum(statistics.getExpenseLineChart().getSeriesData());
+        dataExpense.add(daySumExpense);
+        Double daySumIncome = getDaySum(statistics.getIncomeLineChart().getSeriesData());
+        dataIncome.add(daySumIncome);
+        //dataMoney.addFirst(calculateStartDayMoney(currency, transactions, date, dataMoney.getFirst()));
 
         chartIncome.setSeriesData(dataIncome);
         chartExpense.setSeriesData(dataExpense);
@@ -130,11 +131,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         for (int i = 0; i < days - 1; i++) {
             calendar.setTime(Date.from(date));
             date = date.minus(1, ChronoUnit.DAYS);
+            //if (i > 0)
+                dataMoney.addFirst(calculateStartDayMoney(currency, transactions, dateMoney, dataMoney.getFirst()));
 
             AccountStatistics tempStat = getAccountStatisticsForDay(date, transactions, currency);
             mergeAccounts(statistics, tempStat);
-            if (i > 1)
-                dataMoney.addFirst(calculateStartDayMoney(currency, transactions, dateMoney, dataMoney.getFirst()));
             dateMoney = dateMoney.minus(1, ChronoUnit.DAYS);
         }
         chartMoney.setSeriesData(dataMoney);
@@ -179,8 +180,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         LineChart chartIncome = tempAccount.getIncomeLineChart();
         LineChart chartExpense = tempAccount.getExpenseLineChart();
 
-        mainAccount.getIncomeLineChart().getSeriesData().add(getDaySum(chartIncome.getSeriesData()));
-        mainAccount.getExpenseLineChart().getSeriesData().add(getDaySum(chartExpense.getSeriesData()));
+        ((LinkedList<Double>) mainAccount.getIncomeLineChart().getSeriesData()).offerLast(getDaySum(chartIncome.getSeriesData()));
+        ((LinkedList<Double>) mainAccount.getExpenseLineChart().getSeriesData()).offerLast(getDaySum(chartExpense.getSeriesData()));
 
         CircleChart chartIncomeCircle = tempAccount.getIncomeCircleChart();
         CircleChart chartExpenseCircle = tempAccount.getExpenseCircleChart();
@@ -220,14 +221,14 @@ public class StatisticsServiceImpl implements StatisticsService {
                 int hour = calendar1.get(Calendar.HOUR_OF_DAY);
                 String category = transaction.getCategory().getType();
                 if (category.equals(INCOME)) {
-                    double value = accountService.convertCurrencies(transaction.getQuantity(),
-                            transaction.getAccountBill().getCurrency().getShortName(), currency);
+                    double value = NumberUtil.round(accountService.convertCurrencies(transaction.getQuantity(),
+                            transaction.getAccountBill().getCurrency().getShortName(), currency));
                     dataIncome[hour] += value;
                     rawDataIncome.merge(transaction.getCategory(), value, Double::sum);
                 }
                 if (category.equals(EXPENSES)) {
-                    double value = accountService.convertCurrencies(transaction.getQuantity() * -1,
-                            transaction.getAccountBill().getCurrency().getShortName(), currency);
+                    double value = NumberUtil.round(accountService.convertCurrencies(transaction.getQuantity() * -1,
+                            transaction.getAccountBill().getCurrency().getShortName(), currency));
                     dataExpense[hour] += value;
                     rawDataExpense.merge(transaction.getCategory(), value, Double::sum);
                 }
@@ -236,10 +237,14 @@ public class StatisticsServiceImpl implements StatisticsService {
         circleChartIncome.setRawData(rawDataIncome);
 
         chartExpense.setCategories(DAY_CATEGORIES);
-        chartExpense.setSeriesData(new LinkedList<>(Arrays.asList(dataExpense)));
+        LinkedList<Double> seriesData = new LinkedList<>(Arrays.asList(dataExpense));
+        //Collections.reverse(seriesData);
+        chartExpense.setSeriesData(seriesData);
 
         chartIncome.setCategories(DAY_CATEGORIES);
-        chartIncome.setSeriesData(new LinkedList<>(Arrays.asList(dataIncome)));
+        LinkedList<Double> seriesData1 = new LinkedList<>(Arrays.asList(dataIncome));
+       //  Collections.reverse(seriesData1);
+        chartIncome.setSeriesData(seriesData1);
 
         statistics.setExpenseCircleChart(circleChartExpense);
         statistics.setIncomeCircleChart(circleChartIncome);
