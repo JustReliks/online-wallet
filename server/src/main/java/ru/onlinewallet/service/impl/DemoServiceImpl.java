@@ -9,6 +9,7 @@ import ru.onlinewallet.repo.account.*;
 import ru.onlinewallet.service.AccountService;
 import ru.onlinewallet.service.DemoService;
 import ru.onlinewallet.service.DictionaryService;
+import ru.onlinewallet.service.UserService;
 import ru.onlinewallet.util.NumberUtil;
 
 import java.io.IOException;
@@ -31,6 +32,7 @@ public class DemoServiceImpl implements DemoService {
     private final DictionaryService dictionaryService;
     private final AccountGoalRepository accountGoalRepository;
     private final TransactionCategoryRepository transactionCategoryRepository;
+    private final UserService userService;
     private AccountRepository accountRepository;
 
     private final Map<String, String> demoAccountsDescriptions = Map.ofEntries(
@@ -49,6 +51,7 @@ public class DemoServiceImpl implements DemoService {
         List<Account> accounts = new ArrayList<>();
         Random random = new Random();
         List<Currency> currencies = dictionaryService.getAllCurrencies();
+        String mainCurrency = userService.getUserProfile(userID).getCurrency();
         for (Type type : typeRepository.findAll()) {
             Account account = new Account();
             account.setName(type.getName() + " демо счет");
@@ -117,7 +120,6 @@ public class DemoServiceImpl implements DemoService {
                 saved.setGoal(save1);
             }
 
-
             List<TransactionCategory> categoriesExpense = transactionCategoryRepository.findAllByType("EXPENSES");
             List<TransactionCategory> categoriesIncome = transactionCategoryRepository.findAllByType("INCOME");
             for (AccountBill accountBill : bills) {
@@ -143,12 +145,16 @@ public class DemoServiceImpl implements DemoService {
                             value *= isCredit ? 1.5 : 1;
                             sum += value;
                         } else {
-                            value = 2500 + random.nextDouble() * 7500;
+                            value = 2500 + random.nextDouble() * 6500;
                             sum -= value;
                         }
                         long transactionId = plus ?
                                 categoriesIncome.get(random.nextInt(categoriesIncome.size())).getId() :
                                 categoriesExpense.get(random.nextInt(categoriesIncome.size())).getId();
+                        if(accountService.getConvertedBalance(saved, mainCurrency).getValue() < 0 && !isCredit)
+                        {
+                            throw new RuntimeException("Баланс счета не может быть меньше 0!");
+                        }
                         accountService.addTransaction(accountBill, userID, plus, NumberUtil.round(value),
                                 transactionId, transactionDate);
                     }
