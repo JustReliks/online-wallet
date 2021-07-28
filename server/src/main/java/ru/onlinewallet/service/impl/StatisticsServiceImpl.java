@@ -1,6 +1,7 @@
 package ru.onlinewallet.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Service;
 import ru.onlinewallet.entity.account.Account;
 import ru.onlinewallet.entity.account.Transaction;
@@ -44,6 +45,22 @@ public class StatisticsServiceImpl implements StatisticsService {
         Instant date = Instant.now();
         AccountStatistics statistics = getAccountStatisticsForDay(date, transactions, currency);
 
+        calcMainInfo(account, transactions, currency, date, statistics);
+
+        calculateMoneyChartCurrentDay(statistics, account, currency);
+        if (days != 1) {
+            calcNDays(days, account, transactions, currency, date, statistics);
+            DAY_CATEGORIES = getNDaysCategories(Math.toIntExact(days));
+        }
+        createCircleData(statistics);
+        statistics.getMoneyLineChart().setCategories(DAY_CATEGORIES);
+        statistics.getIncomeLineChart().setCategories(DAY_CATEGORIES);
+        statistics.getExpenseLineChart().setCategories(DAY_CATEGORIES);
+
+        return statistics;
+    }
+
+    private void calcMainInfo(Account account, List<Transaction> transactions, String currency, Instant date, AccountStatistics statistics) throws CloneNotSupportedException, IOException {
         AccountStatistics mainInfo = calcMainStatistics(account, transactions, currency, date,
                 statistics);
 
@@ -76,24 +93,12 @@ public class StatisticsServiceImpl implements StatisticsService {
                         Double::sum);
         statistics.setIncomes(Arrays.asList(allIncome, dayIncome, weekIncome, monthIncome));
         statistics.setExpenses(Arrays.asList(allExpense, dayExpenses, weekExpenses, monthExpenses));
-
-        calculateMoneyChartCurrentDay(statistics, account, currency);
-        if (days != 1) {
-            calcNDays(days, account, transactions, currency, date, statistics);
-            DAY_CATEGORIES = getNDaysCategories(Math.toIntExact(days));
-        }
-        createCircleData(statistics);
-        statistics.getMoneyLineChart().setCategories(DAY_CATEGORIES);
-        statistics.getIncomeLineChart().setCategories(DAY_CATEGORIES);
-        statistics.getExpenseLineChart().setCategories(DAY_CATEGORIES);
-
-        return statistics;
     }
 
     private AccountStatistics calcMainStatistics(Account account, List<Transaction> transactions, String currency,
                                                  Instant date,
-                                                 AccountStatistics statistics) throws CloneNotSupportedException, IOException {
-        AccountStatistics clone = (AccountStatistics) statistics.clone();
+                                                 AccountStatistics statistics) throws IOException {
+        AccountStatistics clone = SerializationUtils.clone(statistics);
         calcNDays(30L, account, transactions, currency, date, clone);
 
         return clone;

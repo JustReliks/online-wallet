@@ -2,10 +2,11 @@ package ru.onlinewallet.entity.account.statistics;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class AccountStatistics implements Cloneable{
+public class AccountStatistics implements Cloneable, Serializable {
 
     private LineChart incomeLineChart;
     private CircleChart incomeCircleChart;
