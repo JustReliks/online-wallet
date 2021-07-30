@@ -176,4 +176,9 @@ export class HeaderComponent implements OnInit {
       })
     return dialogRef
   }
+
+  scrollToAbout() {
+    let elementById = document.getElementById("about");
+    elementById.scrollIntoView({behavior: 'smooth'});
+  }
 }
